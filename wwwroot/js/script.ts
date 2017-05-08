@@ -275,7 +275,7 @@ $(document).ready(function()
 	// *** END PAGE RENDERING ***
 	// *** BEGIN FORM VALIDATION ***
 	
-	$("form[name='auth']").validate(
+	$("form[name='authForm']").validate(
 	{
 		rules: 
 		{
