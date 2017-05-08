@@ -32,9 +32,16 @@ namespace DigitalWizardry.SPA_Template.Controllers
 
 		#region Authentication
 
+		public class SignUpData
+		{
+			public string UserName { get; set; }
+			public string Password { get; set; }
+			public string AccountType { get; set; }
+		}
+
 		[HttpPost]
 		[Route("auth/signup")]
-		public IActionResult SignUp([FromBody] AuthData authData)
+		public IActionResult SignUp([FromBody] SignUpData signUpData)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -47,30 +54,31 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			{				
 				try
 				{
-					Accounts.GetByUserName(authData.UserName);
+					Accounts.GetByUserName(signUpData.UserName);
 					// This is bad. The account already exists. Reject the sign up by returning 204 code.
-					ServiceLogs.SignUp(Request, "ERROR: Account Exists", authData.UserName);
+					ServiceLogs.SignUp(Request, "ERROR: Account Exists", signUpData.UserName);
 					return new StatusCodeResult(204);
 				}
 				catch (System.InvalidOperationException)
 				{
 					// This is good. The account doesn't exist yet. Create the account and return token.
 					token = Guid.NewGuid();
-					HashData hashData = HashPassword(authData.Password);
+					HashData hashData = HashPassword(signUpData.Password);
 					
 					Account account = new Account();
-					account.UserName = authData.UserName;
+					account.UserName = signUpData.UserName;
 					account.Salt = hashData.Salt;
 					account.Hash = hashData.Hash;
 					account.Token = (Guid)token;
+					account.AccountType = signUpData.AccountType;
 					Accounts.Add(account);
 					
-					ServiceLogs.SignUp(Request, null, authData.UserName);
+					ServiceLogs.SignUp(Request, signUpData.AccountType, signUpData.UserName);
 				}
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignUp()", authData == null ? null : authData.UserName);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignUp()", signUpData == null ? null : signUpData.UserName);
 				return new StatusCodeResult(500);
 			}
 
@@ -105,9 +113,15 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			return hashData;
 		}
 
+		public class SignInData
+		{
+			public string UserName { get; set; }
+			public string Password { get; set; }
+		}
+		
 		[HttpPost]
 		[Route("auth/signin")]
-		public IActionResult SignIn([FromBody] AuthData authData)
+		public IActionResult SignIn([FromBody] SignInData signInData)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -120,14 +134,14 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			{				
 				try
 				{
-					Account account = Accounts.GetByUserName(authData.UserName);
+					Account account = Accounts.GetByUserName(signInData.UserName);
 					
-					string hash = HashPassword(account.Salt, authData.Password);
+					string hash = HashPassword(account.Salt, signInData.Password);
 
 					if (account.Hash != hash)
 					{
 						// This is bad. The password doesn't match. Reject the sign in by returning 204 code.
-						ServiceLogs.SignIn(Request, "ERROR: Bad Password", authData.UserName);
+						ServiceLogs.SignIn(Request, "ERROR: Bad Password", signInData.UserName);
 						return new StatusCodeResult(204);
 					}
 
@@ -135,18 +149,18 @@ namespace DigitalWizardry.SPA_Template.Controllers
 					account.Token = (Guid)token;
 					Accounts.Update(account);
 					
-					ServiceLogs.SignIn(Request, token.ToString(), authData.UserName);
+					ServiceLogs.SignIn(Request, token.ToString(), signInData.UserName);
 				}
 				catch (System.InvalidOperationException)
 				{
 					// This is bad. The account doesn't exist. Reject the sign in by returning 204 code.
-					ServiceLogs.SignIn(Request, "ERROR: Account Doesn't Exist", authData.UserName);
+					ServiceLogs.SignIn(Request, "ERROR: Account Doesn't Exist", signInData.UserName);
 					return new StatusCodeResult(204);
 				}
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignIn()", authData == null ? null : authData.UserName);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignIn()", signInData == null ? null : signInData.UserName);
 				return new StatusCodeResult(500);
 			}
 
@@ -168,12 +182,6 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			);
 
 			return hash;
-		}
-
-		public class AuthData
-		{
-			public string UserName { get; set; }
-			public string Password { get; set; }
 		}
 
 		public class HashData

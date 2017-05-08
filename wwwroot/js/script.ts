@@ -342,7 +342,7 @@ $(document).ready(function()
 		({
 			type: "POST",
 			dataType: "json",
-			data: JSON.stringify({ UserName: username, Password: password }),
+			data: JSON.stringify({ UserName: username, Password: password, AccountType: "USER" }),
 			contentType: "application/json",
 			url: "/api/auth/signup",
 			headers: BasicAuth,
