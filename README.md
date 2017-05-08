@@ -26,16 +26,16 @@ The project is compatible with cloud infrastructure and can use Docker to encaps
 
 There are three permission levels: user, manager, and administrator.
 
-##### User
+##### Jogger
 
-A user or **Jogger** in application-specific terms, is blah blah blah
+A jogger has **user permissions** and can...
 
-##### Manager
+##### Coach
 
-A manager or **Coach** in application-specific terms, is blah blah blah
+A coach has **manager permissions** and can...
 
 ##### Administrator
-An administrator is blah blah blah
+An administrator can... 
 
 ### Deployment Notes
 
