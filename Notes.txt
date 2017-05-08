@@ -1,0 +1,15 @@
+*** EF COMMANDS ***
+
+dotnet ef migrations list --context MainContext
+
+dotnet ef migrations add mig1 --context MainContext
+dotnet ef database update --context MainContext
+
+dotnet ef migrations add mig2 --context ServiceLogContext
+dotnet ef database update --context ServiceLogContext
+
+*** TODO ***
+
+Complete testing
+--Sign up --> Items --> Click Sign In --> click on form --> single item view loads!
+--Test bad token used to try to load items (should return code 500)

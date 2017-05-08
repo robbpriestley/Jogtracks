@@ -1,0 +1,9 @@
+bin
+obj
+REST.txt
+.DS_Store
+Migrations
+version.txt
+secrets.json
+wwwroot/js/script.js
+wwwroot/js/script.js.map

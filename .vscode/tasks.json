@@ -1,0 +1,22 @@
+{
+    "version": "0.1.0",
+    "command": "build",
+    "isShellCommand": true,
+    "showOutput": "always",
+    "tasks": 
+	[
+		{
+            "taskName": "build",
+			"command": "${workspaceRoot}/build.sh",
+			"isShellCommand": true,
+			"isBuildCommand": true
+        },
+		{
+			"taskName": "transpile",
+			"command": "tsc",
+			"args": ["-p", "./wwwroot/js/tsconfig.json", "--outDir", "./wwwroot/js/"],
+			"isShellCommand": true,
+			"isTestCommand": true
+		}
+    ]
+}

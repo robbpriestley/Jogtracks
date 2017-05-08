@@ -1,0 +1,79 @@
+<header class="compact">
+	<h2 id="headercontrols" class="headercontrols visible">
+		<span id="user" class="user" style="display:none;">Welcome, User!</span>
+		<a id="signup" href="">Sign Up</a>
+		<a id="signin" href="">Sign In</a>
+		<a id="signout" href="" style="display:none;">Sign Out</a>
+	</h2>
+	<a href="javascript:void(0)" onclick="return Reload();"><img id="logo" class="logo" src="images/logo.png" /></a>
+</header>
+
+<div id="main" class="main-content">
+
+	<div class="welcome page">
+		<div>Hello and welcome to the SPA_Template!</div>
+	</div>
+
+	<div class="auth page">
+		<div id="authmessage">Auth message</div>
+		<form name="auth">
+		<ul class="formdefault">
+			<li>
+				<label>Username <span class="required">*</span></label>
+				<input type="text" id="username" name="username" class="field" />
+				<label id="username-taken" style="display: none;" class="error">Sorry, that username is already taken.</label>
+			</li>
+			<li>
+				<label>Password <span class="required">*</span></label>
+				<input type="password" id="password" name="password" class="field" />
+			</li>
+			<li id="confirm">
+				<label>Confirm Password <span class="required">*</span></label>
+				<input type="password" id="cpassword" name="cpassword" class="field" />
+			</li>
+			<li>
+				<input type="submit" value="Submit" />
+			</li>
+		</ul>
+		</form>
+	</div>
+	
+	<div class="all-items page">
+		<div class="controls">
+			<form>
+				<span>Sort Order</span>
+				<label><input type="radio" name="sort" value="Name" checked>Sort by Name</label>
+				<label><input type="radio" name="sort" value="Rating">Sort by Rating</label>
+			</form>
+			<button id="newitem">New Item</button>
+		</div>
+		<ul class="items-list"></ul>
+		<script id="items-template" type="x-handlebars-template">​
+			{{#each this}}
+				<li data-index="{{Id}}">
+					<h2><a href="#"> {{Name}} </a></h2>
+					<ul class="item-description">
+						<li><span>Rating: </span>{{Rating}}</li>
+						<li><span>Description: </span>{{Description}}</li>
+					</ul>
+					<div class="highlight"></div>
+				</li>
+			{{/each}}
+		</script>
+	</div>
+
+	<div class="single-item page">
+		<div class="overlay"></div>
+		<div class="preview-large">
+			<h3>Single item view</h3>
+			<img src=""/>
+			<p></p>
+			<span class="close">×</span>
+		</div>
+	</div>
+
+	<div class="errorMessage page">
+		<h3>Sorry, something went wrong :(</h3>
+	</div>
+
+</div>
