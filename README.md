@@ -22,9 +22,24 @@ The project is compatible with cloud infrastructure and can use Docker to encaps
 * [Docker](https://www.docker.com/)
 * [Amazon Web Services](https://aws.amazon.com/)
 
+### Permission Levels
+
+There are three permission levels: user, manager, and administrator.
+
+##### User
+
+A user or **Jogger** in application-specific terms, is blah blah blah
+
+##### Manager
+
+A manager or **Coach** in application-specific terms, is blah blah blah
+
+##### Administrator
+An administrator is blah blah blah
+
 ### Deployment Notes
 
-* The web application needs to be served via HTTPS or usernames, passwords, and other data will be transmitted from the client to the server in plaintext.
+* Please keep in mind that in a true production environment, the web application would to be served via HTTPS. Otherwise usernames, passwords, and other data would be transmitted from the client to the server in plaintext.
 
 ### Project Origins
 

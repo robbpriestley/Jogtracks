@@ -85,34 +85,6 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			return new ObjectResult(token);
 		}
 
-		private HashData HashPassword(string password)
-		{
-			byte[] salt = new byte[128 / 8];
-
-			using (var r = RandomNumberGenerator.Create())
-			{
-				r.GetBytes(salt);
-			}
-
-			string hash = Convert.ToBase64String
-			(
-				KeyDerivation.Pbkdf2
-				(
-					password: password,
-					salt: salt,
-					prf: KeyDerivationPrf.HMACSHA1,
-					iterationCount: 10000,
-					numBytesRequested: 256 / 8
-				)
-			);
-
-			HashData hashData = new HashData();
-			hashData.Salt = salt;
-			hashData.Hash = hash;
-
-			return hashData;
-		}
-
 		public class SignInData
 		{
 			public string UserName { get; set; }
@@ -165,6 +137,34 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			}
 
 			return new ObjectResult(token);
+		}
+
+		private HashData HashPassword(string password)
+		{
+			byte[] salt = new byte[128 / 8];
+
+			using (var r = RandomNumberGenerator.Create())
+			{
+				r.GetBytes(salt);
+			}
+
+			string hash = Convert.ToBase64String
+			(
+				KeyDerivation.Pbkdf2
+				(
+					password: password,
+					salt: salt,
+					prf: KeyDerivationPrf.HMACSHA1,
+					iterationCount: 10000,
+					numBytesRequested: 256 / 8
+				)
+			);
+
+			HashData hashData = new HashData();
+			hashData.Salt = salt;
+			hashData.Hash = hash;
+
+			return hashData;
 		}
 
 		private string HashPassword(byte[] salt, string password)
