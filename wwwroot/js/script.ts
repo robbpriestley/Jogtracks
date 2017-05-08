@@ -109,7 +109,7 @@ $(document).ready(function()
 
 	$('input[name="sort"]').on("change", (function(e) 
 	{
-		let value: string = $("input[name=sort]:checked").val()
+		let value: string = $("input[name=sort]:checked").val();
 		Items.sort(sortOn(value));
 		GenerateItemsHTML(Items);
 		RenderItemsPage(Items);
@@ -305,7 +305,8 @@ $(document).ready(function()
 			
 			if (keyword == "#signup")
 			{
-				SignUp(username, password);
+				let accountType: string = $("input[name=accountType]:checked").val();
+				SignUp(username, password, accountType);
 			}
 			else if (keyword == "#signin")
 			{
@@ -333,7 +334,7 @@ $(document).ready(function()
 		}
 	}
 
-	function SignUp(username: string, password: string): void
+	function SignUp(username: string, password: string, accountType: string): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
@@ -342,7 +343,7 @@ $(document).ready(function()
 		({
 			type: "POST",
 			dataType: "json",
-			data: JSON.stringify({ UserName: username, Password: password, AccountType: "USER" }),
+			data: JSON.stringify({ UserName: username, Password: password, AccountType: accountType }),
 			contentType: "application/json",
 			url: "/api/auth/signup",
 			headers: BasicAuth,

@@ -19,6 +19,11 @@
 		<form name="auth">
 		<ul class="formdefault">
 			<li>
+				<label>Account Type <span class="required">*</span></label>
+				<label><input type="radio" name="accountType" value="JOGGER" checked> I'm a <strong>Jogger</strong></label>
+				<label><input type="radio" name="accountType" value="COACH"> I'm a <strong>Coach</strong></label>
+			</li>
+			<li>
 				<label>Username <span class="required">*</span></label>
 				<input type="text" id="username" name="username" class="field" />
 				<label id="username-taken" style="display: none;" class="error">Sorry, that username is already taken.</label>
