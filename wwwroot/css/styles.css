@@ -241,6 +241,26 @@ span.user {
 	font-size: 24px;
 }
 
+/*** SETTINGS ***/
+
+.settings {
+	left: 0;
+	top: 100px;
+	opacity: 0;
+	width: 100%;
+	transition: 0.6s;
+	position: absolute;
+}
+
+.settings.visible {
+	opacity: 1;
+	transition: 1s;
+}
+
+.settings div {
+	font-size: 24px;
+}
+
 /*** MAIN CONTENT ***/
 
 .main-content {

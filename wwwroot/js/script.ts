@@ -76,6 +76,7 @@ $(document).ready(function()
 	{
 		localStorage.removeItem("token");
 		$("#confirm").show();
+		$("#accountType").show();
 		$("#authmessage").text("Create an account");
 		window.location.hash = "#signup/";
 		return false;
@@ -85,8 +86,16 @@ $(document).ready(function()
 	{
 		localStorage.removeItem("token");
 		$("#confirm").hide();
+		$("#accountType").hide();
 		$("#authmessage").text("Sign in to your account");
 		window.location.hash = "#signin/";
+		return false;
+	});
+	
+	$("#settings").click(function(e) 
+	{
+		Items = [];
+		Settings();
 		return false;
 	});
 	
@@ -114,6 +123,11 @@ $(document).ready(function()
 		GenerateItemsHTML(Items);
 		RenderItemsPage(Items);
 	}));
+
+	$("#coachSelect").select2({
+		width: "400px",
+		minimumResultsForSearch: Infinity
+	});
 
 	// Single item page buttons.
 	let singleItemPage: JQuery = $(".single-item");
@@ -150,6 +164,10 @@ $(document).ready(function()
 			case "#signin":
 				RenderAuthPage();
 				break;
+
+			case "#settings":
+				RenderSettingsPage();
+				break;
 			
 			case "#items":
 				RenderItemsPage(Items);
@@ -176,6 +194,13 @@ $(document).ready(function()
 	function RenderAuthPage(): void
 	{
 		var page = $(".auth");
+		page.addClass("visible");
+		ShowHeaderComponents(true);
+	}
+
+	function RenderSettingsPage(): void
+	{
+		var page = $(".settings");
 		page.addClass("visible");
 		ShowHeaderComponents(true);
 	}
@@ -317,6 +342,16 @@ $(document).ready(function()
 		}
 	});
 
+	$("form[name='settingsForm']").validate(
+	{
+		submitHandler: function(form: any)
+		{
+			// PLACEHOLDER
+
+			return false;
+		}
+	});
+
 	// *** END FORM VALIDATION ***
 	// *** BEGIN REST AUTHENTICATION ***
 
@@ -404,7 +439,9 @@ $(document).ready(function()
 		$("#signup").show();
 		$("#signin").show();
 		$("#signout").hide();
+		$("#settings").hide();
 
+		// Reset the authentication form.
 		$("#username").val("");
 		$("#password").val("");
 		$("#cpassword").val("");
@@ -421,6 +458,7 @@ $(document).ready(function()
 		$("#signup").hide();
 		$("#signin").hide();
 		$("#signout").show();
+		$("#settings").show();
 
 		localStorage.setItem("token", token);
 		LoadItems(token);
@@ -428,6 +466,18 @@ $(document).ready(function()
 	}
 
 	// *** END REST AUTHENTICATION ***
+	// *** BEGIN SETTINGS ***
+
+	function Settings(): void
+	{
+		// Clear the items list.
+		let itemList: JQuery = $(".all-items .items-list");
+		itemList.html("");
+
+		window.location.hash = "settings/";
+	}
+
+	// *** END SETTINGS ***
 	// *** BEGIN REST API ***
 
 	function LoadItems(token: string): void
