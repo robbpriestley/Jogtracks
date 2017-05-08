@@ -405,6 +405,11 @@ $(document).ready(function()
 		$("#signin").show();
 		$("#signout").hide();
 
+		$("#username").val("");
+		$("#password").val("");
+		$("#cpassword").val("");
+		$("#jogger").prop("checked", true);
+
 		localStorage.removeItem("token");
 		window.location.hash = "#";  // Show welcome page.
 	}
