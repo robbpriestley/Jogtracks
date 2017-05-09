@@ -74,7 +74,7 @@ $(document).ready(function()
 
 	$("#signup").click(function(e) 
 	{
-		ClearLocalStorage();
+		SignOut();
 		$("#confirm").show();
 		$("#accountType").show();
 		$("#authMessage").text("Create an account");
@@ -84,7 +84,7 @@ $(document).ready(function()
 	
 	$("#signin").click(function(e) 
 	{
-		ClearLocalStorage();
+		SignOut();
 		$("#confirm").hide();
 		$("#accountType").hide();
 		$("#authMessage").text("Sign in to your account");
@@ -103,6 +103,7 @@ $(document).ready(function()
 	{
 		Items = [];
 		SignOut();
+		window.location.hash = "#";  // Show welcome page.
 		return false;
 	});
 	
@@ -494,8 +495,9 @@ $(document).ready(function()
 		$("#cpassword").val("");
 		$("#jogger").prop("checked", true);
 
+		//Reset other stuff.
+		$("#coachSelect").empty();
 		ClearLocalStorage();
-		window.location.hash = "#";  // Show welcome page.
 	}
 
 	function ClearLocalStorage(): void
@@ -527,7 +529,7 @@ $(document).ready(function()
 	{
 		let coach: string | null = localStorage.getItem("coach");
 
-		if (coach != null)
+		if (coach != null && coach != "null")
 		{
 			let coachSelect: JQuery = $("#coachSelect");
 			let option: JQuery = $("<option selected></option>");
