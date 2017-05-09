@@ -35,5 +35,10 @@ namespace DigitalWizardry.SPA_Template
 		{
 			return Context.Account.Where(x => x.UserName == userName).Single();
 		}
+
+		public List<Account> GetCoaches()
+		{
+			return Context.Account.Where(x => x.AccountType.Equals("COACH")).OrderBy(x => x.UserName).ToList();
+		}
 	}
 }

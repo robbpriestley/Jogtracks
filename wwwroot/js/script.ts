@@ -126,7 +126,31 @@ $(document).ready(function()
 
 	$("#coachSelect").select2({
 		width: "400px",
-		minimumResultsForSearch: Infinity
+		minimumResultsForSearch: Infinity,
+		ajax: 
+		{
+			url: "/api/coaches",
+			dataType: "json",
+			type: "GET",
+			headers: BasicAuth,
+			data: function(params: any) 
+			{
+				var queryParameters = { token: localStorage.getItem("token") }
+				return queryParameters;
+			},
+			processResults: function(data: any) 
+			{
+				return {
+					results: $.map(data, function(item) 
+					{
+						return {
+							text: item.UserName,
+							id: item.UserName
+						}
+					})
+				};
+			}
+		}
 	});
 
 	// Single item page buttons.
@@ -150,8 +174,9 @@ $(document).ready(function()
 	
 	function Render(url: string): void
 	{
-		let keyword: string = url.split("/")[0];  // Get the keyword from the URL.
-		$(".main-content .page").removeClass("visible");  // Hide the page that"s currently shown.
+		let keyword: string = url.split("/")[0];                 // Get the keyword from the URL.
+		$(".main-content .page").css("pointer-events", "none");  // Prevent pages from intercepting focus.
+		$(".main-content .page").removeClass("visible");         // Hide the page that"s currently shown.
 		ShowHeaderComponents(false);
 
 		switch (keyword)
@@ -195,6 +220,7 @@ $(document).ready(function()
 	{
 		var page = $(".auth");
 		page.addClass("visible");
+		page.css("pointer-events", "auto");
 		ShowHeaderComponents(true);
 	}
 
@@ -202,6 +228,7 @@ $(document).ready(function()
 	{
 		var page = $(".settings");
 		page.addClass("visible");
+		page.css("pointer-events", "auto");
 		ShowHeaderComponents(true);
 	}
 	
@@ -209,6 +236,7 @@ $(document).ready(function()
 	{
 		var page = $(".errorMessage");
 		page.addClass("visible");
+		page.css("pointer-events", "auto");
 		ShowHeaderComponents(true);
 	}
 

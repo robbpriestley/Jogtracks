@@ -9,5 +9,6 @@ namespace DigitalWizardry.SPA_Template
 		void Update(Account account);
 		Account GetByToken(Guid token);
 		Account GetByUserName(string userName);
+		List<Account> GetCoaches();
 	}
 }
