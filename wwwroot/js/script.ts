@@ -77,7 +77,7 @@ $(document).ready(function()
 		ClearLocalStorage();
 		$("#confirm").show();
 		$("#accountType").show();
-		$("#authmessage").text("Create an account");
+		$("#authMessage").text("Create an account");
 		window.location.hash = "#signup/";
 		return false;
 	});
@@ -87,7 +87,7 @@ $(document).ready(function()
 		ClearLocalStorage();
 		$("#confirm").hide();
 		$("#accountType").hide();
-		$("#authmessage").text("Sign in to your account");
+		$("#authMessage").text("Sign in to your account");
 		window.location.hash = "#signin/";
 		return false;
 	});
@@ -513,6 +513,13 @@ $(document).ready(function()
 		// Clear the items list.
 		let itemList: JQuery = $(".all-items .items-list");
 		itemList.html("");
+
+		// Update settings message. Convert account type from all caps to leading cap only.
+		let accountType: any = localStorage.getItem("accountType");
+		accountType = accountType.toString().toLowerCase();
+		accountType = accountType.charAt(0).toUpperCase() + accountType.slice(1);
+		$("#settingsMessage").text(accountType + " Settings");
+		
 		window.location.hash = "settings/";
 	}
 
