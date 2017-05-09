@@ -373,7 +373,7 @@ $(document).ready(function()
 		}
 	});
 
-	$("form[name='settingsForm']").validate(
+	$("form[name='coachForm']").validate(
 	{
 		submitHandler: function(form: any)
 		{
