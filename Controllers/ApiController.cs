@@ -32,7 +32,21 @@ namespace DigitalWizardry.SPA_Template.Controllers
 
 		#region Authentication
 
-		public class SignUpData
+		public class AuthOutput
+		{
+			public string Token { get; set; }
+			public string AccountType { get; set; }
+			public string Coach { get; set; }
+
+			public AuthOutput(string token, string accountType, string coach)
+			{
+				Token = token;
+				AccountType = accountType;
+				Coach = coach;
+			}
+		}
+		
+		public class SignUpInput
 		{
 			public string UserName { get; set; }
 			public string Password { get; set; }
@@ -41,14 +55,14 @@ namespace DigitalWizardry.SPA_Template.Controllers
 
 		[HttpPost]
 		[Route("auth/signup")]
-		public IActionResult SignUp([FromBody] SignUpData signUpData)
+		public IActionResult SignUp([FromBody] SignUpInput signUpData)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
-			Guid? token = null;
+			AuthOutput authOutput = null;
 
 			try
 			{				
@@ -62,16 +76,17 @@ namespace DigitalWizardry.SPA_Template.Controllers
 				catch (System.InvalidOperationException)
 				{
 					// This is good. The account doesn't exist yet. Create the account and return token.
-					token = Guid.NewGuid();
 					HashData hashData = HashPassword(signUpData.Password);
 					
-					Account account = new Account();
-					account.UserName = signUpData.UserName;
-					account.Salt = hashData.Salt;
-					account.Hash = hashData.Hash;
-					account.Token = (Guid)token;
-					account.AccountType = signUpData.AccountType;
-					Accounts.Add(account);
+					Account user = new Account();
+					user.UserName = signUpData.UserName;
+					user.Salt = hashData.Salt;
+					user.Hash = hashData.Hash;
+					user.Token = Guid.NewGuid();;
+					user.AccountType = signUpData.AccountType;
+					Accounts.Add(user);
+
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, null);  // Coach is always null on new sign up.
 					
 					ServiceLogs.SignUp(Request, signUpData.AccountType, signUpData.UserName);
 				}
@@ -82,10 +97,10 @@ namespace DigitalWizardry.SPA_Template.Controllers
 				return new StatusCodeResult(500);
 			}
 
-			return new ObjectResult(token);
+			return Utility.JsonObjectResult(authOutput);
 		}
 
-		public class SignInData
+		public class SignInInput
 		{
 			public string UserName { get; set; }
 			public string Password { get; set; }
@@ -93,14 +108,14 @@ namespace DigitalWizardry.SPA_Template.Controllers
 		
 		[HttpPost]
 		[Route("auth/signin")]
-		public IActionResult SignIn([FromBody] SignInData signInData)
+		public IActionResult SignIn([FromBody] SignInInput signInData)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
-			Guid? token = null;
+			AuthOutput authOutput = null;
 
 			try
 			{				
@@ -117,11 +132,12 @@ namespace DigitalWizardry.SPA_Template.Controllers
 						return new StatusCodeResult(204);
 					}
 
-					token = Guid.NewGuid();
-					user.Token = (Guid)token;
+					user.Token = Guid.NewGuid();
 					Accounts.Update(user);
+
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.Coach);
 					
-					ServiceLogs.SignIn(Request, token.ToString(), signInData.UserName);
+					ServiceLogs.SignIn(Request, user.Token.ToString(), signInData.UserName);
 				}
 				catch (System.InvalidOperationException)
 				{
@@ -136,7 +152,7 @@ namespace DigitalWizardry.SPA_Template.Controllers
 				return new StatusCodeResult(500);
 			}
 
-			return new ObjectResult(token);
+			return Utility.JsonObjectResult(authOutput);
 		}
 
 		private HashData HashPassword(string password)
@@ -201,34 +217,20 @@ namespace DigitalWizardry.SPA_Template.Controllers
 				return new UnauthorizedResult();
 			}
 			
-			Account user = null;
+			Account user = GetUser(token);
 
-			try
+			if (user == null)
 			{
-				user = Accounts.GetByToken(Guid.Parse(token));  // Look up the current user by their token.
-			}
-			catch (System.InvalidOperationException)
-			{
-				// The user's account doesn't exist. Reject the request by returning 500 code.
-				ServiceLogs.Access(Request, "ERROR: Token Doesn't Exist", token);
 				return new StatusCodeResult(204);
 			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
 			
 			List<Item> items = null;
 
 			try
-			{				
-				ServiceLogs.Access(Request, null, user.UserName);
-
-				try
-				{
-					items = Items.GetAll();
-				}
-				catch (System.InvalidOperationException)
-				{
-					ServiceLogs.Error(Request, "[ITEMS LOAD FAILURE] ", "ApiController.ItemList()", user.UserName);
-					return new StatusCodeResult(500);
-				}
+			{			
+				items = Items.GetAll();
 			}
 			catch (System.Exception e)
 			{
@@ -271,6 +273,40 @@ namespace DigitalWizardry.SPA_Template.Controllers
 			return new ObjectResult("SUCCESS");
 		}
 
+		#region Coaches
+			
+		[HttpPatch]
+		[Route("coachpatch")]
+		public IActionResult CoachPatch([FromBody] CoachPatchInput coachPatchInput)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(coachPatchInput.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			try
+			{				
+				user.Coach = coachPatchInput.Coach;
+				Accounts.Update(user);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SetCoach()", coachPatchInput.Token);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
+		}
+
 		[HttpGet]
 		[Route("coaches")]
 		public IActionResult CoachList(string token)
@@ -280,39 +316,25 @@ namespace DigitalWizardry.SPA_Template.Controllers
 				return new UnauthorizedResult();
 			}
 			
-			Account user = null;
+			Account user = GetUser(token);
 
-			try
+			if (user == null)
 			{
-				user = Accounts.GetByToken(Guid.Parse(token));  // Look up the current user by their token.
-			}
-			catch (System.InvalidOperationException)
-			{
-				// The user's account doesn't exist. Reject the request by returning 500 code.
-				ServiceLogs.Access(Request, "ERROR: Token Doesn't Exist", token);
 				return new StatusCodeResult(204);
 			}
 			
+			ServiceLogs.Access(Request, null, user.UserName);
+
 			List<Coach> coaches = new List<Coach>();
 
 			try
 			{				
-				ServiceLogs.Access(Request, null, user.UserName);
+				List<Account> coachAccounts = Accounts.GetCoaches();
 
-				try
+				// Convert full accounts list to basic list.
+				foreach(Account coachAccount in coachAccounts)
 				{
-					List<Account> coachAccounts = Accounts.GetCoaches();
-
-					 // Convert full accounts list to basic list.
-					 foreach(Account coachAccount in coachAccounts)
-					{
-						coaches.Add(new Coach(coachAccount.UserName, coachAccount.UserName == user.Coach));
-					}
-				}
-				catch (System.InvalidOperationException)
-				{
-					ServiceLogs.Error(Request, "[COACHES LOAD FAILURE] ", "ApiController.CoachList()", user.UserName);
-					return new StatusCodeResult(500);
+					coaches.Add(new Coach(coachAccount.UserName));
 				}
 			}
 			catch (System.Exception e)
@@ -327,13 +349,38 @@ namespace DigitalWizardry.SPA_Template.Controllers
 		public class Coach
 		{
 			public string UserName { get; set; }
-			public bool Selected { get; set; }
 			
-			public Coach(string userName, bool selected)
+			public Coach(string userName)
 			{
 				UserName = userName;
-				Selected = selected;
 			}
 		}
+
+		public class CoachPatchInput
+		{
+			public string Token { get; set; }
+			public string Coach { get; set; }
+		}
+
+		#endregion
+		#region Utility
+			
+		private Account GetUser(string token)
+		{
+			Account user = null;
+
+			try
+			{
+				user = Accounts.GetByToken(Guid.Parse(token));  // Look up the current user by their token.
+			}
+			catch (System.InvalidOperationException)
+			{
+				ServiceLogs.Access(Request, "ERROR: Token not found, cannot get user", token);
+			}
+
+			return user;
+		}
+
+		#endregion
 	}
 }

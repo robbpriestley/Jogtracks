@@ -74,7 +74,7 @@ $(document).ready(function()
 
 	$("#signup").click(function(e) 
 	{
-		localStorage.removeItem("token");
+		ClearLocalStorage();
 		$("#confirm").show();
 		$("#accountType").show();
 		$("#authmessage").text("Create an account");
@@ -84,7 +84,7 @@ $(document).ready(function()
 	
 	$("#signin").click(function(e) 
 	{
-		localStorage.removeItem("token");
+		ClearLocalStorage();
 		$("#confirm").hide();
 		$("#accountType").hide();
 		$("#authmessage").text("Sign in to your account");
@@ -229,6 +229,9 @@ $(document).ready(function()
 		var page = $(".settings");
 		page.addClass("visible");
 		page.css("pointer-events", "auto");
+
+		SetCoachSelect();
+
 		ShowHeaderComponents(true);
 	}
 	
@@ -374,8 +377,8 @@ $(document).ready(function()
 	{
 		submitHandler: function(form: any)
 		{
-			// PLACEHOLDER
-
+			let coach: string = $("#coachSelect").val();
+			CoachPatch(coach);
 			return false;
 		}
 	});
@@ -421,7 +424,7 @@ $(document).ready(function()
 				else
 				{
 					spinner.stop();
-					Authenticated(username, result);  // result is the token.
+					Authenticated(username, result);
 				}
 			}
 		});
@@ -451,10 +454,26 @@ $(document).ready(function()
 				else
 				{
 					spinner.stop();
-					Authenticated(username, result);  // result is the token.
+					Authenticated(username, result);
 				}
 			}
 		});
+	}
+
+	function Authenticated(username: string, authOutput: any): void
+	{
+		$("#user").text("Welcome, " + username + "!");
+		$("#user").show();
+		$("#signup").hide();
+		$("#signin").hide();
+		$("#signout").show();
+		$("#settings").show();
+
+		localStorage.setItem("token", authOutput.Token);
+		localStorage.setItem("accountType", authOutput.AccountType);
+		localStorage.setItem("coach", authOutput.Coach);
+		LoadItems(authOutput.Token);
+		window.location.hash = "items/";
 	}
 
 	function SignOut(): void
@@ -475,22 +494,15 @@ $(document).ready(function()
 		$("#cpassword").val("");
 		$("#jogger").prop("checked", true);
 
-		localStorage.removeItem("token");
+		ClearLocalStorage();
 		window.location.hash = "#";  // Show welcome page.
 	}
 
-	function Authenticated(username: string, token: string): void
+	function ClearLocalStorage(): void
 	{
-		$("#user").text("Welcome, " + username + "!");
-		$("#user").show();
-		$("#signup").hide();
-		$("#signin").hide();
-		$("#signout").show();
-		$("#settings").show();
-
-		localStorage.setItem("token", token);
-		LoadItems(token);
-		window.location.hash = "items/";
+		localStorage.removeItem("token");
+		localStorage.removeItem("accountType");
+		localStorage.removeItem("coach");
 	}
 
 	// *** END REST AUTHENTICATION ***
@@ -501,12 +513,47 @@ $(document).ready(function()
 		// Clear the items list.
 		let itemList: JQuery = $(".all-items .items-list");
 		itemList.html("");
-
 		window.location.hash = "settings/";
 	}
 
+	function SetCoachSelect(): void
+	{
+		let coach: string | null = localStorage.getItem("coach");
+
+		if (coach != null)
+		{
+			let coachSelect: JQuery = $("#coachSelect");
+			let option: JQuery = $("<option selected></option>");
+			option.val(coach);   // Set id.
+			option.text(coach);  // Set text.
+			coachSelect.append(option);     // Add coach to the list of selections.
+			coachSelect.trigger("change");  // Tell Select2 to update.
+		}
+	}
+
+	function CoachPatch(coach: string): void
+	{
+		localStorage.setItem("coach", coach);
+		
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			type: "PATCH",
+			data: JSON.stringify({ Token: localStorage.getItem("token"), Coach: coach }),
+			contentType: "application/json",
+			url: "/api/coachpatch",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+			}
+		});
+	}
+
 	// *** END SETTINGS ***
-	// *** BEGIN REST API ***
+	// *** BEGIN ITEMS ***
 
 	function LoadItems(token: string): void
 	{
@@ -531,6 +578,9 @@ $(document).ready(function()
 		});
 	}
 
+	// *** END ITEMS ***
+	// *** BEGIN UTILITY ***
+
 	function SpinnerSetup() : Spinner
 	{
 		var opts = 
@@ -547,7 +597,7 @@ $(document).ready(function()
 		return new Spinner(opts);
 	}
 
-	// *** END REST API ***
+	// *** END UTILITY ***
 	// *** BEGIN BOOTSTRAP ***
 
 	AuthCheck();
