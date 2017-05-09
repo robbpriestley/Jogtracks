@@ -12,12 +12,3 @@ dotnet ef database update --context ServiceLogContext
 
 Auto-detect user from localSettings
 Change password
-
-	var $element = $("#coachSelect"); // the element that Select2 is initialized on
-
-	var $option = $("<option selected></option>"); // the new base option
-	$option.val("fug"); // set the id
-	$option.text("fug"); // set the text
-
-	$element.append($option); // add it to the list of selections
-	$element.trigger("change"); // tell Select2 to update

@@ -5,7 +5,7 @@ select * from Account;
 select * from Item;
 select * from ServiceLog order by UtcTime desc;
 
-update Account set Coach = 'foo' where Id = 6;
+update Account set Coach = 'foo' where UserName = 'dude3';
 
 delete from Account;
 delete from Item;
