@@ -19,6 +19,13 @@ div.message {
 	margin-bottom: 10px;
 }
 
+div.messageLeft {
+	font-size: 24px;
+	text-align: left;
+	margin-top: 20px;
+	margin-left: 10px;
+}
+
 div.group {
 	width: 600px;
 	margin: 0 auto;
@@ -122,7 +129,8 @@ select {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
 }
 
-.formdefault input[type=submit]:hover, .formdefault input[type=button]:hover {
+.formdefault input[type=submit]:hover, 
+.formdefault input[type=button]:hover {
 	background: yellow;
 	box-shadow: none;
 	-moz-box-shadow: none;

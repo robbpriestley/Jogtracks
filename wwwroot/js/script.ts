@@ -132,10 +132,12 @@ $(document).ready(function()
 		if (value == "noCoach")
 		{
 			$("#coachSelect").hide();
+			$("#coach-select").css("display", "none");
 		}
 		else
 		{
 			$("#coachSelect").show();
+			$("#coach-select").css("display", "none");
 		}
 	}));
 
@@ -156,6 +158,8 @@ $(document).ready(function()
 			},
 			processResults: function(data: any) 
 			{
+				$("#coach-select").css("display", "none");
+				
 				return {
 					results: $.map(data, function(item) 
 					{
@@ -198,7 +202,15 @@ $(document).ready(function()
 		switch (keyword)
 		{
 			case "":
-				RenderWelcomePage();
+				if (localStorage.getItem("token") == null)
+				{
+					SignOut();
+					RenderWelcomePage();
+				}
+				else
+				{
+					window.location.hash = "#items/";
+				}
 				break;
 			
 			case "#signup":
@@ -439,7 +451,7 @@ $(document).ready(function()
 				if (result == undefined)
 				{
 					spinner.stop();
-					$("#username-taken").text("Sorry, that username is already taken.");
+					$("#username-taken").text("Sorry, that username is already taken");
 					$("#username-taken").css("display", "inherit");
 				}
 				else
@@ -469,7 +481,7 @@ $(document).ready(function()
 				if (result == undefined)
 				{
 					spinner.stop();
-					$("#username-taken").text("Bad username or password.");
+					$("#username-taken").text("Bad username or password");
 					$("#username-taken").css("display", "inherit");
 				}
 				else
@@ -585,6 +597,13 @@ $(document).ready(function()
 		if (useCoach == "useCoach")
 		{
 			coach = $("#coachSelectControl").val();
+
+			if (coach == null)
+			{
+				$("#coach-select").text("Please select a coach from the list");
+				$("#coach-select").css("display", "inherit");
+				return;
+			}
 		}
 		else
 		{

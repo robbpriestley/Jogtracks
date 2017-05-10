@@ -34,7 +34,7 @@
 					<li>
 						<label>Username <span class="required">*</span></label>
 						<input type="text" id="username" name="username" class="field" />
-						<label id="username-taken" style="display: none;" class="error">Sorry, that username is already taken.</label>
+						<label id="username-taken" style="display: none;" class="error"></label>
 					</li>
 					<li>
 						<label>Password <span class="required">*</span></label>
@@ -55,12 +55,15 @@
 	<div class="settings page">
 		<div id="settingsMessage" class="message"></div>
 		<div class="group">
+			<div class="messageLeft">Coach</div>
 			<form name="coachForm">
 				<ul class="formdefault">
 					<label><input id="noCoach" type="radio" name="coach" value="noCoach" checked> I don't want to use a coach</label>
 					<label><input id="useCoach" type="radio" name="coach" value="useCoach"> I want to use a coach</label>
 					<li id="coachSelect">
-						<label>Coach <select id="coachSelectControl"></select></label>
+						<!-- Keeping the label on the select centers the placeholder. -->
+						<label><select id="coachSelectControl"></select></label>
+						<label id="coach-select" style="display: none;" class="error"></label>
 					</li>
 					<li>
 						<input type="submit" value="Save Changes" />
