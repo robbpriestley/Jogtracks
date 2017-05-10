@@ -297,7 +297,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
-				user.Coach = coachPatchInput.Coach;
+				user.Coach = coachPatchInput.Coach == "null" ? null : coachPatchInput.Coach;
 				Accounts.Update(user);
 			}
 			catch (System.Exception e)

@@ -117,7 +117,7 @@ $(document).ready(function()
 		$("#username-taken").css("display", "none");
 	});
 
-	$('input[name="sort"]').on("change", (function(e) 
+	$("input[name=sort]").on("change", (function(e) 
 	{
 		let value: string = $("input[name=sort]:checked").val();
 		Items.sort(sortOn(value));
@@ -125,9 +125,24 @@ $(document).ready(function()
 		RenderItemsPage(Items);
 	}));
 
-	$("#coachSelect").select2({
+	$("input[name=coach]").on("change", (function(e) 
+	{
+		let value: string = $("input[name=coach]:checked").val();
+		
+		if (value == "noCoach")
+		{
+			$("#coachSelect").hide();
+		}
+		else
+		{
+			$("#coachSelect").show();
+		}
+	}));
+
+	$("#coachSelectControl").select2({
 		width: "400px",
-		minimumResultsForSearch: Infinity,
+		placeholder: "Select a coach",
+		dropdownCssClass : "no-search",
 		ajax: 
 		{
 			url: "/api/coaches",
@@ -237,7 +252,7 @@ $(document).ready(function()
 		accountType = accountType.charAt(0).toUpperCase() + accountType.slice(1);
 		$("#settingsMessage").text(accountType + " Settings");
 
-		SetCoachSelect();
+		SetCoachSelectControl();
 
 		ShowHeaderComponents(true);
 	}
@@ -384,8 +399,7 @@ $(document).ready(function()
 	{
 		submitHandler: function(form: any)
 		{
-			let coach: string = $("#coachSelect").val();
-			CoachPatch(coach);
+			CoachPatch();
 			return false;
 		}
 	});
@@ -516,7 +530,8 @@ $(document).ready(function()
 		$("#jogger").prop("checked", true);
 
 		//Reset other stuff.
-		$("#coachSelect").empty();
+		$("#noCoach").prop("checked", true);
+		$("#coachSelectControl").empty();
 		ClearLocalStorage();
 	}
 
@@ -539,23 +554,43 @@ $(document).ready(function()
 		window.location.hash = "settings/";
 	}
 
-	function SetCoachSelect(): void
+	function SetCoachSelectControl(): void
 	{
 		let coach: string | null = localStorage.getItem("coach");
 
-		if (coach != null && coach != "null")
-		{
-			let coachSelect: JQuery = $("#coachSelect");
+		if (coach != null && coach != "null")  // A coach has previously been selected.
+		{			
+			$("#coachSelect").show();
+			$("#useCoach").prop("checked", true);
+
+			let coachSelectControl: JQuery = $("#coachSelectControl");
 			let option: JQuery = $("<option selected></option>");
 			option.val(coach);   // Set id.
 			option.text(coach);  // Set text.
-			coachSelect.append(option);     // Add coach to the list of selections.
-			coachSelect.trigger("change");  // Tell Select2 to update.
+			coachSelectControl.append(option);     // Add coach to the list of selections.
+			coachSelectControl.trigger("change");  // Tell Select2 to update.
+		}
+		else
+		{
+			$("#coachSelect").hide();
+			$("#noCoach").prop("checked", true);
 		}
 	}
 
-	function CoachPatch(coach: string): void
+	function CoachPatch(): void
 	{
+		let coach: string;
+		let useCoach: string = $("input[name=coach]:checked").val();
+		
+		if (useCoach == "useCoach")
+		{
+			coach = $("#coachSelectControl").val();
+		}
+		else
+		{
+			coach = "null";
+		}
+		
 		localStorage.setItem("coach", coach);
 		
 		let spinner: Spinner = SpinnerSetup();

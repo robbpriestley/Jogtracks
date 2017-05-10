@@ -138,6 +138,10 @@ form .error {
   color: #ff0000;
 }
 
+.no-search .select2-search {
+    display:none
+}
+
 /*** HEADER ***/
 
 header {

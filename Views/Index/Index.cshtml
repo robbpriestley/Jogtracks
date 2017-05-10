@@ -57,12 +57,13 @@
 		<div class="group">
 			<form name="coachForm">
 				<ul class="formdefault">
-					<li>
-						<label>Coach <select id="coachSelect"></select></label>
+					<label><input id="noCoach" type="radio" name="coach" value="noCoach" checked> I don't want to use a coach</label>
+					<label><input id="useCoach" type="radio" name="coach" value="useCoach"> I want to use a coach</label>
+					<li id="coachSelect">
+						<label>Coach <select id="coachSelectControl"></select></label>
 					</li>
-					
 					<li>
-						<input type="submit" value="Save Coach" />
+						<input type="submit" value="Save Changes" />
 					</li>
 				</ul>
 			</form>
@@ -73,8 +74,8 @@
 		<div class="controls">
 			<form>
 				<span>Sort Order</span>
-				<label><input type="radio" name="sort" value="Name" checked>Sort by Name</label>
-				<label><input type="radio" name="sort" value="Rating">Sort by Rating</label>
+				<label><input type="radio" name="sort" value="Name" checked> Sort by Name</label>
+				<label><input type="radio" name="sort" value="Rating"> Sort by Rating</label>
 			</form>
 			<button id="newitem">New Item</button>
 		</div>
