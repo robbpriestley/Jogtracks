@@ -14,18 +14,18 @@ namespace DigitalWizardry.SPA_Template
 	}
 	
 	public class ServiceLog
-    {
+	{
 		public ServiceLog(){}
  
-        public ServiceLog(ServiceLogType type, string path, string message, string userId)
-        {
+		public ServiceLog(ServiceLogType type, string path, string message, string userId)
+		{
 			Id = 0;
 			UtcTime = DateTime.UtcNow;
 			Type = type.ToString();
-            Path = path;
-            Message = message;
+			Path = path;
+			Message = message;
 			UserId = userId;
-        }
+		}
 		
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
@@ -35,5 +35,5 @@ namespace DigitalWizardry.SPA_Template
 		public string Path { get; set; }
 		public string Message { get; set; }
 		public string UserId { get; set; }
-    }
+	}
 }
