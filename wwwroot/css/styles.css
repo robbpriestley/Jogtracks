@@ -105,10 +105,11 @@ select {
 }
 
 .formdefault input[type=submit]:hover, .formdefault input[type=button]:hover {
-	background: #4691A4;
-	box-shadow:none;
-	-moz-box-shadow:none;
-	-webkit-box-shadow:none;
+	background: yellow;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	outline: #7FFF00 solid 1px;
 }
 
 .formdefault .required {
@@ -166,7 +167,12 @@ header h2.headercontrols a {
 	vertical-align: middle;
 	background-color: #7FFF00;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
-}	
+}
+
+header h2.headercontrols a:hover {
+	background-color: yellow;
+	outline: #7FFF00 solid 1px;
+}		
 
 span.user {
 	width: 40px;
@@ -372,6 +378,11 @@ img.splash {
 	border-radius: 2px;
 	background-color:  #7FFF00;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.controls button:hover {
+	background-color: yellow;
+	outline: #7FFF00 solid 1px;
 }
 
 /*** ITEMS LIST ***/
