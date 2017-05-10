@@ -101,6 +101,7 @@ $(document).ready(function()
 
 	$("#settingsDone").click(function(e) 
 	{
+		window.scrollTo(0, 0);
 		window.location.hash = "#items/";
 		return false;
 	});
@@ -229,6 +230,7 @@ $(document).ready(function()
 				break;
 			
 			case "#items":
+				LoadItems();
 				RenderItemsPage(Items);
 				break;
 
@@ -500,7 +502,6 @@ $(document).ready(function()
 		localStorage.setItem("coach", authOutput.Coach);
 		localStorage.setItem("userName", authOutput.UserName);
 		localStorage.setItem("accountType", authOutput.AccountType);
-		LoadItems(authOutput.Token);
 		window.location.hash = "items/";
 	}
 
@@ -709,10 +710,12 @@ $(document).ready(function()
 	// *** END SETTINGS ***
 	// *** BEGIN ITEMS ***
 
-	function LoadItems(token: string): void
+	function LoadItems(): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
+
+		let token: string | null = localStorage.getItem("token");
 		
 		$.ajax
 		({
@@ -727,7 +730,6 @@ $(document).ready(function()
 				Items = result;
 				GenerateItemsHTML(Items);
 				spinner.stop();
-				window.location.hash = "items/";
 			}
 		});
 	}
