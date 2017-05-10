@@ -14,6 +14,23 @@ h1, h3 {
 	font-size: 24px;
 }
 
+div.message {
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+div.group {
+	width: 600px;
+	margin: 0 auto;
+	color: #2B2E31;
+	border-radius: 3px;
+	box-sizing: border-box;
+	padding: 5px 30px 30px;
+	background-color: #FFF;
+	border: 1px solid #DBE3E7;
+	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
+}
+
 /*** FORMS ***/
 
 input {
@@ -37,6 +54,7 @@ input {
 	margin:0 0 3px 0;
 	padding:0px;
 	display:block;
+	font-size: 16px;
 	text-align: left;
 	font-weight: bold;
 }
@@ -303,24 +321,6 @@ img.splash {
 .settings.visible {
 	opacity: 1;
 	transition: 1s;
-}
-
-div.settingsMessage {
-	font-size: 24px;
-	margin-bottom: 10px;
-}
-
-.settingsGroup {
-	width: 600px;
-	margin: 0 auto;
-	color: #2B2E31;
-	border-radius: 3px;
-	pointer-events: none;
-	box-sizing: border-box;
-	padding: 5px 30px 30px;
-	background-color: #FFF;
-	border: 1px solid #DBE3E7;
-	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
 }
 
 /*** MAIN CONTENT ***/
