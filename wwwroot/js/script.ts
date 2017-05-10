@@ -231,6 +231,12 @@ $(document).ready(function()
 		page.addClass("visible");
 		page.css("pointer-events", "auto");
 
+		// Update settings message. Convert account type from all caps to leading cap only.
+		let accountType: any = localStorage.getItem("accountType");
+		accountType = accountType.toString().toLowerCase();
+		accountType = accountType.charAt(0).toUpperCase() + accountType.slice(1);
+		$("#settingsMessage").text(accountType + " Settings");
+
 		SetCoachSelect();
 
 		ShowHeaderComponents(true);
@@ -393,7 +399,7 @@ $(document).ready(function()
 
 		if (token != null)
 		{
-			//LoadItems("testUser");
+			Authenticated();
 		}
 		else
 		{
@@ -425,7 +431,7 @@ $(document).ready(function()
 				else
 				{
 					spinner.stop();
-					Authenticated(username, result);
+					ServerAuthenticated(username, result);
 				}
 			}
 		});
@@ -455,13 +461,26 @@ $(document).ready(function()
 				else
 				{
 					spinner.stop();
-					Authenticated(username, result);
+					ServerAuthenticated(username, result);
 				}
 			}
 		});
 	}
 
-	function Authenticated(username: string, authOutput: any): void
+	function Authenticated(): void
+	{
+		let token: string | null = localStorage.getItem("token");
+		let userName: string | null = localStorage.getItem("userName");
+		
+		$("#user").text("Welcome, " + userName + "!");
+		$("#user").show();
+		$("#signup").hide();
+		$("#signin").hide();
+		$("#signout").show();
+		$("#settings").show();
+	}
+	
+	function ServerAuthenticated(username: string, authOutput: any): void
 	{
 		$("#user").text("Welcome, " + username + "!");
 		$("#user").show();
@@ -471,8 +490,9 @@ $(document).ready(function()
 		$("#settings").show();
 
 		localStorage.setItem("token", authOutput.Token);
-		localStorage.setItem("accountType", authOutput.AccountType);
 		localStorage.setItem("coach", authOutput.Coach);
+		localStorage.setItem("userName", authOutput.UserName);
+		localStorage.setItem("accountType", authOutput.AccountType);
 		LoadItems(authOutput.Token);
 		window.location.hash = "items/";
 	}
@@ -516,12 +536,6 @@ $(document).ready(function()
 		let itemList: JQuery = $(".all-items .items-list");
 		itemList.html("");
 
-		// Update settings message. Convert account type from all caps to leading cap only.
-		let accountType: any = localStorage.getItem("accountType");
-		accountType = accountType.toString().toLowerCase();
-		accountType = accountType.charAt(0).toUpperCase() + accountType.slice(1);
-		$("#settingsMessage").text(accountType + " Settings");
-		
 		window.location.hash = "settings/";
 	}
 

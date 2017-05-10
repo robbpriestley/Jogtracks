@@ -34,15 +34,17 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		public class AuthOutput
 		{
-			public string Token { get; set; }
 			public string AccountType { get; set; }
 			public string Coach { get; set; }
+			public string Token { get; set; }
+			public string UserName { get; set; }
 
-			public AuthOutput(string token, string accountType, string coach)
+			public AuthOutput(string token, string accountType, string userName, string coach)
 			{
 				Token = token;
-				AccountType = accountType;
 				Coach = coach;
+				UserName = userName;
+				AccountType = accountType;
 			}
 		}
 		
@@ -86,7 +88,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					user.AccountType = signUpData.AccountType;
 					Accounts.Add(user);
 
-					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, null);  // Coach is always null on new sign up.
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, null);  // Coach is always null on new sign up.
 					
 					ServiceLogs.SignUp(Request, signUpData.AccountType, signUpData.UserName);
 				}
@@ -135,7 +137,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					user.Token = Guid.NewGuid();
 					Accounts.Update(user);
 
-					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.Coach);
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, user.Coach);
 					
 					ServiceLogs.SignIn(Request, user.Token.ToString(), signInData.UserName);
 				}
