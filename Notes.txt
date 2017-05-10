@@ -9,8 +9,3 @@ dotnet ef migrations add mig2 --context ServiceLogContext
 dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
-
-Ability to clear coach selection
-Forms have button hover effect, but not header and sort button
-Auto-detect user from localSettings
-Change password

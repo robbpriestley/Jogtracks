@@ -23,6 +23,7 @@ An administrator can...
 * [TypeScript](https://www.typescriptlang.org/)
 * [Handlebars](http://handlebarsjs.com/)
 * [jQuery](https://jquery.com/)
+* [jQuery Select2](https://select2.github.io/)
 * [jQuery Validation Plugin](https://jqueryvalidation.org/)
 * [Docker](https://www.docker.com/)
 * [Amazon Web Services](https://aws.amazon.com/)
@@ -50,18 +51,48 @@ This project evolved from several earlier projects I developed and certain tutor
 * Certain basic SPA aspects of the project were originally derived from an excellent tutorial on **tutorialzine**: [http://tutorialzine.com/2015/02/single-page-app-without-a-framework/](http://tutorialzine.com/2015/02/single-page-app-without-a-framework/).
 * Form styling courtesy of **Sanwebe**: [https://www.sanwebe.com/2014/08/css-html-forms-designs](https://www.sanwebe.com/2014/08/css-html-forms-designs)
 
-### Appendix 2: Test Cases
+### Appendix 2: Testing Notes
 
 **Sign Up**
 
-Sign up with both **jogger** and **coach** account types.
-
-* Browser **localSettings** should contain token, accountType, and coach.
-* **localSettings** coach should be null.
-* **Settings** mode should show an empty coach select control as no coach has been selected yet.
+* Sign up with both **jogger** and **coach** account types. Only one account type can be selected at a time during a sign up scenario.
+* Test **form validation** is working, and ensure the form is cleared when switching between authentication modes. There should be no residual form validation messages. Form validation criteria are as follows:
+  * Only letters, numbers, and underscores for username.
+  * Only letters, numbers, and underscores for password.
+  * Minimum 8 characters for password.
+  * Password and confirm password must match.
+* After successful sign up:
+  * A "Welcome, user!" message should appear in the header. 
+  * The **Sign Up** and **Sign In** buttons should be replaced with **Settings** and **Sign Out** buttons.
+  * The **jogs** page should be displayed.
+  * The browser **localSettings** should contain token, accountType, coach, token, and userName fields.
 
 **Sign In**
 
-* Browser **localSettings** should contain token, accountType, and coach.
-* **localSettings** coach should be null, or set to specified value.
-* **Settings** mode should show an appropriate coach select control depending on whether a coach is already selected or not.
+* Test **form validation** is working, and ensure the form is cleared when switching between authentication modes. There should be no residual form validation messages. Form validation criteria are as follows:
+  * Only letters, numbers, and underscores for username.
+  * Only letters, numbers, and underscores for password.
+  * Minimum 8 characters for password.
+* After successful sign in:
+  * A "Welcome, user!" message should appear in the header. 
+  * The **Sign Up** and **Sign In** buttons should be replaced with **Settings** and **Sign Out** buttons.
+  * The **jogs** page should be displayed.
+  * The browser **localSettings** should contain token, accountType, coach, token, and userName fields.
+
+**Settings**
+
+* Account Type should be determined by user.
+* **Coach** select control group:
+  * The control group should be hidden for **COACH** and **ADMIN** user account types as it is irrelevant.
+  * The control group should appear and be properly populated with any previously-selected coach if the user is a **JOGGER** user account type.
+  * If the user is a **JOGGER**, the coach select control should populate on activation via AJAX call to the server with a list of valid coaches. The user should then be able to select a coach and persist the selection using the **Save Changes** button.
+* **Password reset** control group should have good form validation and should function as expected with confirmation message being displayed and fading out after 3 seconds. Form validation criteria are as follows:
+  * Only letters, numbers, and underscores for password.
+  * Minimum 8 characters for password.
+  * Password and confirm password must match.
+* **Done** button should cause **jogs** page to be displayed regardless of whether any changes took place or not.
+
+**Sign Out**
+
+* All form fields should be cleared and all form validation messages removed.
+* All **localSettings** values should be cleared.

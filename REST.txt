@@ -1,7 +1,7 @@
 *** CREATE ACCOUNTS ****************************************************************************************
 jogger1, jogger2, jogger3, coach1, and admin1 are for dynamic in-application testing
 jogger4, coach2, and admin2 are for scripted rest testing and thus their tokens need to remain constant:
-jogger4: cbb62a71-7a8a-4563-b4a3-af567b809aa5
+jogger4: ff49bf23-c832-47fb-b740-7dff485bd9ce
 coach2:  68fc76c5-aab7-4ad9-a27f-84a9db621c32
 admin2:  29e13921-7d38-47d3-ada7-1c4133e33413
 ************************************************************************************************************
