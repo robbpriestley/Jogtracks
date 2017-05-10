@@ -258,11 +258,20 @@ $(document).ready(function()
 		page.addClass("visible");
 		page.css("pointer-events", "auto");
 
-		// Update settings message. Convert account type from all caps to leading cap only.
 		let accountType: any = localStorage.getItem("accountType");
-		accountType = accountType.toString().toLowerCase();
-		accountType = accountType.charAt(0).toUpperCase() + accountType.slice(1);
-		$("#settingsMessage").text(accountType + " Settings");
+
+		if (accountType == "JOGGER")
+		{
+			$("#accountTypeMessage").html("You are a <strong>Jogger</strong> with <strong>user-level</strong> permissions.");
+		}
+		else if (accountType == "COACH")
+		{
+			$("#accountTypeMessage").html("You are a <strong>Coach</strong> with <strong>manager-level</strong> permissions.");
+		}
+		else
+		{
+			$("#accountTypeMessage").html("You are an <strong>Administrator</strong> with <strong>superuser-level</strong> permissions.");
+		}
 
 		SetCoachSelectControl();
 
