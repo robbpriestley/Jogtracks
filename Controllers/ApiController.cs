@@ -157,6 +157,50 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			return Utility.JsonObjectResult(authOutput);
 		}
 
+		public class ChangePasswordInput
+		{
+			public string Token { get; set; }
+			public string Password { get; set; }
+		}
+
+		[HttpPost]
+		[Route("auth/changepassword")]
+		public IActionResult ChangePassword([FromBody] ChangePasswordInput changePasswordData)
+		{
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+
+			try
+			{				
+				try
+				{
+					HashData hashData = HashPassword(changePasswordData.Password);
+					
+					Account user = Accounts.GetByToken(Guid.Parse(changePasswordData.Token));
+					user.Salt = hashData.Salt;
+					user.Hash = hashData.Hash;
+					Accounts.Update(user);
+
+					ServiceLogs.Access(Request, null, user.UserName);
+				}
+				catch (System.InvalidOperationException)
+				{
+					// The user's account doesn't exist. Reject the request by returning 500 code.
+					ServiceLogs.Access(Request, "ERROR: Account Doesn't Exist", changePasswordData.Token);
+					return new StatusCodeResult(204);
+				}
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.ChangePassword()", changePasswordData.Token);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
+		}
+
 		private HashData HashPassword(string password)
 		{
 			byte[] salt = new byte[128 / 8];

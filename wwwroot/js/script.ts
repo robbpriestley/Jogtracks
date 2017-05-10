@@ -365,7 +365,7 @@ $(document).ready(function()
 	// *** END PAGE RENDERING ***
 	// *** BEGIN FORM VALIDATION ***
 	
-	$("form[name='authForm']").validate(
+	$("form[name=authForm]").validate(
 	{
 		rules: 
 		{
@@ -407,11 +407,35 @@ $(document).ready(function()
 		}
 	});
 
-	$("form[name='coachForm']").validate(
+	$("form[name=coachForm]").validate(
 	{
 		submitHandler: function(form: any)
 		{
 			CoachPatch();
+			return false;
+		}
+	});
+
+	$("form[name=changePasswordForm]").validate(
+	{
+		rules: 
+		{
+			changePassword:
+			{
+				minlength: 8,
+				required: true,
+				alphanumeric:true
+			},
+			changecPassword:
+			{
+				required: true,
+				equalTo: "#changePassword"
+			}
+		},
+		submitHandler: function(form: any)
+		{
+			let password: string = $("#changePassword").val();
+			ChangePassword(password);
 			return false;
 		}
 	});
@@ -431,6 +455,36 @@ $(document).ready(function()
 		{
 			window.location.hash = "#";  // Show welcome page.
 		}
+	}
+
+	function Authenticated(): void
+	{
+		let token: string | null = localStorage.getItem("token");
+		let userName: string | null = localStorage.getItem("userName");
+		
+		$("#user").text("Welcome, " + userName + "!");
+		$("#user").show();
+		$("#signup").hide();
+		$("#signin").hide();
+		$("#signout").show();
+		$("#settings").show();
+	}
+	
+	function ServerAuthenticated(username: string, authOutput: any): void
+	{
+		$("#user").text("Welcome, " + username + "!");
+		$("#user").show();
+		$("#signup").hide();
+		$("#signin").hide();
+		$("#signout").show();
+		$("#settings").show();
+
+		localStorage.setItem("token", authOutput.Token);
+		localStorage.setItem("coach", authOutput.Coach);
+		localStorage.setItem("userName", authOutput.UserName);
+		localStorage.setItem("accountType", authOutput.AccountType);
+		LoadItems(authOutput.Token);
+		window.location.hash = "items/";
 	}
 
 	function SignUp(username: string, password: string, accountType: string): void
@@ -493,36 +547,6 @@ $(document).ready(function()
 		});
 	}
 
-	function Authenticated(): void
-	{
-		let token: string | null = localStorage.getItem("token");
-		let userName: string | null = localStorage.getItem("userName");
-		
-		$("#user").text("Welcome, " + userName + "!");
-		$("#user").show();
-		$("#signup").hide();
-		$("#signin").hide();
-		$("#signout").show();
-		$("#settings").show();
-	}
-	
-	function ServerAuthenticated(username: string, authOutput: any): void
-	{
-		$("#user").text("Welcome, " + username + "!");
-		$("#user").show();
-		$("#signup").hide();
-		$("#signin").hide();
-		$("#signout").show();
-		$("#settings").show();
-
-		localStorage.setItem("token", authOutput.Token);
-		localStorage.setItem("coach", authOutput.Coach);
-		localStorage.setItem("userName", authOutput.UserName);
-		localStorage.setItem("accountType", authOutput.AccountType);
-		LoadItems(authOutput.Token);
-		window.location.hash = "items/";
-	}
-
 	function SignOut(): void
 	{
 		// Clear the items list.
@@ -552,6 +576,31 @@ $(document).ready(function()
 		localStorage.removeItem("token");
 		localStorage.removeItem("accountType");
 		localStorage.removeItem("coach");
+	}
+
+	function ChangePassword(password: string): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+
+		let token: string | null = localStorage.getItem("token");
+		
+		$.ajax
+		({
+			type: "POST",
+			data: JSON.stringify({ Token: token, Password: password }),
+			contentType: "application/json",
+			url: "/api/auth/changepassword",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+				$("#changePassword").val("");
+				$("#changecPassword").val("");
+				$("#changePasswordMessage").show();
+				setTimeout(function() { $("#changePasswordMessage").fadeOut(); }, 3000);
+			}
+		});
 	}
 
 	// *** END REST AUTHENTICATION ***
