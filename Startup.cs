@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
 	public class Startup
 	{

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
 	public class MainContext : DbContext
 	{

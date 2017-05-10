@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DigitalWizardry.SPA_Template.Controllers
+namespace DigitalWizardry.Jogtracks.Controllers
 {
 	[Route("api")]
 	public class ApiController : Controller

@@ -1,9 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Http;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
-    public class ServiceLogRepository : DigitalWizardry.SPA_Template.IServiceLogRepository
+    public class ServiceLogRepository: IServiceLogRepository
     {		
 		public ServiceLogContext Context { get; set; }
 		

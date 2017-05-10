@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/SPA_Template.dll",
+            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.1/Jogtracks.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,

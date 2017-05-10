@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
 	public interface IServiceLogRepository
 	{

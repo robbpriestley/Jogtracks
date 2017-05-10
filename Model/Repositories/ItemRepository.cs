@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using DigitalWizardry.SPA_Template;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
-	public class ItemRepository : DigitalWizardry.SPA_Template.IItemRepository
+	public class ItemRepository: IItemRepository
 	{		
 		public MainContext Context { get; set; }
 		

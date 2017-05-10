@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace DigitalWizardry.SPA_Template.Controllers
+namespace DigitalWizardry.Jogtracks.Controllers
 {
 	public class IndexController : Controller
 	{

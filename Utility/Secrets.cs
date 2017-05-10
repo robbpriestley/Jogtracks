@@ -1,4 +1,4 @@
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
 	public class Secrets
 	{

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DigitalWizardry.SPA_Template
+namespace DigitalWizardry.Jogtracks
 {
 	public interface IItemRepository
 	{
