@@ -98,6 +98,12 @@ $(document).ready(function()
 		Settings();
 		return false;
 	});
+
+	$("#settingsDone").click(function(e) 
+	{
+		window.location.hash = "#items/";
+		return false;
+	});
 	
 	$("#signout").click(function(e) 
 	{
@@ -263,18 +269,20 @@ $(document).ready(function()
 		if (accountType == "JOGGER")
 		{
 			$("#accountTypeMessage").html("You are a <strong>Jogger</strong> with <strong>user-level</strong> permissions.");
+			$("#coachGroup").show();
 		}
 		else if (accountType == "COACH")
 		{
 			$("#accountTypeMessage").html("You are a <strong>Coach</strong> with <strong>manager-level</strong> permissions.");
+			$("#coachGroup").hide();
 		}
 		else
 		{
 			$("#accountTypeMessage").html("You are an <strong>Administrator</strong> with <strong>superuser-level</strong> permissions.");
+			$("#coachGroup").hide();
 		}
 
 		SetCoachSelectControl();
-
 		ShowHeaderComponents(true);
 	}
 	
