@@ -1,9 +1,9 @@
 *** CREATE ACCOUNTS ****************************************************************************************
 jogger1, jogger2, jogger3, coach1, and admin1 are for dynamic in-application testing
 jogger4, coach2, and admin2 are for scripted rest testing and thus their tokens need to remain constant:
-jogger4: 7781d029-82ae-4ed2-be24-0d26e37a6b84
-coach2:  fbc5cd24-db7c-4a09-b2d6-4db0dc8fa787
-admin2:  c5c18338-1566-4e52-bd2b-7e82579caaa6
+jogger4: cbb62a71-7a8a-4563-b4a3-af567b809aa5
+coach2:  68fc76c5-aab7-4ad9-a27f-84a9db621c32
+admin2:  29e13921-7d38-47d3-ada7-1c4133e33413
 ************************************************************************************************************
 
 curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger1", "Password": "qqqqqqqq", "AccountType": "JOGGER"}'
@@ -24,7 +24,7 @@ curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request 
 
 *** COACH PATCH ********************************************************************************************
 
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "7781d029-82ae-4ed2-be24-0d26e37a6b84", "Coach": "coach2"}'
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "cbb62a71-7a8a-4563-b4a3-af567b809aa5", "Coach": "coach2"}'
 
 *** ITEMS **************************************************************************************************
 
