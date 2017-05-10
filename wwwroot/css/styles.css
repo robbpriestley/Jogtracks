@@ -295,6 +295,7 @@ img.splash {
 	top: 100px;
 	opacity: 0;
 	width: 100%;
+	font-size: 16px;
 	transition: 0.6s;
 	position: absolute;
 }
@@ -304,8 +305,22 @@ img.splash {
 	transition: 1s;
 }
 
-.settings div {
+div.settingsMessage {
 	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.settingsGroup {
+	width: 600px;
+	margin: 0 auto;
+	color: #2B2E31;
+	border-radius: 3px;
+	pointer-events: none;
+	box-sizing: border-box;
+	padding: 5px 30px 30px;
+	background-color: #FFF;
+	border: 1px solid #DBE3E7;
+	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
 }
 
 /*** MAIN CONTENT ***/
@@ -335,18 +350,18 @@ img.splash {
 /*** ALL ITEMS PAGE ***/
 
 .controls {
-	box-sizing: border-box;
-	padding: 5px 30px 30px;
+	opacity: 0;
 	width: 190px;
-	background-color: #FFF;
-	border: 1px solid #DBE3E7;
-	border-radius: 3px;
-	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
 	position: fixed;
 	text-align: left;
 	color: #2B2E31;
-	opacity: 0;
+	border-radius: 3px;
 	pointer-events: none;
+	box-sizing: border-box;
+	padding: 5px 30px 30px;
+	background-color: #FFF;
+	border: 1px solid #DBE3E7;
+	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
 }
 
 .controls span {
