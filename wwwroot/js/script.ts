@@ -114,7 +114,7 @@ $(document).ready(function()
 
 	$("#username").on("change keyup keydown click paste", function()
 	{
-		$("#username-taken").css("display", "none");
+		$("#").css("display", "none");
 	});
 
 	$("input[name=sort]").on("change", (function(e) 
@@ -568,11 +568,22 @@ $(document).ready(function()
 		$("#signout").hide();
 		$("#settings").hide();
 
-		// Reset the authentication form.
+		// *** BEGIN RESET FORMS ***
+		
+		$("#jogger").prop("checked", true);
+		$("#username-taken").css("display", "none");
+		
+		$("form[name=authForm]").validate().resetForm();
+		$("form[name=coachForm]").validate().resetForm();
+		$("form[name=changePasswordForm]").validate().resetForm();
+		
 		$("#username").val("");
 		$("#password").val("");
 		$("#cpassword").val("");
-		$("#jogger").prop("checked", true);
+		$("#changePassword").val("");
+		$("#changecPassword").val("");
+		
+		// *** END RESET FORMS ***
 
 		//Reset other stuff.
 		$("#noCoach").prop("checked", true);
