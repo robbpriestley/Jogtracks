@@ -391,7 +391,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					jogOutput.Week = JogOutput.WeekOfYear(jog.Date);
 					jogOutput.Distance = jog.Distance;
 					jogOutput.Time = jog.Time;
-					jogOutput.AverageSpeed = 35;
+					jogOutput.AverageSpeed = jog.AverageSpeed;
 
 					jogOutputs.Add(jogOutput);
 				}
