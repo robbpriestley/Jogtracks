@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -387,6 +388,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					jogOutput.Year = jog.Date.Year;
 					jogOutput.Month = jog.Date.Month;
 					jogOutput.Day = jog.Date.Day;
+					jogOutput.Week = JogOutput.WeekOfYear(jog.Date);
 					jogOutput.Distance = jog.Distance;
 					jogOutput.Time = jog.Time;
 					jogOutput.AverageSpeed = 35;
@@ -411,6 +413,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			public int Year { get; set; }
 			public int Month { get; set; }
 			public int Day { get; set; }
+			public int Week { get; set; }
 			public decimal Distance { get; set; }
 			public int Time { get; set; }
 			public decimal AverageSpeed { get; set; }
@@ -420,6 +423,13 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				string month = dt.Month < 10 ? "0" + dt.Month.ToString() : dt.Month.ToString();
 				string day = dt.Day < 10 ? "0" + dt.Day.ToString() : dt.Day.ToString();
 				return dt.Year.ToString() + "-" + month + "-" + day;
+			}
+
+			public static int WeekOfYear(DateTime dt)
+			{
+				DateTimeFormatInfo info = DateTimeFormatInfo.CurrentInfo;
+				Calendar cal = info.Calendar;
+				return cal.GetWeekOfYear(dt, info.CalendarWeekRule, info.FirstDayOfWeek);
 			}
 		}
 

@@ -9,3 +9,5 @@ dotnet ef migrations add mig2 --context ServiceLogContext
 dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
+
+SQLLite?
