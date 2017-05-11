@@ -85,6 +85,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					
 					Account user = new Account();
 					user.UserName = signUpData.UserName;
+					user.UserColor = RandomUserColor();
 					user.Salt = hashData.Salt;
 					user.Hash = hashData.Hash;
 					user.Token = Guid.NewGuid();;
@@ -103,6 +104,91 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return Utility.JsonObjectResult(authOutput);
+		}
+
+		private string RandomUserColor()
+		{
+			List<string> colors = new List<string>();
+
+			colors.Add("AntiqueWhite");
+			colors.Add("Aqua");
+			colors.Add("Aquamarine");
+			colors.Add("Bisque");
+			colors.Add("BlanchedAlmond");
+			colors.Add("BurlyWood");
+			colors.Add("Chartreuse");
+			colors.Add("Coral");
+			colors.Add("CornflowerBlue");
+			colors.Add("Cornsilk");
+			colors.Add("Cyan");
+			colors.Add("DarkOrange");
+			colors.Add("DarkSalmon");
+			colors.Add("DeepPink");
+			colors.Add("DeepSkyBlue");
+			colors.Add("DodgerBlue");
+			colors.Add("FloralWhite");
+			colors.Add("Fuchsia");
+			colors.Add("Gold");
+			colors.Add("Goldenrod");
+			colors.Add("GreenYellow");
+			colors.Add("HotPink");
+			colors.Add("Ivory");
+			colors.Add("Khaki");
+			colors.Add("Lavender");
+			colors.Add("LavenderBlush");
+			colors.Add("LawnGreen");
+			colors.Add("LemonChiffon");
+			colors.Add("LightBlue");
+			colors.Add("LightCoral");
+			colors.Add("LightCyan");
+			colors.Add("LightGoldenrodYellow");
+			colors.Add("LightGreen");
+			colors.Add("LightPink");
+			colors.Add("LightSalmon");
+			colors.Add("LightSkyBlue");
+			colors.Add("LightSteelBlue");
+			colors.Add("LightYellow");
+			colors.Add("Lime");
+			colors.Add("LimeGreen");
+			colors.Add("Linen");
+			colors.Add("Magenta");
+			colors.Add("MediumOrchid");
+			colors.Add("MediumPurple");
+			colors.Add("MediumSpringGreen");
+			colors.Add("MediumTurquoise");
+			colors.Add("MistyRose");
+			colors.Add("Moccasin");
+			colors.Add("NavajoWhite");
+			colors.Add("Orange");
+			colors.Add("OrangeRed");
+			colors.Add("Orchid");
+			colors.Add("PaleGoldenrod");
+			colors.Add("PaleGreen");
+			colors.Add("PaleTurquoise");
+			colors.Add("PaleVioletRed");
+			colors.Add("PapayaWhip");
+			colors.Add("PeachPuff");
+			colors.Add("Pink");
+			colors.Add("Plum");
+			colors.Add("PowderBlue");
+			colors.Add("Red");
+			colors.Add("RosyBrown");
+			colors.Add("Salmon");
+			colors.Add("SandyBrown");
+			colors.Add("SkyBlue");
+			colors.Add("SpringGreen");
+			colors.Add("Tan");
+			colors.Add("Thistle");
+			colors.Add("Tomato");
+			colors.Add("Turquoise");
+			colors.Add("Violet");
+			colors.Add("Wheat");
+			colors.Add("Yellow");
+			colors.Add("YellowGreen");
+
+			Random r = new Random();
+			int i = r.Next(colors.Count);
+			return colors[i];
 		}
 
 		#endregion
@@ -296,7 +382,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					JogOutput jogOutput = new JogOutput();
 
 					jogOutput.UserName = user.UserName;
-					jogOutput.UserColor = "#ff9900";
+					jogOutput.UserColor = user.UserColor;
 					jogOutput.Date = JogOutput.DateString(jog.Date);
 					jogOutput.Year = jog.Date.Year;
 					jogOutput.Month = jog.Date.Month;
