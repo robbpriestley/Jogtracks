@@ -9,8 +9,3 @@ dotnet ef migrations add mig2 --context ServiceLogContext
 dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
-
-Coach save changes message
-Single item click outside of frame doesn't close
-Signle item close seems to force new AJAX
-Switching from Settings to Items, Spinner is not centered

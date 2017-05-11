@@ -85,8 +85,8 @@ This project evolved from several earlier projects I developed and certain tutor
 * **Coach** select control group:
   * The control group should be hidden for **COACH** and **ADMIN** user account types as it is irrelevant.
   * The control group should appear and be properly populated with any previously-selected coach if the user is a **JOGGER** user account type.
-  * If the user is a **JOGGER**, the coach select control should populate on activation via AJAX call to the server with a list of valid coaches. The user should then be able to select a coach and persist the selection using the **Save Changes** button.
-* **Password reset** control group should have good form validation and should function as expected with confirmation message being displayed and fading out after 3 seconds. Form validation criteria are as follows:
+  * If the user is a **JOGGER**, the coach select control should populate on activation via AJAX call to the server with a list of valid coaches. The user should then be able to select a coach and persist the selection using the **Save Changes** button. Clicking the button causes a confirmation message to be displayed. Message fades out after 3 seconds.
+* **Password reset** control group should have good form validation and should function to change the password, with a confirmation message being displayed on **Submit** button click. Message fades out after 3 seconds. Form validation criteria are as follows:
   * Only letters, numbers, and underscores for password.
   * Minimum 8 characters for password.
   * Password and confirm password must match.
