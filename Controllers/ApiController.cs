@@ -384,13 +384,14 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 					jogOutput.UserName = user.UserName;
 					jogOutput.UserColor = user.UserColor;
-					jogOutput.Date = JogOutput.DateString(jog.Date);
+					jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
 					jogOutput.Year = jog.Date.Year;
 					jogOutput.Month = jog.Date.Month;
 					jogOutput.Day = jog.Date.Day;
-					jogOutput.Week = JogOutput.WeekOfYear(jog.Date);
+					jogOutput.Week = JogOutput.WeekOfYearCalc(jog.Date);
 					jogOutput.Distance = jog.Distance;
 					jogOutput.Time = jog.Time;
+					jogOutput.TimeString = JogOutput.TimeStringCalc(jog.Time);
 					jogOutput.AverageSpeed = jog.AverageSpeed;
 
 					jogOutputs.Add(jogOutput);
@@ -416,20 +417,36 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			public int Week { get; set; }
 			public decimal Distance { get; set; }
 			public int Time { get; set; }
+			public string TimeString { get; set; }
 			public decimal AverageSpeed { get; set; }
 
-			public static string DateString(DateTime dt)
+			public static string DateStringCalc(DateTime dt)
 			{
 				string month = dt.Month < 10 ? "0" + dt.Month.ToString() : dt.Month.ToString();
 				string day = dt.Day < 10 ? "0" + dt.Day.ToString() : dt.Day.ToString();
 				return dt.Year.ToString() + "-" + month + "-" + day;
 			}
 
-			public static int WeekOfYear(DateTime dt)
+			public static int WeekOfYearCalc(DateTime dt)
 			{
 				DateTimeFormatInfo info = DateTimeFormatInfo.CurrentInfo;
 				Calendar cal = info.Calendar;
 				return cal.GetWeekOfYear(dt, info.CalendarWeekRule, info.FirstDayOfWeek);
+			}
+
+			public static string TimeStringCalc(int time)
+			{
+				int h = time / 3600;
+				time = time - h * 3600;
+				int m = time / 60;
+				time = time - m * 60;
+				int s = time;
+
+				string hs = h < 10 ? "0" + h.ToString() : h.ToString();
+				string ms = m < 10 ? "0" + m.ToString() : m.ToString();
+				string ss = s < 10 ? "0" + s.ToString() : s.ToString();
+
+				return hs + ":" + ms + ":" + ss;
 			}
 		}
 
