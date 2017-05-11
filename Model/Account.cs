@@ -14,6 +14,7 @@ namespace DigitalWizardry.Jogtracks
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public string UserName { get; set; }
+		public string UserColor { get; set; }
 		public string AccountType { get; set; }
 		public byte[] Salt { get; set; }
 		public string Hash { get; set; }

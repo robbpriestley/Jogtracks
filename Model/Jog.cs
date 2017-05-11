@@ -13,8 +13,9 @@ namespace DigitalWizardry.Jogtracks
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-		public DateTime Date { get; set; }  // No time component (00:00:00)
-		public int Distance { get; set; }     // Meters
-		public int Time { get; set; }         // Seconds
+		public DateTime Date { get; set; }         // Just date: no time component (00:00:00)
+		public decimal Distance { get; set; }      // Kilometres
+		public int Time { get; set; }              // Seconds
+		public decimal AverageSpeed { get; set; }  // Kilometres per hour
 	}
 }
