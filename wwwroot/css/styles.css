@@ -395,7 +395,7 @@ img.splash {
 
 }
 
-/*** ALL ITEMS PAGE ***/
+/*** ALL JOGS PAGE ***/
 
 .controls {
 	opacity: 0;
@@ -448,13 +448,13 @@ img.splash {
 	outline: #7FFF00 solid 1px;
 }
 
-/*** ITEMS LIST ***/
+/*** JOGS LIST ***/
 
-.all-items h3 {
+.all-jogs h3 {
 	opacity: 0;
 }
 
-.items-list {
+.jogs-list {
 	list-style:none;
 	margin-left:225px;
 	max-width: 1500px;
@@ -464,15 +464,15 @@ img.splash {
 	font-size: 0;
 }
 
-.all-items.visible .items-list,
-.all-items.visible .controls,
-.all-items.visible h3 {
+.all-jogs.visible .jogs-list,
+.all-jogs.visible .controls,
+.all-jogs.visible h3 {
 	opacity: 1;
 	transition: 1s;
 	pointer-events: auto;
 }
 
-.items-list > li {
+.jogs-list > li {
 	box-sizing:border-box;
 	display: inline-block;
 	cursor: pointer;
@@ -491,14 +491,14 @@ img.splash {
 	padding: 25px;
 }
 
-.items-list > li.hidden {
+.jogs-list > li.hidden {
 	opacity: 0.2;
 	pointer-events: none;
 }
 
-/*** ITEM NAME ***/
+/*** JOG NAME ***/
 
-.items-list h2 {
+.jogs-list h2 {
 	display: block;
 	font-size: 18px;
 	white-space: nowrap;
@@ -508,14 +508,14 @@ img.splash {
 	margin:0;
 }
 
-.items-list h2 a {
+.jogs-list h2 a {
 	text-decoration: none;
 	color: #2B2E31;
 }
 
-/*** ITEM DESCRIPTION ***/
+/*** JOG DESCRIPTION ***/
 
-.items-list .item-description {
+.jogs-list .jog-description {
 	margin-top: 20px;
 
 	color: #5d5d5d;
@@ -529,22 +529,22 @@ img.splash {
 	list-style: none;
 }
 
-.items-list .item-description li {
+.jogs-list .jog-description li {
 	display: inline-block;
 	margin-right: 5px;
 }
 
-.items-list .item-description li:first-child {
+.jogs-list .jog-description li:first-child {
 	display: block;
 }
 
-.items-list .item-description li span {
+.jogs-list .jog-description li span {
 	font-weight: bold;
 }
 
-/*** ITEMS LIST BUTTON ***/
+/*** JOGS LIST BUTTON ***/
 
-.items-list button {
+.jogs-list button {
 	border-radius: 2px;
 	background-color:  #87bae1;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
@@ -557,7 +557,7 @@ img.splash {
 	height: 32px;
 }
 
-.items-list .highlight {
+.jogs-list .highlight {
 	position: absolute;
 	top:0;
 	left:0;
@@ -568,7 +568,7 @@ img.splash {
 	transition: 0.4s;
 }
 
-.items-list > li:hover .highlight {
+.jogs-list > li:hover .highlight {
 	opacity: 1;
 }
 
@@ -576,18 +576,18 @@ img.splash {
 
 @media (max-width: 800px) {
 
-	.items-list .item-photo {
+	.jogs-list .jog-photo {
 		width: 225px;
 	}
 
-	.items-list .item-description {
+	.jogs-list .jog-description {
 		max-width: 225px;
 	}
 }
 
-/*** SINGLE ITEM PAGE ***/
+/*** SINGLE JOG PAGE ***/
 
-.single-item {
+.single-jog {
 	z-index: 100;
 }
 
@@ -602,7 +602,7 @@ img.splash {
 	z-index: 10;
 }
 
-.single-item.visible .overlay {
+.single-jog.visible .overlay {
 	height: 100%;
 }
 
@@ -623,7 +623,7 @@ img.splash {
 	transition: 0.4s;
 }
 
-.single-item.visible .preview-large {
+.single-jog.visible .preview-large {
 	opacity: 1;
 	transition: 1.4s;
 	pointer-events: auto;

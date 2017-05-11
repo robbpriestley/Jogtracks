@@ -9,7 +9,7 @@ interface IDictionary
 	[key: string]: Array<string>;
 };
 
-interface IItemData
+interface IJogData
 {
 	Id: number;
 	Name: string;
@@ -19,7 +19,7 @@ interface IItemData
 // *** BEGIN INTERFACES ***
 // *** BEGIN CLASS DEFINITIONS ***
 
-class ItemData implements IItemData 
+class JogData implements IJogData 
 {
 	Id: number;
 	Name: string;
@@ -42,7 +42,7 @@ $(document).ready(function()
 	// *** BEGIN SPA ***
 	// *** GLOBAL VARIABLES ***
 
-	let Items: Array<ItemData> = [];
+	let Jogs: Array<JogData> = [];
 	let BasicAuth: object = {"Authorization": "Basic " + btoa("g9CZRkDEC5x8vfr96HMvkR3oiEiPLW" + ":" + "ECepRGahbgUCnwH5rCC7Xk3fdkBCKu")};
 
 	function sortOn(property: string)
@@ -94,7 +94,7 @@ $(document).ready(function()
 	
 	$("#settings").click(function(e) 
 	{
-		Items = [];
+		Jogs = [];
 		Settings();
 		return false;
 	});
@@ -102,19 +102,19 @@ $(document).ready(function()
 	$("#settingsDone").click(function(e) 
 	{
 		window.scrollTo(0, 0);
-		window.location.hash = "#items/";
+		window.location.hash = "#jogs/";
 		return false;
 	});
 	
 	$("#signout").click(function(e) 
 	{
-		Items = [];
+		Jogs = [];
 		SignOut();
 		window.location.hash = "#";  // Show welcome page.
 		return false;
 	});
 	
-	$("#newitem").click(function(e) 
+	$("#newjog").click(function(e) 
 	{
 		return false;
 	});
@@ -127,9 +127,9 @@ $(document).ready(function()
 	$("input[name=sort]").on("change", (function(e) 
 	{
 		let value: string = $("input[name=sort]:checked").val();
-		Items.sort(sortOn(value));
-		GenerateItemsHTML(Items);
-		RenderItemsPage();
+		Jogs.sort(sortOn(value));
+		GenerateJogsHTML(Jogs);
+		RenderJogsPage();
 	}));
 
 	$("input[name=coach]").on("change", (function(e) 
@@ -168,11 +168,11 @@ $(document).ready(function()
 				$("#coach-select").css("display", "none");
 				
 				return {
-					results: $.map(data, function(item) 
+					results: $.map(data, function(jog) 
 					{
 						return {
-							text: item.UserName,
-							id: item.UserName
+							text: jog.UserName,
+							id: jog.UserName
 						}
 					})
 				};
@@ -180,18 +180,18 @@ $(document).ready(function()
 		}
 	});
 
-	// Single item page buttons.
-	let singleItemPage: JQuery = $(".single-item");
-	singleItemPage.on("click", function(e) 
+	// Single jog page buttons.
+	let singleJogPage: JQuery = $(".single-jog");
+	singleJogPage.on("click", function(e) 
 	{
-		if (singleItemPage.hasClass("visible")) 
+		if (singleJogPage.hasClass("visible")) 
 		{
 			let clicked: JQuery = $(e.target);
 
-			// If the close button or the background are clicked go to the items page.
+			// If the close button or the background are clicked go to the jogs page.
 			if (clicked.hasClass("close") || clicked.hasClass("overlay"))
 			{
-				window.location.hash = "#items/";
+				window.location.hash = "#jogs/";
 			}
 		}
 	});
@@ -216,7 +216,7 @@ $(document).ready(function()
 				}
 				else
 				{
-					window.location.hash = "#items/";
+					window.location.hash = "#jogs/";
 				}
 				break;
 			
@@ -229,15 +229,15 @@ $(document).ready(function()
 				RenderSettingsPage();
 				break;
 			
-			case "#items":
-				LoadItems();
-				GenerateItemsHTML(Items);
-				RenderItemsPage();
+			case "#jogs":
+				LoadJogs();
+				GenerateJogsHTML(Jogs);
+				RenderJogsPage();
 				break;
 
-			case "#item":
-				let itemIndex: number = Number(url.split("#item/")[1].trim());
-				RenderSingleItemPage(itemIndex, Items);
+			case "#jog":
+				let jogIndex: number = Number(url.split("#jog/")[1].trim());
+				RenderSingleJogPage(jogIndex, Jogs);
 				break;
 
 			default:
@@ -313,49 +313,49 @@ $(document).ready(function()
 		}
 	}
 
-	// Fill item list using handlebars template. Data argument is obtained from JSON file.
-	function GenerateItemsHTML(items: Array<ItemData>): void
+	// Fill jog list using handlebars template.
+	function GenerateJogsHTML(jogs: Array<JogData>): void
 	{
-		let itemList: JQuery = $(".all-items .items-list");
-		itemList.html("");
-		let template: string = $("#items-template").html();
+		let jogList: JQuery = $(".all-jogs .jogs-list");
+		jogList.html("");
+		let template: string = $("#jogs-template").html();
 		let compiledTemplate: any = Handlebars.compile(template);
-		itemList.append(compiledTemplate(items));
+		jogList.append(compiledTemplate(jogs));
 
-		// Each item has data index attribute. On click change the URL hash to open up a preview for
-		// the item. Every hashchange triggers the render function.
-		itemList.find("li").on("click", function(e)
+		// Each jog has data index attribute. On click change the URL hash to open up a preview for
+		// the jog. Every hashchange triggers the render function.
+		jogList.find("li").on("click", function(e)
 		{
 			e.preventDefault();
-			let itemIndex: string = $(this).data("index");
-			window.location.hash = "item/" + itemIndex;
+			let jogIndex: string = $(this).data("index");
+			window.location.hash = "jog/" + jogIndex;
 		})
 	}
 
-	function RenderItemsPage(): void
+	function RenderJogsPage(): void
 	{
-		let page: JQuery = $(".all-items");
+		let page: JQuery = $(".all-jogs");
 		page.addClass("visible");
 		ShowHeaderComponents(true);
 	}
 
-	// Opens preview page for one of the items. Parameters index from the hash and the items object.
-	function RenderSingleItemPage(index: number, items: Array<ItemData>): void
+	// Opens preview page for one of the jogs. Parameters index from the hash and the jogs object.
+	function RenderSingleJogPage(index: number, jogs: Array<JogData>): void
 	{	
-		let page: JQuery = $(".single-item");
+		let page: JQuery = $(".single-jog");
 		page.css("pointer-events", "auto");
 		let container: JQuery = $(".preview-large");
 
-		// Find the item by iterating through the data object and searching for the chosen index.
-		if (items.length)
+		// Find the jog by iterating through the data object and searching for the chosen index.
+		if (jogs.length)
 		{
-			items.forEach(function(item)
+			jogs.forEach(function(jog)
 			{
-				if (item.Id == index)
+				if (jog.Id == index)
 				{
-					// Populate ".preview-large" with the chosen item data.
-					container.find("h3").text(item.Name);
-					container.find("p").text(item.Description);
+					// Populate ".preview-large" with the chosen jog data.
+					container.find("h3").text(jog.Name);
+					container.find("p").text(jog.Description);
 				}
 			});
 		}
@@ -484,7 +484,7 @@ $(document).ready(function()
 		localStorage.setItem("coach", authOutput.Coach);
 		localStorage.setItem("userName", authOutput.UserName);
 		localStorage.setItem("accountType", authOutput.AccountType);
-		window.location.hash = "items/";
+		window.location.hash = "jogs/";
 	}
 
 	function SignUp(username: string, password: string, accountType: string): void
@@ -549,9 +549,9 @@ $(document).ready(function()
 
 	function SignOut(): void
 	{
-		// Clear the items list.
-		let itemList: JQuery = $(".all-items .items-list");
-		itemList.html("");
+		// Clear the jogs list.
+		let jogList: JQuery = $(".all-jogs .jogs-list");
+		jogList.html("");
 
 		$("#user").hide();
 		$("#signup").show();
@@ -619,9 +619,9 @@ $(document).ready(function()
 
 	function Settings(): void
 	{
-		// Clear the items list.
-		let itemList: JQuery = $(".all-items .items-list");
-		itemList.html("");
+		// Clear the jogs list.
+		let jogList: JQuery = $(".all-jogs .jogs-list");
+		jogList.html("");
 
 		window.location.hash = "settings/";
 	}
@@ -692,9 +692,9 @@ $(document).ready(function()
 	}
 
 	// *** END SETTINGS ***
-	// *** BEGIN ITEMS ***
+	// *** BEGIN JOGS ***
 
-	function LoadItems(): void
+	function LoadJogs(): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
@@ -711,14 +711,14 @@ $(document).ready(function()
 			headers: BasicAuth,
 			success: function(result) 
 			{
-				Items = result;
-				GenerateItemsHTML(Items);
+				Jogs = result;
+				GenerateJogsHTML(Jogs);
 				spinner.stop();
 			}
 		});
 	}
 
-	// *** END ITEMS ***
+	// *** END JOGS ***
 	// *** BEGIN UTILITY ***
 
 	function SpinnerSetup() : Spinner

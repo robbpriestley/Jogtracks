@@ -98,21 +98,21 @@
 		<div><a id="settingsDone" href="">Done</a></div>
 	</div>
 	
-	<div class="all-items page">
+	<div class="all-jogs page">
 		<div class="controls">
 			<form>
 				<span>Sort Order</span>
 				<label><input type="radio" name="sort" value="Name" checked> Sort by Name</label>
 				<label><input type="radio" name="sort" value="Rating"> Sort by Rating</label>
 			</form>
-			<button id="newitem">New Item</button>
+			<button id="newjog">New Jog</button>
 		</div>
-		<ul class="items-list"></ul>
-		<script id="items-template" type="x-handlebars-template">​
+		<ul class="jogs-list"></ul>
+		<script id="jogs-template" type="x-handlebars-template">​
 			{{#each this}}
 				<li data-index="{{Id}}">
 					<h2><a href="#"> {{Name}} </a></h2>
-					<ul class="item-description">
+					<ul class="jog-description">
 						<li><span>Rating: </span>{{Rating}}</li>
 						<li><span>Description: </span>{{Description}}</li>
 					</ul>
@@ -122,10 +122,10 @@
 		</script>
 	</div>
 
-	<div class="single-item page">
+	<div class="single-jog page">
 		<div class="overlay"></div>
 		<div class="preview-large">
-			<h3>Single item view</h3>
+			<h3>Single jog view</h3>
 			<img src=""/>
 			<p></p>
 			<span class="close">×</span>
