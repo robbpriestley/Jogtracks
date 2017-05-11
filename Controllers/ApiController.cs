@@ -47,6 +47,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				AccountType = accountType;
 			}
 		}
+
+		#endregion
+		#region Authentication: Sign Up
 		
 		public class SignUpInput
 		{
@@ -101,6 +104,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			return Utility.JsonObjectResult(authOutput);
 		}
+
+		#endregion
+		#region Authentication: Sign In
 
 		public class SignInInput
 		{
@@ -157,6 +163,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			return Utility.JsonObjectResult(authOutput);
 		}
 
+		#endregion
+		#region Authentication: Change Password
+
 		public class ChangePasswordInput
 		{
 			public string Token { get; set; }
@@ -199,6 +208,15 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return new ObjectResult("SUCCESS");
+		}
+
+		#endregion
+		#region Authentication: Utility
+
+		public class HashData
+		{
+			public byte[] Salt { get; set; }
+			public string Hash { get; set; }
 		}
 
 		private HashData HashPassword(string password)
@@ -245,14 +263,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			return hash;
 		}
-
-		public class HashData
-		{
-			public byte[] Salt { get; set; }
-			public string Hash { get; set; }
-		}
-
+		
 		#endregion
+		#region Jogs: Jog List
 
 		[HttpGet]
 		[Route("jogs")]
@@ -324,6 +337,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 		}
 
+		#endregion
+		#region Jogs: Jog Add
+
 		[HttpPost]
 		[Route("jogs/add")]
 		public IActionResult JogAdd(string userId)
@@ -356,8 +372,67 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			return new ObjectResult("SUCCESS");
 		}
 
-		#region Coaches
+		#endregion
+		#region Coaches: Coach List
+
+		[HttpGet]
+		[Route("coaches")]
+		public IActionResult CoachList(string token)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
 			
+			Account user = GetUser(token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			List<CoachOutput> coaches = new List<CoachOutput>();
+
+			try
+			{				
+				List<Account> coachAccounts = Accounts.GetCoaches();
+
+				// Convert full accounts list to basic list.
+				foreach(Account coachAccount in coachAccounts)
+				{
+					coaches.Add(new CoachOutput(coachAccount.UserName));
+				}
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.CoachList()", token);
+				return new StatusCodeResult(500);
+			}
+
+			return Utility.JsonObjectResult(coaches);
+		}
+
+		public class CoachOutput
+		{
+			public string UserName { get; set; }
+			
+			public CoachOutput(string userName)
+			{
+				UserName = userName;
+			}
+		}
+
+		#endregion
+		#region Coaches: Coach Patch
+			
+		public class CoachPatchInput
+		{
+			public string Token { get; set; }
+			public string Coach { get; set; }
+		}
+		
 		[HttpPatch]
 		[Route("coachpatch")]
 		public IActionResult CoachPatch([FromBody] CoachPatchInput coachPatchInput)
@@ -388,61 +463,6 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return new ObjectResult("SUCCESS");
-		}
-
-		[HttpGet]
-		[Route("coaches")]
-		public IActionResult CoachList(string token)
-		{			
-			if (!Utility.BasicAuthentication(Secrets, Request))
-			{
-				return new UnauthorizedResult();
-			}
-			
-			Account user = GetUser(token);
-
-			if (user == null)
-			{
-				return new StatusCodeResult(204);
-			}
-			
-			ServiceLogs.Access(Request, null, user.UserName);
-
-			List<Coach> coaches = new List<Coach>();
-
-			try
-			{				
-				List<Account> coachAccounts = Accounts.GetCoaches();
-
-				// Convert full accounts list to basic list.
-				foreach(Account coachAccount in coachAccounts)
-				{
-					coaches.Add(new Coach(coachAccount.UserName));
-				}
-			}
-			catch (System.Exception e)
-			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.CoachList()", token);
-				return new StatusCodeResult(500);
-			}
-
-			return Utility.JsonObjectResult(coaches);
-		}
-
-		public class Coach
-		{
-			public string UserName { get; set; }
-			
-			public Coach(string userName)
-			{
-				UserName = userName;
-			}
-		}
-
-		public class CoachPatchInput
-		{
-			public string Token { get; set; }
-			public string Coach { get; set; }
 		}
 
 		#endregion
