@@ -129,7 +129,7 @@ $(document).ready(function()
 		let value: string = $("input[name=sort]:checked").val();
 		Items.sort(sortOn(value));
 		GenerateItemsHTML(Items);
-		RenderItemsPage(Items);
+		RenderItemsPage();
 	}));
 
 	$("input[name=coach]").on("change", (function(e) 
@@ -231,7 +231,8 @@ $(document).ready(function()
 			
 			case "#items":
 				LoadItems();
-				RenderItemsPage(Items);
+				GenerateItemsHTML(Items);
+				RenderItemsPage();
 				break;
 
 			case "#item":
@@ -331,29 +332,9 @@ $(document).ready(function()
 		})
 	}
 
-	function RenderItemsPage(items: Array<ItemData>): void
+	function RenderItemsPage(): void
 	{
 		let page: JQuery = $(".all-items");
-		let allItems: JQuery = $(".all-items .items-list > li");
-
-		// Hide all items in the items list.
-		allItems.addClass("hidden");
-
-		// Iterate over the items. If item ID is in the data object, remove hidden class to reveal.
-		allItems.each(function()
-		{
-			let instance: JQuery = $(this);
-
-			items.forEach(function(item) 
-			{
-				if (instance.data("index") == item.Id)
-				{
-					instance.removeClass("hidden");
-				}
-			});
-		});
-
-		// Show the page. Render function hides all pages so we need to show the one we want.
 		page.addClass("visible");
 		ShowHeaderComponents(true);
 	}
