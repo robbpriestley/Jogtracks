@@ -13,6 +13,8 @@ namespace DigitalWizardry.Jogtracks
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+		public string UserName { get; set; }      // Username of the jogger.
+		public string AddedBy { get; set; }       // Username of the jogger or coach.
 		public DateTime Date { get; set; }         // Just date: no time component (00:00:00)
 		public decimal Distance { get; set; }      // Kilometres
 		public int Time { get; set; }              // Seconds
