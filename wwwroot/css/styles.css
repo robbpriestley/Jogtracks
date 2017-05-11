@@ -455,13 +455,13 @@ img.splash {
 }
 
 .jogs-list {
-	list-style:none;
-	margin-left:225px;
-	max-width: 1500px;
-	text-align: center;
 	padding: 0;
 	opacity: 0;
 	font-size: 0;
+	list-style: none;
+	text-align: left;
+	max-width: 1500px;
+	margin-left:225px;
 }
 
 .all-jogs.visible .jogs-list,
@@ -473,22 +473,18 @@ img.splash {
 }
 
 .jogs-list > li {
-	box-sizing:border-box;
-	display: inline-block;
-	cursor: pointer;
-	position: relative;
-	transition: 0.2s;
-
-	text-align:left;
-	font:normal 12px;
-
-	background-color:#ffffff;
-	border:1px solid #dbe3e7;
-	border-radius: 3px;
-	box-shadow: 1px 3px 1px rgba(0, 0, 0, 0.08);
-
-	margin: 0 12px 14px 0;
 	padding: 25px;
+	cursor: pointer;
+	text-align:left;
+	transition: 0.2s;
+	position: relative;
+	border-radius: 3px;
+	margin: 0 12px 14px 0;
+	display: inline-block;
+	box-sizing:border-box;
+	background-color:#ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
 .jogs-list > li.hidden {
@@ -499,13 +495,14 @@ img.splash {
 /*** JOG NAME ***/
 
 .jogs-list h2 {
+	margin: 0px;
+	padding: 5px;
 	display: block;
 	font-size: 18px;
-	white-space: nowrap;
 	overflow: hidden;
-	text-overflow:ellipsis;
 	max-width: 200px;
-	margin:0;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .jogs-list h2 a {
@@ -516,22 +513,13 @@ img.splash {
 /*** JOG DESCRIPTION ***/
 
 .jogs-list .jog-description {
-	margin-top: 20px;
-
-	color: #5d5d5d;
 	font-size: 14px;
+	list-style: none;
+	color: #5d5d5d;
+	max-width: 260px;
+	margin-top: 15px;
 	line-height: 1.45;
 	white-space: normal;
-
-	max-width: 260px;
-	margin-bottom: 20px;
-
-	list-style: none;
-}
-
-.jogs-list .jog-description li {
-	display: inline-block;
-	margin-right: 5px;
 }
 
 .jogs-list .jog-description li:first-child {

@@ -111,12 +111,14 @@
 		<script id="jogs-template" type="x-handlebars-template">​
 			{{#each this}}
 				<li data-index="{{Id}}">
-					<h2><a href="#"> {{Date}} </a></h2>
+					<h2 style="background-color: #345678"><a href="#">jogger1</a></h2>
 					<ul class="jog-description">
+						<li><span>{{Date}}</span></li>
 						<li><span>Distance: </span>{{Distance}}</li>
 						<li><span>Time: </span>{{Time}}</li>
+						<li><span>Average Speed: </span>{{Time}}</li>
 					</ul>
-					<div class="highlight"></div>
+					<!--<div class="highlight"></div>-->
 				</li>
 			{{/each}}
 		</script>
