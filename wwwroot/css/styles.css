@@ -477,6 +477,7 @@ img.splash {
 	cursor: pointer;
 	text-align:left;
 	min-width: 250px;
+	max-width: 250px;
 	transition: 0.2s;
 	position: relative;
 	border-radius: 3px;
@@ -528,6 +529,8 @@ img.splash {
 }
 
 .jogs-list .jog-description li span {
+	float:left;
+	width: 100px;
 	font-weight: bold;
 }
 
