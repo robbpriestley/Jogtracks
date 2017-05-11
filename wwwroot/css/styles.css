@@ -476,6 +476,7 @@ img.splash {
 	padding: 25px;
 	cursor: pointer;
 	text-align:left;
+	min-width: 200px;
 	transition: 0.2s;
 	position: relative;
 	border-radius: 3px;
