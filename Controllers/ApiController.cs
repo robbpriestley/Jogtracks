@@ -436,32 +436,47 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#endregion
 		#region Jogs: Jog Add
 
+		public class JogAddInput
+		{
+			public string Token { get; set; }
+			public string UserName { get; set; }
+			public string Date { get; set; }
+			public decimal Distance { get; set; }
+			public int Time { get; set; }
+		}
+
 		[HttpPost]
 		[Route("jogs/add")]
-		public IActionResult JogAdd(string userId)
+		public IActionResult JogAdd([FromBody] JogAddInput jogAddInput)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
+			Account user = GetUser(jogAddInput.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+
+			ServiceLogs.Access(Request, null, user.UserName);
+
 			try
 			{				
-				ServiceLogs.Access(Request, null, userId);
-				
-				DateTime date = DateTime.Parse(Request.Form["date"]);
-				int distance = Int32.Parse(Request.Form["distance"]);
-				int time = Int32.Parse(Request.Form["time"]);
-
 				Jog jog = new Jog();
-				jog.Date = date;
-				jog.Distance = distance;
-				jog.Time = time;
+				jog.UserName = jogAddInput.UserName;
+				jog.AddedBy = user.UserName;
+				jog.Date = DateTime.Parse(jogAddInput.Date);
+				jog.Distance = jogAddInput.Distance;
+				jog.Time = jogAddInput.Time;
+				jog.AverageSpeed = (decimal)((double)jog.Distance / ((double)jog.Time / 3600.0d));
 				Jogs.Add(jog);
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogAdd()", userId);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogAdd()", user.UserName);
 				return new StatusCodeResult(500);
 			}
 
