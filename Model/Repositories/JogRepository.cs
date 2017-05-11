@@ -17,6 +17,22 @@ namespace DigitalWizardry.Jogtracks
 		{
 			return Context.Jog.Count();
 		}
+
+		public List<Jog> GetByUserName(string userName)
+		{
+			List<Jog> jogs = null;
+			
+			try
+			{
+				jogs = Context.Jog.Where(x => x.UserName == userName).OrderByDescending(x => x.Date).ToList();
+			}
+			catch (System.InvalidOperationException)
+			{
+				// There are none, I suppose.
+			}
+
+			return jogs;
+		}
 	
 		public List<Jog> GetAll()
 		{
@@ -24,7 +40,7 @@ namespace DigitalWizardry.Jogtracks
 			
 			try
 			{
-				jogs = Context.Jog.ToList();
+				jogs = Context.Jog.OrderByDescending(x => x.Date).ToList();
 			}
 			catch (System.InvalidOperationException)
 			{

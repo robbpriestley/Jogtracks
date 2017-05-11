@@ -376,7 +376,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{			
-				List<Jog> jogs = Jogs.GetAll();
+				List<Jog> jogs = Jogs.GetByUserName(user.UserName);
 
 				foreach (Jog jog in jogs)
 				{
