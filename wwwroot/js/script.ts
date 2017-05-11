@@ -343,6 +343,7 @@ $(document).ready(function()
 	function RenderSingleItemPage(index: number, items: Array<ItemData>): void
 	{	
 		let page: JQuery = $(".single-item");
+		page.css("pointer-events", "auto");
 		let container: JQuery = $(".preview-large");
 
 		// Find the item by iterating through the data object and searching for the chosen index.
@@ -684,6 +685,8 @@ $(document).ready(function()
 			success: function(result) 
 			{
 				spinner.stop();
+				$("#changeCoachMessage").show();
+				setTimeout(function() { $("#changeCoachMessage").fadeOut(); }, 3000);
 			}
 		});
 	}
