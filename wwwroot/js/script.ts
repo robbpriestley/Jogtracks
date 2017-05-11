@@ -707,7 +707,7 @@ $(document).ready(function()
 			dataType: "json",
 			data: { token: token },
 			contentType: "application/json",
-			url: "/api/items",
+			url: "/api/jogs",
 			headers: BasicAuth,
 			success: function(result) 
 			{

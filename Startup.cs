@@ -32,7 +32,7 @@ namespace DigitalWizardry.Jogtracks
 			services.AddMvc();
 			services.AddScoped<IServiceLogRepository, ServiceLogRepository>();
 			services.AddScoped<IAccountRepository, AccountRepository>();
-			services.AddScoped<IItemRepository, ItemRepository>();
+			services.AddScoped<IJogRepository, JogRepository>();
 
 			services.Configure<Secrets>(secrets =>
 			{

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace DigitalWizardry.Jogtracks
 {
-	public interface IItemRepository
+	public interface IJogRepository
 	{
 		int Count();
-		List<Item> GetAll();
-		void Add(Item item);
+		List<Jog> GetAll();
+		void Add(Jog jog);
 	}
 }

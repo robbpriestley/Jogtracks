@@ -5,7 +5,7 @@ namespace DigitalWizardry.Jogtracks
 	public class MainContext : DbContext
 	{
 		public DbSet<Account> Account { get; set; }
-		public DbSet<Item> Item { get; set; }
+		public DbSet<Jog> Jog { get; set; }
 		
 		public MainContext(DbContextOptions<MainContext> options) : base(options){}
 	}

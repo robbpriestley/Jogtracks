@@ -14,20 +14,20 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		public Secrets Secrets { get; set; }
 		public IServiceLogRepository ServiceLogs { get; set; }
 		public IAccountRepository Accounts { get; set; }
-		public IItemRepository Items { get; set; }
+		public IJogRepository Jogs { get; set; }
 		
 		public ApiController
 		(
 			IOptions<Secrets> secrets,
 			IServiceLogRepository serviceLogs,
 			IAccountRepository accounts,
-			IItemRepository items
+			IJogRepository jogs
 		)
 		{
 			Secrets = secrets.Value;
 			ServiceLogs = serviceLogs;
 			Accounts = accounts;
-			Items = items;
+			Jogs = jogs;
 		}
 
 		#region Authentication
@@ -255,8 +255,8 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#endregion
 
 		[HttpGet]
-		[Route("items")]
-		public IActionResult ItemList(string token)
+		[Route("jogs")]
+		public IActionResult JogList(string token)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -272,24 +272,24 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			
 			ServiceLogs.Access(Request, null, user.UserName);
 			
-			List<Item> items = null;
+			List<Jog> jogs = null;
 
 			try
 			{			
-				items = Items.GetAll();
+				jogs = Jogs.GetAll();
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.ItemList()", token);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogList()", token);
 				return new StatusCodeResult(500);
 			}
 
-			return Utility.JsonObjectResult(items);
+			return Utility.JsonObjectResult(jogs);
 		}
 
 		[HttpPost]
-		[Route("items/add")]
-		public IActionResult ItemAdd(string userId)
+		[Route("jogs/add")]
+		public IActionResult JogAdd(string userId)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -300,19 +300,19 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			{				
 				ServiceLogs.Access(Request, null, userId);
 				
-				string name = Request.Form["name"];
-				int rating = Int32.Parse(Request.Form["rating"]);
-				string description = Request.Form["description"];
+				DateTime date = DateTime.Parse(Request.Form["date"]);
+				int distance = Int32.Parse(Request.Form["distance"]);
+				int time = Int32.Parse(Request.Form["time"]);
 
-				Item item = new Item();
-				item.Name = name;
-				item.Rating = rating;
-				item.Description = description;
-				Items.Add(item);
+				Jog jog = new Jog();
+				jog.Date = date;
+				jog.Distance = distance;
+				jog.Time = time;
+				Jogs.Add(jog);
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.ItemAdd()", userId);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogAdd()", userId);
 				return new StatusCodeResult(500);
 			}
 

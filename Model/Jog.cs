@@ -6,15 +6,15 @@ using Newtonsoft.Json;
 
 namespace DigitalWizardry.Jogtracks
 {	
-	public class Item
+	public class Jog
 	{
-		public Item(){}
+		public Jog(){}
 		
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-		public string Name { get; set; }
-		public int Rating { get; set; }
-		public string Description { get; set; }
+		public DateTime Date { get; set; }  // No time component (00:00:00)
+		public int Distance { get; set; }     // Meters
+		public int Time { get; set; }         // Seconds
 	}
 }

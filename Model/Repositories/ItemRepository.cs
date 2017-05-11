@@ -4,39 +4,39 @@ using System.Collections.Generic;
 
 namespace DigitalWizardry.Jogtracks
 {
-	public class ItemRepository: IItemRepository
+	public class JogRepository: IJogRepository
 	{		
 		public MainContext Context { get; set; }
 		
-		public ItemRepository(MainContext context)
+		public JogRepository(MainContext context)
 		{
 			Context = context;
 		}
 
 		public int Count()
 		{
-			return Context.Item.Count();
+			return Context.Jog.Count();
 		}
 	
-		public List<Item> GetAll()
+		public List<Jog> GetAll()
 		{
-			List<Item> items = null;
+			List<Jog> jogs = null;
 			
 			try
 			{
-				items = Context.Item.ToList();
+				jogs = Context.Jog.ToList();
 			}
 			catch (System.InvalidOperationException)
 			{
 				// There are none, I suppose.
 			}
 
-			return items;
+			return jogs;
 		}
 
-		public void Add(Item item)
+		public void Add(Jog jog)
 		{
-			Context.Item.Add(item);
+			Context.Jog.Add(jog);
 			Context.SaveChanges();
 		}
 	}
