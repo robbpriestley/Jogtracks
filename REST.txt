@@ -1,45 +1,31 @@
 *** CREATE ACCOUNTS ****************************************************************************************
 jogger1, jogger2, jogger3, coach1, and admin1 are for dynamic in-application testing
 jogger4, coach2, and admin2 are for scripted rest testing and thus their tokens need to remain constant:
-jogger4: ff49bf23-c832-47fb-b740-7dff485bd9ce
-coach2:  68fc76c5-aab7-4ad9-a27f-84a9db621c32
-admin2:  29e13921-7d38-47d3-ada7-1c4133e33413
+jogger4: 2a4db818-969c-44b6-beb3-12628443c122
+coach2:  ca85fa57-353c-49b5-8cec-4776f5112fe2
+admin2:  bb30094f-036d-4748-b6e7-cd6ca38812c5
 ************************************************************************************************************
 
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger1", "Password": "qqqqqqqq", "AccountType": "JOGGER"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger2", "Password": "qqqqqqqq", "AccountType": "JOGGER"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger3", "Password": "qqqqqqqq", "AccountType": "JOGGER"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger4", "Password": "qqqqqqqq", "AccountType": "JOGGER"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "coach1", "Password": "qqqqqqqq", "AccountType": "COACH"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "coach2", "Password": "qqqqqqqq", "AccountType": "COACH"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "admin1", "Password": "qqqqqqqq", "AccountType": "ADMIN"}'
-
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "admin2", "Password": "qqqqqqqq", "AccountType": "ADMIN"}'
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger1", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger2", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger3", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "jogger4", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "coach1", "Password": "qqqqqqqq", "AccountType": "COACH"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "coach2", "Password": "qqqqqqqq", "AccountType": "COACH"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "admin1", "Password": "qqqqqqqq", "AccountType": "ADMIN"}' && curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "admin2", "Password": "qqqqqqqq", "AccountType": "ADMIN"}'
 
 *** COACH PATCH ********************************************************************************************
 
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "cbb62a71-7a8a-4563-b4a3-af567b809aa5", "Coach": "coach2"}'
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "2a4db818-969c-44b6-beb3-12628443c122", "Coach": "coach2"}'
 
-*** ITEMS **************************************************************************************************
+*** jogS **************************************************************************************************
 
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Alpha" -F "rating=12" -F "description=This alpha is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Beta" -F "rating=11" -F "description=This beta is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Gamma" -F "rating=10" -F "description=This gamma is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Delta" -F "rating=9" -F "description=This delta is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Epsilon" -F "rating=8" -F "description=This epsilon is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Zeta" -F "rating=7" -F "description=This zeta is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Eta" -F "rating=6" -F "description=This eta is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Theta" -F "rating=5" -F "description=This theta is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Iota" -F "rating=4" -F "description=This iota is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Kappa" -F "rating=3" -F "description=This kappa is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Lambda" -F "rating=2" -F "description=This lambda is a very interesting item"
-curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/items/add -F "name=Mu" -F "rating=1" -F "description=This mu is a very interesting item"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Alpha" -F "rating=12" -F "description=This alpha is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Beta" -F "rating=11" -F "description=This beta is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Gamma" -F "rating=10" -F "description=This gamma is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Delta" -F "rating=9" -F "description=This delta is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Epsilon" -F "rating=8" -F "description=This epsilon is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Zeta" -F "rating=7" -F "description=This zeta is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Eta" -F "rating=6" -F "description=This eta is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Theta" -F "rating=5" -F "description=This theta is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Iota" -F "rating=4" -F "description=This iota is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Kappa" -F "rating=3" -F "description=This kappa is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Lambda" -F "rating=2" -F "description=This lambda is a very interesting jog"
+curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/jogs/add -F "name=Mu" -F "rating=1" -F "description=This mu is a very interesting jog"
 
 # TEMPLATE:
 # curl -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request POST http://0.0.0.0:5000/api/
