@@ -272,11 +272,28 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			
 			ServiceLogs.Access(Request, null, user.UserName);
 			
-			List<Jog> jogs = null;
+			List<JogOutput> jogOutputs = new List<JogOutput>();
 
 			try
 			{			
-				jogs = Jogs.GetAll();
+				List<Jog> jogs = Jogs.GetAll();
+
+				foreach (Jog jog in jogs)
+				{
+					JogOutput jogOutput = new JogOutput();
+
+					jogOutput.UserName = user.UserName;
+					jogOutput.UserColor = "#ff9900";
+					jogOutput.Date = JogOutput.DateString(jog.Date);
+					jogOutput.Year = jog.Date.Year;
+					jogOutput.Month = jog.Date.Month;
+					jogOutput.Day = jog.Date.Day;
+					jogOutput.Distance = jog.Distance;
+					jogOutput.Time = jog.Time;
+					jogOutput.AverageSpeed = 35;
+
+					jogOutputs.Add(jogOutput);
+				}
 			}
 			catch (System.Exception e)
 			{
@@ -284,7 +301,27 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				return new StatusCodeResult(500);
 			}
 
-			return Utility.JsonObjectResult(jogs);
+			return Utility.JsonObjectResult(jogOutputs);
+		}
+
+		public class JogOutput
+		{
+			public string UserName { get; set; }
+			public string UserColor { get; set; }
+			public string Date { get; set; }
+			public int Year { get; set; }
+			public int Month { get; set; }
+			public int Day { get; set; }
+			public decimal Distance { get; set; }
+			public int Time { get; set; }
+			public decimal AverageSpeed { get; set; }
+
+			public static string DateString(DateTime dt)
+			{
+				string month = dt.Month < 10 ? "0" + dt.Month.ToString() : dt.Month.ToString();
+				string day = dt.Day < 10 ? "0" + dt.Day.ToString() : dt.Day.ToString();
+				return dt.Year.ToString() + "-" + month + "-" + day;
+			}
 		}
 
 		[HttpPost]
