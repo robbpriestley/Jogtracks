@@ -18,6 +18,12 @@ namespace DigitalWizardry.Jogtracks
 			return Context.Jog.Count();
 		}
 
+		public void Add(Jog jog)
+		{
+			Context.Jog.Add(jog);
+			Context.SaveChanges();
+		}
+
 		public List<Jog> GetByUserName(string userName)
 		{
 			List<Jog> jogs = null;
@@ -34,22 +40,22 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
-		public List<Jog> GetByUserAccount(Account user)
+		public List<Jog> GetByUserAccount(Account user, DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = null;
 			
 			switch (user.AccountType)
 			{
 				case "JOGGER":
-					jogs = GetJogsByJogger(user);
+					jogs = GetJogsByJogger(user, fromDate, toDate);
 					break;
 
 				case "COACH":
-					jogs = GetJogsByCoach(user);
+					jogs = GetJogsByCoach(user, fromDate, toDate);
 					break;
 
 				case "ADMIN":
-					jogs = GetAll();
+					jogs = GetAll(fromDate, toDate);
 					break;
 				
 				default:
@@ -59,12 +65,20 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;  // Postpone sorting due to efficiency gained as UserColor must still be obtained.
 		}
 	
-		public List<Jog> GetAll()
+		public List<Jog> GetAll(DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = null;
 			
 			try
 			{
+				if (fromDate != null && toDate != null)
+				{
+					jogs = Context.Jog.Where(x => x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).OrderByDescending(x => x.UserName).ToList();
+				}
+				else
+				{
+					jogs = Context.Jog.OrderByDescending(x => x.UserName).ToList();
+				}
 				jogs = Context.Jog.OrderByDescending(x => x.UserName).ToList();
 			}
 			catch (System.InvalidOperationException)
@@ -75,19 +89,20 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
-		public void Add(Jog jog)
-		{
-			Context.Jog.Add(jog);
-			Context.SaveChanges();
-		}
-
-		private List<Jog> GetJogsByJogger(Account user)
+		private List<Jog> GetJogsByJogger(Account user, DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = null;
-			
+
 			try
 			{
-				jogs = Context.Jog.Where(x => x.UserName == user.UserName).ToList();
+				if (fromDate != null && toDate != null)
+				{
+					jogs = Context.Jog.Where(x => x.UserName == user.UserName && x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList();
+				}
+				else
+				{
+					jogs = Context.Jog.Where(x => x.UserName == user.UserName).ToList();	
+				}
 			}
 			catch (System.InvalidOperationException)
 			{
@@ -97,7 +112,7 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
-		private List<Jog> GetJogsByCoach(Account coach)
+		private List<Jog> GetJogsByCoach(Account coach, DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = new List<Jog>();
 			
@@ -107,7 +122,14 @@ namespace DigitalWizardry.Jogtracks
 
 				foreach (Account jogger in joggers)
 				{
-					jogs.AddRange(Context.Jog.Where(x => x.UserName == jogger.UserName).ToList());
+					if (fromDate != null && toDate != null)
+					{
+						jogs.AddRange(Context.Jog.Where(x => x.UserName == jogger.UserName && x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList());
+					}
+					else
+					{
+						jogs.AddRange(Context.Jog.Where(x => x.UserName == jogger.UserName).ToList());
+					}
 				}
 			}
 			catch (System.InvalidOperationException)

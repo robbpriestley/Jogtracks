@@ -186,7 +186,7 @@ $(document).ready(function()
 
 			if (fromDate > toDate)
 			{
-				throw "Filter error: the from date must be on or before the to date.";
+				throw "Filter error: the from date must be the same as, or before, the to date.";
 			}
 
 			Filter["FromDate"] = fromDate.toISOString();
@@ -299,6 +299,9 @@ $(document).ready(function()
 	{
 		url = url.split("#filter/")[1].trim();
 
+		let fromDate: string;
+		let toDate: string;
+
 		try
 		{
 			Filter = JSON.parse(url);  // Parse filter from query string.
@@ -311,8 +314,8 @@ $(document).ready(function()
 				}
 			}
 
-			let fromDate: string = Filter["FromDate"].split("T")[0];
-			let toDate: string = Filter["ToDate"].split("T")[0];
+			fromDate = Filter["FromDate"].split("T")[0];
+			toDate = Filter["ToDate"].split("T")[0];
 
 			$("#fromDate").val(fromDate);
 			$("#toDate").val(toDate);
@@ -332,7 +335,7 @@ $(document).ready(function()
 			return;
 		}
 
-		LoadJogsWithFilter(Filter);
+		LoadJogsWithFilter(fromDate, toDate);
 		GenerateJogsHTML(Jogs);
 		RenderJogsPage();
 	}
@@ -818,7 +821,7 @@ $(document).ready(function()
 		});
 	}
 
-	function LoadJogsWithFilter(filter: IDictionary): void
+	function LoadJogsWithFilter(fromDate: string, toDate: string): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
@@ -829,9 +832,9 @@ $(document).ready(function()
 		({
 			type: "GET",
 			dataType: "json",
-			data: { token: token },
+			data: { token: token, fromDate: fromDate, toDate: toDate },
 			contentType: "application/json",
-			url: "/api/jogs",
+			url: "/api/jogsfilter",
 			headers: BasicAuth,
 			success: function(result) 
 			{

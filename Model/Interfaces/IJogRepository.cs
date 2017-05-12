@@ -6,9 +6,9 @@ namespace DigitalWizardry.Jogtracks
 	public interface IJogRepository
 	{
 		int Count();
-		List<Jog> GetAll();
-		List<Jog> GetByUserName(string userName);
-		List<Jog> GetByUserAccount(Account user);
 		void Add(Jog jog);
+		List<Jog> GetByUserName(string userName);
+		List<Jog> GetAll(DateTime? fromDate, DateTime? toDate);
+		List<Jog> GetByUserAccount(Account user, DateTime? fromDate, DateTime? toDate);
 	}
 }

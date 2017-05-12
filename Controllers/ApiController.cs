@@ -316,7 +316,73 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			{			
 				string currentUser = null;
 				string currentUserColor = null;
-				List<Jog> jogs = Jogs.GetByUserAccount(user);
+				List<Jog> jogs = Jogs.GetByUserAccount(user, null, null);
+
+				foreach (Jog jog in jogs)
+				{
+					if (currentUser == null || !currentUser.Equals(jog.UserName))
+					{
+						currentUser = jog.UserName;
+						currentUserColor = Accounts.GetUserColor(jog.UserName);
+					}
+					
+					JogOutput jogOutput = new JogOutput();
+
+					jogOutput.UserName = currentUser;
+					jogOutput.UserColor = currentUserColor;
+					jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
+					jogOutput.Year = jog.Date.Year;
+					jogOutput.Month = jog.Date.Month;
+					jogOutput.Day = jog.Date.Day;
+					jogOutput.Week = JogOutput.WeekOfYearCalc(jog.Date);
+					jogOutput.Distance = jog.Distance;
+					jogOutput.Time = jog.Time;
+					jogOutput.TimeString = JogOutput.TimeStringCalc(jog.Time);
+					jogOutput.AverageSpeed = jog.AverageSpeed;
+
+					jogOutputs.Add(jogOutput);
+				}
+
+				// Final sort!
+				jogOutputs = jogOutputs.OrderByDescending(x => x.Date).ThenBy(y => y.UserName).ToList();
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogList()", token);
+				return new StatusCodeResult(500);
+			}
+
+			return Utility.JsonObjectResult(jogOutputs);
+		}
+
+		[HttpGet]
+		[Route("jogsfilter")]
+		public IActionResult JogsListFilter(string token, string fromDate, string toDate)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, fromDate + " " + toDate, user.UserName);
+			
+			List<JogOutput> jogOutputs = new List<JogOutput>();
+
+			try
+			{			
+				string currentUser = null;
+				string currentUserColor = null;
+				DateTime from = DateTime.Parse(fromDate);
+				DateTime to = DateTime.Parse(toDate);
+				
+				List<Jog> jogs = Jogs.GetByUserAccount(user, from, to);
 
 				foreach (Jog jog in jogs)
 				{
