@@ -45,25 +45,6 @@ $(document).ready(function()
 	let Jogs: Array<JogData> = [];
 	let BasicAuth: object = {"Authorization": "Basic " + btoa("g9CZRkDEC5x8vfr96HMvkR3oiEiPLW" + ":" + "ECepRGahbgUCnwH5rCC7Xk3fdkBCKu")};
 
-	function sortOn(property: string)
-	{
-		return function(a: any, b: any)
-		{
-			if (a[property] < b[property])
-			{
-				return -1;
-			}
-			else if(a[property] > b[property])
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;   
-			}
-		}
-	}
-
 	// *** BEGIN EVENT HANDLERS ***
 
 	// Event handler calls the render function on every hashchange.
@@ -124,14 +105,6 @@ $(document).ready(function()
 		$("#").css("display", "none");
 	});
 
-	$("input[name=sort]").on("change", (function(e) 
-	{
-		let value: string = $("input[name=sort]:checked").val();
-		Jogs.sort(sortOn(value));
-		GenerateJogsHTML(Jogs);
-		RenderJogsPage();
-	}));
-
 	$("input[name=coach]").on("change", (function(e) 
 	{
 		let value: string = $("input[name=coach]:checked").val();
@@ -178,6 +151,26 @@ $(document).ready(function()
 				};
 			}
 		}
+	});
+
+	$("#dateFrom").datepicker
+	({
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true,
+		minDate: "-100Y",
+		maxDate: 0,
+		yearRange: "-100:+nn"
+	});
+
+	$("#dateTo").datepicker
+	({
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true,
+		minDate: "-100Y",
+		maxDate: 0,
+		yearRange: "-100:+nn"
 	});
 
 	// Single jog page buttons.
@@ -334,6 +327,9 @@ $(document).ready(function()
 
 	function RenderJogsPage(): void
 	{
+		$("#dateFrom").val("");
+		$("#dateTo").val("");
+		
 		let page: JQuery = $(".all-jogs");
 		page.addClass("visible");
 		ShowHeaderComponents(true);
@@ -721,6 +717,19 @@ $(document).ready(function()
 	// *** END JOGS ***
 	// *** BEGIN UTILITY ***
 
+	function Today(): string
+	{
+		let today: Date = new Date();
+
+		let m: number = (today.getMonth() + 1); // January is 0!
+		let d: number = today.getDate();
+		let ys: string = today.getFullYear().toString();
+		let ms: string = m < 10 ? "0" + m.toString() : m.toString();
+		let ds: string = d < 10 ? "0" + d.toString() : d.toString();
+
+		return ys + "-" + ms + "-" + ds;
+	}
+	
 	function SpinnerSetup() : Spinner
 	{
 		var opts = 

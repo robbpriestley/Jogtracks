@@ -101,11 +101,11 @@
 	<div class="all-jogs page">
 		<div class="controls">
 			<form>
-				<span>Sort Order</span>
-				<label><input type="radio" name="sort" value="Name" checked> Sort by Name</label>
-				<label><input type="radio" name="sort" value="Rating"> Sort by Rating</label>
+				<span>Date Select</span>
+				<label><input id="dateFrom" type="text"> From Date</label>
+				<label><input id="dateTo" type="text"> To Date</label>
 			</form>
-			<button id="newjog">New Jog</button>
+			<button id="filterRefresh">Refresh</button>
 		</div>
 		<ul class="jogs-list"></ul>
 		<script id="jogs-template" type="x-handlebars-template">​

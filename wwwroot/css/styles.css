@@ -448,6 +448,10 @@ img.splash {
 	outline: #7FFF00 solid 1px;
 }
 
+.controls input {
+	width: 100%;
+}
+
 /*** JOGS LIST ***/
 
 .all-jogs h3 {
