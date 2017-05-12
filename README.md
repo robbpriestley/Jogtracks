@@ -93,7 +93,26 @@ This project evolved from several earlier projects I developed and certain tutor
   * Password and confirm password must match.
 * **Done** button should cause **jogs** page to be displayed regardless of whether any changes took place or not.
 
+**Jogs**
+
+* The jogs list should load, ordered first by date descending, then by username.
+
+**Date Filters**
+
+* On the jogs page, the filter date controls should display datepickers that appear on click in the field.
+* The **Refresh** button should parse the dates obtained from the datepickers and place correctly-formatted dates into a JSON argument in the URL. The URL will also be changed to **#filter**, which forces a page load. The page that is loaded is the same as the **Jogs** page, but includes only filtered jog results.
+* Error control:
+  * The user should not be able to defeat the date filter by direct manipulation of the datepickers or by direct manipulation of the JSON filter argument in the URL.
+  * If incorrect dates, date ranges, or date filter formats are detected, the user will be directed to the **Error** page, and an appropriate error message will be presented.
+* The browser should retain a **history** of the previous date filters, allowing use of the browser's back and forward buttons to navigate through the history.
+
 **Sign Out**
 
 * All form fields should be cleared and all form validation messages removed.
 * All **localSettings** values should be cleared.
+
+**Error**
+
+* The error page should show an appropriate error message and a **Back** button.
+* If there is no actual error (the user directly navigated to the page using the URL), no error message will be shown, but the Back button still will be shown.
+* If the Back button is clicked, the **Jogs** page will be loaded, and the error message will be cleared.
