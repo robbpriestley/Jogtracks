@@ -62,7 +62,8 @@ namespace DigitalWizardry.Jogtracks
 					break;
 			}
 
-			return jogs;  // Postpone sorting due to efficiency gained as UserColor must still be obtained.
+			// Don't return a null list. Also, postpone sorting due to efficiency gained as UserColor must still be obtained.
+			return jogs == null ? new List<Jog>() : jogs;
 		}
 	
 		public List<Jog> GetAll(DateTime? fromDate, DateTime? toDate)
@@ -137,7 +138,7 @@ namespace DigitalWizardry.Jogtracks
 				// There are no jogs, I suppose.
 			}
 
-			return jogs.Count > 0 ? jogs : null;
+			return jogs;
 		}
 
 		private List<Account> GetAllAccounts()
