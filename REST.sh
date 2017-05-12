@@ -5,10 +5,13 @@ BASICAUTH=g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu
 echo "Admin: Juan"
 curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Juan", "Password": "qqqqqqqq", "AccountType": "ADMIN"}' > /dev/null
 
-# *** COACH ACCOUNT ***
+# *** COACH ACCOUNTS ***
 
 echo "Coach: Ivan"
 curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Ivan", "Password": "qqqqqqqq", "AccountType": "COACH"}' > /dev/null
+
+echo "Coach: Lisa"
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Lisa", "Password": "qqqqqqqq", "AccountType": "COACH"}' > /dev/null
 
 # *** JOGGER ACCOUNTS ***
 
@@ -22,11 +25,11 @@ curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "C
 
 echo "Jogger: James"
 JAMESTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "James", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
-curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "'"${JAMESTOKEN}"'", "Coach": "Ivan"}' > /dev/null
+curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "'"${JAMESTOKEN}"'", "Coach": "Lisa"}' > /dev/null
 
 echo "Jogger: Zoe"
 ZOETOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Zoe", "Password": "qqqqqqqq", "AccountType": "JOGGER"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
-curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "'"${ZOETOKEN}"'", "Coach": "Ivan"}' > /dev/null
+curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "'"${ZOETOKEN}"'", "Coach": "Lisa"}' > /dev/null
 
 # *** JOGS ***
 
