@@ -8,6 +8,7 @@ namespace DigitalWizardry.Jogtracks
 		int Count();
 		List<Jog> GetAll();
 		List<Jog> GetByUserName(string userName);
+		List<Jog> GetByUserAccount(Account user);
 		void Add(Jog jog);
 	}
 }

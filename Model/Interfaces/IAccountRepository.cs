@@ -10,5 +10,6 @@ namespace DigitalWizardry.Jogtracks
 		Account GetByToken(Guid token);
 		Account GetByUserName(string userName);
 		List<Account> GetCoaches();
+		string GetUserColor(string userName);
 	}
 }

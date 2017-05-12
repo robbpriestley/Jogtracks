@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Security.Cryptography;
+using System.Linq;
 using System.Text;
 
 namespace DigitalWizardry.Jogtracks.Controllers
@@ -31,7 +32,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			Jogs = jogs;
 		}
 
-		#region Authentication
+		#region Authentication Output
 
 		public class AuthOutput
 		{
@@ -376,14 +377,22 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{			
-				List<Jog> jogs = Jogs.GetByUserName(user.UserName);
+				string currentUser = null;
+				string currentUserColor = null;
+				List<Jog> jogs = Jogs.GetByUserAccount(user);
 
 				foreach (Jog jog in jogs)
 				{
+					if (currentUser == null || !currentUser.Equals(jog.UserName))
+					{
+						currentUser = jog.UserName;
+						currentUserColor = Accounts.GetUserColor(jog.UserName);
+					}
+					
 					JogOutput jogOutput = new JogOutput();
 
-					jogOutput.UserName = user.UserName;
-					jogOutput.UserColor = user.UserColor;
+					jogOutput.UserName = currentUser;
+					jogOutput.UserColor = currentUserColor;
 					jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
 					jogOutput.Year = jog.Date.Year;
 					jogOutput.Month = jog.Date.Month;
@@ -396,6 +405,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 					jogOutputs.Add(jogOutput);
 				}
+
+				// Final sort!
+				jogOutputs = jogOutputs.OrderByDescending(x => x.Date).ThenBy(y => y.UserName).ToList();
 			}
 			catch (System.Exception e)
 			{

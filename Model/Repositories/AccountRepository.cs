@@ -39,5 +39,11 @@ namespace DigitalWizardry.Jogtracks
 		{
 			return Context.Account.Where(x => x.AccountType.Equals("COACH")).OrderBy(x => x.UserName).ToList();
 		}
+
+		public string GetUserColor(string userName)
+		{
+			Account user = GetByUserName(userName);
+			return user.UserColor;
+		}
 	}
 }
