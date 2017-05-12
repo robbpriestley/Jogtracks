@@ -352,25 +352,6 @@ img.splash {
 	transition: 1s;
 }
 
-.settings a {
-	color: #26292A;
-	font-size: 15px;
-	margin-top: 20px;
-	font-weight: bold;
-	padding: 13px 18px;
-	border-radius: 1px;
-	display: inline-block;
-	text-decoration: none;
-	vertical-align: middle;
-	background-color: #7FFF00;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
-}
-
-.settings a:hover {
-	background-color: yellow;
-	outline: #7FFF00 solid 1px;
-}	
-
 /*** MAIN CONTENT ***/
 
 .main-content {
@@ -668,5 +649,29 @@ img.splash {
 }
 
 .errorMessage h3 {
+	color: black;
 	font-size: 24px;
 }
+
+/*** SHARED ***/
+
+.settings a,
+.errorMessage a {
+	color: #26292A;
+	font-size: 15px;
+	margin-top: 20px;
+	font-weight: bold;
+	padding: 13px 18px;
+	border-radius: 1px;
+	display: inline-block;
+	text-decoration: none;
+	vertical-align: middle;
+	background-color: #7FFF00;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.settings a:hover,
+.errorMessage a:hover {
+	background-color: yellow;
+	outline: #7FFF00 solid 1px;
+}	

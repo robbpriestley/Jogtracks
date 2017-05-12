@@ -213,6 +213,13 @@ $(document).ready(function()
 		}
 	});
 
+	$("#errorBack").click(function(e) 
+	{
+		window.scrollTo(0, 0);
+		window.location.hash = "#jogs/";
+		return false;
+	});
+
 	// *** END EVENT HANDLERS ***
 	// *** BEGIN PAGE RENDERING ***
 	
