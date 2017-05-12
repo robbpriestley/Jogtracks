@@ -226,15 +226,7 @@ $(document).ready(function()
 		switch (keyword)
 		{
 			case "":
-				if (localStorage.getItem("token") == null)
-				{
-					SignOut();
-					RenderWelcomePage();
-				}
-				else
-				{
-					window.location.hash = "#jogs/";
-				}
+				DefaultHandler();
 				break;
 			
 			case "#signup":
@@ -247,35 +239,64 @@ $(document).ready(function()
 				break;
 			
 			case "#jogs":
-				LoadJogs();
-				GenerateJogsHTML(Jogs);
-				RenderJogsPage();
+				JogsPageHandler();
 				break;
 
 			case "#filter":
-				url = url.split("#filter/")[1].trim();
-				try
-				{
-					Filter = JSON.parse(url);  // Parse filter from query string.
-				}
-				catch (error) 
-				{
-					// Not valid JSON in query string, return to jogs.
-					window.location.hash = "#jogs";
-					return;
-				}
-				//RenderFilterResults(Filters, Items);
+				FilterPageHandler(url);
 				break;
 
 			case "#jog":
-				let jogIndex: number = Number(url.split("#jog/")[1].trim());
-				RenderSingleJogPage(jogIndex, Jogs);
+				RenderSingleJogPage(url, Jogs);
 				break;
 
 			default:
 				RenderErrorPage();  // Unknown keyword.
 				break;
 		}
+	}
+
+	function DefaultHandler(): void
+	{
+		if (localStorage.getItem("token") == null)
+		{
+			SignOut();
+			RenderWelcomePage();
+		}
+		else
+		{
+			window.location.hash = "#jogs/";
+		}
+	}
+
+	function JogsPageHandler(): void
+	{
+		LoadJogs();
+		GenerateJogsHTML(Jogs);
+		RenderJogsPage();
+	}
+
+	function FilterPageHandler(url: string): void
+	{
+		url = url.split("#filter/")[1].trim();
+
+		try
+		{
+			Filter = JSON.parse(url);  // Parse filter from query string.
+		}
+		catch (error) 
+		{
+			// Not valid JSON in query string, return to jogs.
+			window.location.hash = "#jogs";
+			return;
+		}
+
+		$("#fromDate").val(Filter["FromDate"].split("T")[0]);
+		$("#toDate").val(Filter["ToDate"].split("T")[0]);
+
+		LoadJogsWithFilter(Filter);
+		GenerateJogsHTML(Jogs);
+		RenderJogsPage();
 	}
 
 	function RenderWelcomePage(): void
@@ -375,8 +396,10 @@ $(document).ready(function()
 	}
 
 	// Opens preview page for one of the jogs. Parameters index from the hash and the jogs object.
-	function RenderSingleJogPage(index: number, jogs: Array<JogData>): void
+	function RenderSingleJogPage(url: string, jogs: Array<JogData>): void
 	{	
+		let jogIndex: number = Number(url.split("#jog/")[1].trim());
+		
 		let page: JQuery = $(".single-jog");
 		page.css("pointer-events", "auto");
 		let container: JQuery = $(".preview-large");
@@ -386,7 +409,7 @@ $(document).ready(function()
 		{
 			jogs.forEach(function(jog)
 			{
-				if (jog.Id == index)
+				if (jog.Id == jogIndex)
 				{
 					// Populate ".preview-large" with the chosen jog data.
 					container.find("h3").text(jog.Name);
@@ -730,6 +753,30 @@ $(document).ready(function()
 	// *** BEGIN JOGS ***
 
 	function LoadJogs(): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+
+		let token: string | null = localStorage.getItem("token");
+		
+		$.ajax
+		({
+			type: "GET",
+			dataType: "json",
+			data: { token: token },
+			contentType: "application/json",
+			url: "/api/jogs",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				Jogs = result;
+				GenerateJogsHTML(Jogs);
+				spinner.stop();
+			}
+		});
+	}
+
+	function LoadJogsWithFilter(filter: IDictionary): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
