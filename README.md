@@ -24,6 +24,7 @@ An administrator can...
 * [Handlebars](http://handlebarsjs.com/)
 * [jQuery](https://jquery.com/)
 * [jQuery Select2](https://select2.github.io/)
+* [jQuery Datepicker](https://jqueryui.com/datepicker/)
 * [jQuery Validation Plugin](https://jqueryvalidation.org/)
 * [Docker](https://www.docker.com/)
 * [Amazon Web Services](https://aws.amazon.com/)
