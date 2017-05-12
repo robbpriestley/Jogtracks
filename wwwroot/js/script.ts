@@ -173,15 +173,20 @@ $(document).ready(function()
 	{
 		let fromString: string = $("#fromDate").val();
 		let toString: string = $("#toDate").val();
-		
+
 		try
 		{
+			if (fromString == "" || toString == "")
+			{
+				throw "Filter error: please select both a from date and a to date.";
+			}
+		
 			let fromDate = ParseDate(fromString);
 			let toDate = ParseDate(toString);
 
 			if (fromDate > toDate)
 			{
-				throw "To date must be greater than from date";
+				throw "Filter error: the from date must be on or before the to date.";
 			}
 
 			Filter["FromDate"] = fromDate.toISOString();
@@ -191,8 +196,9 @@ $(document).ready(function()
 		}
 		catch (error) 
 		{
-			// Not valid dates or date format in datepicker(s), return to jogs.
-			window.location.hash = "#jogs";
+			// Not valid dates or date format in datepicker(s), show error.
+			sessionStorage.setItem("errorMessage", error);
+			window.location.hash = "#error";
 			return;
 		}
 	});
@@ -215,6 +221,7 @@ $(document).ready(function()
 
 	$("#errorBack").click(function(e) 
 	{
+		sessionStorage.removeItem("errorMessage");
 		window.scrollTo(0, 0);
 		window.location.hash = "#jogs/";
 		return false;
@@ -278,6 +285,11 @@ $(document).ready(function()
 
 	function JogsPageHandler(): void
 	{
+		$("#fromDate").val("");
+		$("#toDate").val("");
+		Filter = {};
+		sessionStorage.removeItem("errorMessage");
+		
 		LoadJogs();
 		GenerateJogsHTML(Jogs);
 		RenderJogsPage();
@@ -290,16 +302,35 @@ $(document).ready(function()
 		try
 		{
 			Filter = JSON.parse(url);  // Parse filter from query string.
+
+			for (var key in Filter)
+			{
+				if (key != "FromDate" && key != "ToDate")
+				{
+					delete Filter[key];
+				}
+			}
+
+			let fromDate: string = Filter["FromDate"].split("T")[0];
+			let toDate: string = Filter["ToDate"].split("T")[0];
+
+			$("#fromDate").val(fromDate);
+			$("#toDate").val(toDate);
+
+			ParseDate(fromDate);
+			ParseDate(toDate);
+
+			if (Object.keys(Filter).length != 2)
+			{
+				throw "";  // There needs to be a FromDate and a ToDate in the Filter data.
+			}
 		}
 		catch (error) 
 		{
-			// Not valid JSON in query string, return to jogs.
-			window.location.hash = "#jogs";
+			sessionStorage.setItem("errorMessage", "Filter error: bad filter data in URL.");
+			window.location.hash = "#error";
 			return;
 		}
-
-		$("#fromDate").val(Filter["FromDate"].split("T")[0]);
-		$("#toDate").val(Filter["ToDate"].split("T")[0]);
 
 		LoadJogsWithFilter(Filter);
 		GenerateJogsHTML(Jogs);
@@ -351,6 +382,9 @@ $(document).ready(function()
 	
 	function RenderErrorPage(): void
 	{
+		let errorMessage: string | null = sessionStorage.getItem("errorMessage");
+		$("#errorMessage").text(errorMessage == null ? "" : errorMessage);
+
 		var page = $(".errorMessage");
 		page.addClass("visible");
 		page.css("pointer-events", "auto");
@@ -644,14 +678,15 @@ $(document).ready(function()
 		//Reset other stuff.
 		$("#noCoach").prop("checked", true);
 		$("#coachSelectControl").empty();
-		ClearLocalStorage();
+		ClearStorage();
 	}
 
-	function ClearLocalStorage(): void
+	function ClearStorage(): void
 	{
 		localStorage.removeItem("token");
-		localStorage.removeItem("accountType");
 		localStorage.removeItem("coach");
+		localStorage.removeItem("accountType");
+		sessionStorage.removeItem("errorMessage");
 	}
 
 	function ChangePassword(password: string): void
@@ -859,6 +894,8 @@ function ParseDate(input: string): Date
 	let date: Date | null = null;
 	let dateParts: Array<string> = input.split('-');
 
+	let rangeError: boolean = false;
+
 	try
 	{
 		let year: number = Number(dateParts[0]);
@@ -866,10 +903,15 @@ function ParseDate(input: string): Date
 		let day: number = Number(dateParts[2]);
 
 		date = new Date(year, month - 1, day); // Note: months are 0-based
+
+		if (date.toString() == "Invalid Date")
+		{
+			throw "";
+		}
 	}
 	catch (error)
 	{
-		throw "Date format is incorrect";
+		throw "Filter error: date format is incorrect.";
 	}
 
 	return date; 
