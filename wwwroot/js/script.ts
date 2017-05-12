@@ -6,7 +6,7 @@ declare var Handlebars:any;
 
 interface IDictionary 
 {
-	[key: string]: Array<string>;
+	[key: string]: string;
 };
 
 interface IJogData
@@ -43,6 +43,7 @@ $(document).ready(function()
 	// *** GLOBAL VARIABLES ***
 
 	let Jogs: Array<JogData> = [];
+	let Filter: IDictionary = {};
 	let BasicAuth: object = {"Authorization": "Basic " + btoa("g9CZRkDEC5x8vfr96HMvkR3oiEiPLW" + ":" + "ECepRGahbgUCnwH5rCC7Xk3fdkBCKu")};
 
 	// *** BEGIN EVENT HANDLERS ***
@@ -92,11 +93,6 @@ $(document).ready(function()
 		Jogs = [];
 		SignOut();
 		window.location.hash = "#";  // Show welcome page.
-		return false;
-	});
-	
-	$("#newjog").click(function(e) 
-	{
 		return false;
 	});
 
@@ -153,7 +149,7 @@ $(document).ready(function()
 		}
 	});
 
-	$("#dateFrom").datepicker
+	$("#fromDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
 		changeMonth: true,
@@ -163,7 +159,7 @@ $(document).ready(function()
 		yearRange: "-100:+nn"
 	});
 
-	$("#dateTo").datepicker
+	$("#toDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
 		changeMonth: true,
@@ -171,6 +167,34 @@ $(document).ready(function()
 		minDate: "-100Y",
 		maxDate: 0,
 		yearRange: "-100:+nn"
+	});
+
+	$("#filterRefresh").click(function(e) 
+	{
+		let fromString: string = $("#fromDate").val();
+		let toString: string = $("#toDate").val();
+		
+		try
+		{
+			let fromDate = ParseDate(fromString);
+			let toDate = ParseDate(toString);
+
+			if (fromDate > toDate)
+			{
+				throw "To date must be greater than from date";
+			}
+
+			Filter["FromDate"] = fromDate.toISOString();
+			Filter["ToDate"] = toDate.toISOString();
+
+			window.location.hash = "#filter/" + JSON.stringify(Filter);
+		}
+		catch (error) 
+		{
+			// Not valid dates or date format in datepicker(s), return to jogs.
+			window.location.hash = "#jogs";
+			return;
+		}
 	});
 
 	// Single jog page buttons.
@@ -226,6 +250,21 @@ $(document).ready(function()
 				LoadJogs();
 				GenerateJogsHTML(Jogs);
 				RenderJogsPage();
+				break;
+
+			case "#filter":
+				url = url.split("#filter/")[1].trim();
+				try
+				{
+					Filter = JSON.parse(url);  // Parse filter from query string.
+				}
+				catch (error) 
+				{
+					// Not valid JSON in query string, return to jogs.
+					window.location.hash = "#jogs";
+					return;
+				}
+				//RenderFilterResults(Filters, Items);
 				break;
 
 			case "#jog":
@@ -759,4 +798,25 @@ function Reload(): boolean
 {
 	window.location.hash = "#";
 	return false;
+}
+
+function ParseDate(input: string): Date
+{
+	let date: Date | null = null;
+	let dateParts: Array<string> = input.split('-');
+
+	try
+	{
+		let year: number = Number(dateParts[0]);
+		let month: number = Number(dateParts[1]);
+		let day: number = Number(dateParts[2]);
+
+		date = new Date(year, month - 1, day); // Note: months are 0-based
+	}
+	catch (error)
+	{
+		throw "Date format is incorrect";
+	}
+
+	return date; 
 }
