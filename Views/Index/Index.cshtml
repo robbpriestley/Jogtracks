@@ -142,11 +142,37 @@
 
 	<div class="single-jog page">
 		<div class="overlay"></div>
-		<div class="preview-large">
-			<h3>Single jog view</h3>
-			<img src=""/>
-			<p></p>
-			<span class="close">×</span>
+		<div class="singleView">
+			<h3>Update Jog</h3>
+			<div>
+				<form>
+					<ul class="formdefault singleForm">
+						<li id="userSelect">
+							<label>User <span class="required">*</span></label>
+							<label><select id="userSelectControl"></select></label>
+							<label id="userSelectLabel" style="display: none;" class="error"></label>
+						</li>
+						<li>
+							<label>Date <span class="required">*</span></label>
+							<input type="text" id="updateDate" name="updateDate" class="field" />
+						</li>
+						<li>
+							<label>Distance (km) <span class="required">*</span></label>
+							<input type="text" id="updateDistance" name="updateDistance" class="field" />
+						</li>
+						<li>
+							<label>Time (Hours : Minutes : Seconds) <span class="required">*</span></label>
+							<input type="text" id="updateHours" name="updateHours" class="miniField" /> <strong>:</strong> 
+							<input type="text" id="updateMinutes" name="updateMinutes" class="miniField" /> <strong>:</strong> 
+							<input type="text" id="updateSeconds" name="updateSeconds" class="miniField" />
+						</li>
+						<li style="margin-top: 15px;">
+							<input type="submit" value="Submit" />&nbsp;&nbsp;&nbsp;<input type="submit" value="Cancel" />
+						</li>
+					</ul>
+				</form>
+			</div>
+			<span class="close">x</span>
 		</div>
 	</div>
 

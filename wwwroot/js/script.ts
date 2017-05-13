@@ -173,6 +173,36 @@ $(document).ready(function()
 		}
 	});
 
+	$("#userSelectControl").select2({
+		width: "400px",
+		placeholder: "Select a user",
+		dropdownCssClass : "no-search",
+		ajax: 
+		{
+			url: "/api/accounts",
+			dataType: "json",
+			type: "GET",
+			headers: BasicAuth,
+			data: function(params: any) 
+			{
+				var queryParameters = { token: localStorage.getItem("token") }
+				return queryParameters;
+			},
+			processResults: function(data: any) 
+			{
+				return {
+					results: $.map(data, function(user) 
+					{
+						return {
+							text: user.UserName,
+							id: user.UserName
+						}
+					})
+				};
+			}
+		}
+	});
+
 	$("#fromDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
@@ -530,8 +560,7 @@ $(document).ready(function()
 			{
 				if (jog.Id == jogIndex)
 				{
-					// Populate ".preview-large" with the chosen jog data.
-					container.find("h3").text(jog.UserName);
+					$("#singleJogUser").text(jog.UserName);
 				}
 			});
 		}

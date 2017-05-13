@@ -32,6 +32,16 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			Jogs = jogs;
 		}
 
+		public class AccountOutput
+		{
+			public string UserName { get; set; }
+			
+			public AccountOutput(string userName)
+			{
+				UserName = userName;
+			}
+		}
+
 		#region Authentication Output
 
 		public class AuthOutput
@@ -553,6 +563,48 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		#endregion
+		#region Accounts: Accounts List
+
+		[HttpGet]
+		[Route("accounts")]
+		public IActionResult AccountList(string token)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			List<AccountOutput> accounts = new List<AccountOutput>();
+
+			try
+			{				
+				List<Account> userAccounts = Accounts.GetLinkedAccounts(user);
+
+				// Convert full accounts list to basic list.
+				foreach(Account userAccount in userAccounts)
+				{
+					accounts.Add(new AccountOutput(userAccount.UserName));
+				}
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.AccountList()", token);
+				return new StatusCodeResult(500);
+			}
+
+			return Utility.JsonObjectResult(accounts);
+		}
+
+		#endregion
 		#region Coaches: Coach List
 
 		[HttpGet]
@@ -573,7 +625,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			
 			ServiceLogs.Access(Request, null, user.UserName);
 
-			List<CoachOutput> coaches = new List<CoachOutput>();
+			List<AccountOutput> coaches = new List<AccountOutput>();
 
 			try
 			{				
@@ -582,7 +634,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				// Convert full accounts list to basic list.
 				foreach(Account coachAccount in coachAccounts)
 				{
-					coaches.Add(new CoachOutput(coachAccount.UserName));
+					coaches.Add(new AccountOutput(coachAccount.UserName));
 				}
 			}
 			catch (System.Exception e)
@@ -592,16 +644,6 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return Utility.JsonObjectResult(coaches);
-		}
-
-		public class CoachOutput
-		{
-			public string UserName { get; set; }
-			
-			public CoachOutput(string userName)
-			{
-				UserName = userName;
-			}
 		}
 
 		#endregion

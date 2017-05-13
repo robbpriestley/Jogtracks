@@ -40,6 +40,27 @@ namespace DigitalWizardry.Jogtracks
 			return Context.Account.Where(x => x.AccountType.Equals("COACH")).OrderBy(x => x.UserName).ToList();
 		}
 
+		public List<Account> GetLinkedAccounts(Account user)
+		{
+			List<Account> accounts = null;
+
+			if (user.AccountType == "JOGGER")
+			{
+				accounts = new List<Account>();
+				accounts.Add(user);
+			}
+			else if (user.AccountType == "COACH")
+			{
+				accounts = Context.Account.Where(x => x.Coach.Equals(user.UserName)).OrderBy(y => y.UserName).ToList();
+			}
+			else
+			{
+				accounts = Context.Account.OrderBy(x => x.UserName).ToList();
+			}
+
+			return accounts;
+		}
+
 		public string GetUserColor(string userName)
 		{
 			Account user = GetByUserName(userName);
