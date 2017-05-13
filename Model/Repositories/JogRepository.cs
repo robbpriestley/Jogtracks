@@ -62,8 +62,8 @@ namespace DigitalWizardry.Jogtracks
 					break;
 			}
 
-			// Don't return a null list. Also, postpone sorting due to efficiency gained as UserColor must still be obtained.
-			return jogs == null ? new List<Jog>() : jogs;
+			// Don't return a null list.
+			return jogs == null ? new List<Jog>() : jogs.OrderByDescending(x => x.UserName).ToList();
 		}
 	
 		public List<Jog> GetAll(DateTime? fromDate, DateTime? toDate)
@@ -74,13 +74,12 @@ namespace DigitalWizardry.Jogtracks
 			{
 				if (fromDate != null && toDate != null)
 				{
-					jogs = Context.Jog.Where(x => x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).OrderByDescending(x => x.UserName).ToList();
+					jogs = Context.Jog.Where(x => x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList();
 				}
 				else
 				{
-					jogs = Context.Jog.OrderByDescending(x => x.UserName).ToList();
+					jogs = Context.Jog.ToList();
 				}
-				jogs = Context.Jog.OrderByDescending(x => x.UserName).ToList();
 			}
 			catch (System.InvalidOperationException)
 			{
