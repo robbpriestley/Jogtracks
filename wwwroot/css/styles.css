@@ -433,12 +433,40 @@ img.splash {
 	width: 100%;
 }
 
+.filter {
+	margin-top: 42px;
+}
+
 .report {
-	margin-top: 273px;
+	margin-top: 313px;
 }
 
 .average {
 	margin-bottom: 8px;
+}
+
+.newJog {
+	opacity: 0;
+	width: 190px;
+	position: fixed;
+	box-sizing: border-box;
+}
+
+.newJog button {
+	width: 100%;
+	border: 0;
+	height: 32px;
+	font-size: 15px;
+	cursor: pointer;
+	color: #26292A;
+	border-radius: 2px;
+	background-color:  #7FFF00;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}
+
+.newJog button:hover {
+	background-color: yellow;
+	outline: #7FFF00 solid 1px;
 }
 
 /*** JOGS LIST ***/
@@ -462,6 +490,7 @@ img.splash {
 
 .all-jogs.visible .jogs-list,
 .all-jogs.visible .controls,
+.all-jogs.visible .newJog,
 .all-jogs.visible h3 {
 	opacity: 1;
 	transition: 1s;
