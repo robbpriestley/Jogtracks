@@ -412,6 +412,7 @@ $(document).ready(function()
 	function GenerateJogsHTML(jogs: Array<JogData>): void
 	{
 		$("#jogsMessage1").text("Showing " + jogs.length.toString() + " of ");
+		$("#jogsMessage2").show();
 		
 		let jogList: JQuery = $(".all-jogs .jogs-list");
 		jogList.html("");
@@ -804,6 +805,9 @@ $(document).ready(function()
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
 
+		$("#jogsMessage1").text("Loading...");
+		$("#jogsMessage2").hide();
+
 		let token: string | null = localStorage.getItem("token");
 		
 		$.ajax
@@ -827,6 +831,9 @@ $(document).ready(function()
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
+
+		$("#jogsMessage1").text("Loading...");
+		$("#jogsMessage2").hide();
 
 		let token: string | null = localStorage.getItem("token");
 		
