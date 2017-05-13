@@ -291,7 +291,6 @@ $(document).ready(function()
 		sessionStorage.removeItem("errorMessage");
 		
 		LoadJogs();
-		GenerateJogsHTML(Jogs);
 		RenderJogsPage();
 	}
 
@@ -336,7 +335,6 @@ $(document).ready(function()
 		}
 
 		LoadJogsWithFilter(fromDate, toDate);
-		GenerateJogsHTML(Jogs);
 		RenderJogsPage();
 	}
 
