@@ -84,7 +84,7 @@ $(document).ready(function()
 		$("#confirm").show();
 		$("#accountType").show();
 		$("#authMessage").text("Create an account");
-		window.location.hash = "#signup/";
+		window.location.hash = "#signup";
 		return false;
 	});
 	
@@ -94,7 +94,7 @@ $(document).ready(function()
 		$("#confirm").hide();
 		$("#accountType").hide();
 		$("#authMessage").text("Sign in to your account");
-		window.location.hash = "#signin/";
+		window.location.hash = "#signin";
 		return false;
 	});
 	
@@ -108,7 +108,7 @@ $(document).ready(function()
 	$("#settingsDone").click(function(e) 
 	{
 		window.scrollTo(0, 0);
-		window.location.hash = "#jogs/";
+		window.location.hash = "#jogs";
 		return false;
 	});
 	
@@ -246,7 +246,14 @@ $(document).ready(function()
 			// If the close button or the background are clicked go to the jogs page.
 			if (clicked.hasClass("close") || clicked.hasClass("overlay"))
 			{
-				window.location.hash = "#jogs/";
+				if (!$.isEmptyObject(Filter))
+				{
+					window.location.hash = "#filter/" + JSON.stringify(Filter);
+				}
+				else
+				{
+					window.location.hash = "#jogs";
+				}
 			}
 		}
 	});
@@ -255,7 +262,7 @@ $(document).ready(function()
 	{
 		sessionStorage.removeItem("errorMessage");
 		window.scrollTo(0, 0);
-		window.location.hash = "#jogs/";
+		window.location.hash = "#jogs";
 		return false;
 	});
 
@@ -311,7 +318,7 @@ $(document).ready(function()
 		}
 		else
 		{
-			window.location.hash = "#jogs/";
+			window.location.hash = "#jogs";
 		}
 	}
 
@@ -450,7 +457,10 @@ $(document).ready(function()
 		$("#jogsMessage1").text("Showing " + jogs.length.toString() + " of ");
 		$("#jogsMessage2").show();
 
-		CalculateAverages(jogs);
+		if (jogs.length > 0)
+		{
+			CalculateAverages(jogs);
+		}
 		
 		let jogList: JQuery = $(".all-jogs .jogs-list");
 		jogList.html("");
@@ -650,7 +660,7 @@ $(document).ready(function()
 		localStorage.setItem("coach", authOutput.Coach);
 		localStorage.setItem("userName", authOutput.UserName);
 		localStorage.setItem("accountType", authOutput.AccountType);
-		window.location.hash = "jogs/";
+		window.location.hash = "#jogs";
 	}
 
 	function SignUp(username: string, password: string, accountType: string): void
@@ -790,7 +800,7 @@ $(document).ready(function()
 		let jogList: JQuery = $(".all-jogs .jogs-list");
 		jogList.html("");
 
-		window.location.hash = "settings/";
+		window.location.hash = "#settings";
 	}
 
 	function SetCoachSelectControl(): void
