@@ -328,6 +328,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					
 					JogOutput jogOutput = new JogOutput();
 
+					jogOutput.Id = jog.Id;
 					jogOutput.UserName = currentUser;
 					jogOutput.UserColor = currentUserColor;
 					jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
@@ -394,6 +395,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					
 					JogOutput jogOutput = new JogOutput();
 
+					jogOutput.Id = jog.Id;
 					jogOutput.UserName = currentUser;
 					jogOutput.UserColor = currentUserColor;
 					jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
@@ -423,6 +425,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		public class JogOutput
 		{
+			public int Id { get; set; }
 			public string UserName { get; set; }
 			public string UserColor { get; set; }
 			public string Date { get; set; }
