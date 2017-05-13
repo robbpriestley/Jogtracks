@@ -202,7 +202,7 @@ $(document).ready(function()
 		{
 			if (fromString == "" || toString == "")
 			{
-				throw "Filter error: please select both a from date and a to date.";
+				throw "Filter error: please select both <strong>From Date</strong> and <strong>To Date</strong>.";
 			}
 		
 			let fromDate = ParseDate(fromString);
@@ -210,7 +210,7 @@ $(document).ready(function()
 
 			if (fromDate > toDate)
 			{
-				throw "Filter error: the from date must be the same as, or before, the to date.";
+				throw "Filter error: the <strong>From Date</strong> must be the same as, or before, the <strong>From Date</strong>.";
 			}
 
 			Filter["FromDate"] = fromDate.toISOString();
@@ -427,7 +427,7 @@ $(document).ready(function()
 	function RenderErrorPage(): void
 	{
 		let errorMessage: string | null = sessionStorage.getItem("errorMessage");
-		$("#errorMessage").text(errorMessage == null ? "" : errorMessage);
+		$("#errorMessage").html(errorMessage == null ? "" : errorMessage);
 
 		var page = $(".errorMessage");
 		page.addClass("visible");
