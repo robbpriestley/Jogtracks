@@ -433,6 +433,14 @@ img.splash {
 	width: 100%;
 }
 
+.report {
+	margin-top: 273px;
+}
+
+.average {
+	margin-bottom: 8px;
+}
+
 /*** JOGS LIST ***/
 
 .all-jogs h3 {
