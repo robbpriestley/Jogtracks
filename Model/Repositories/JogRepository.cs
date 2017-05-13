@@ -90,6 +90,34 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
+		public int GetTotalByUserAccount(Account user)
+		{
+			int total = 0;
+			
+			switch (user.AccountType)
+			{
+				case "JOGGER":
+					total = GetTotalJogsByJogger(user);
+					break;
+
+				case "COACH":
+					total = GetTotalJogsByCoach(user);
+					break;
+
+				case "ADMIN":
+					total = Count();
+					break;
+				
+				default:
+					break;
+			}
+
+			// Don't return a null list. Also, postpone sorting due to efficiency gained as UserColor must still be obtained.
+			return total;
+		}
+
+		#region Helper Methods
+
 		private List<Jog> GetJogsByJogger(Account user, DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = null;
@@ -141,6 +169,43 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
+		private int GetTotalJogsByJogger(Account user)
+		{
+			int total = 0;
+
+			try
+			{
+				total = Context.Jog.Where(x => x.UserName == user.UserName).Count();	
+			}
+			catch (System.InvalidOperationException)
+			{
+				// There are none, I suppose.
+			}
+
+			return total;
+		}
+
+		private int GetTotalJogsByCoach(Account coach)
+		{
+			int total = 0;
+			
+			try
+			{
+				List<Account> joggers = GetAccountsByCoach(coach);
+
+				foreach (Account jogger in joggers)
+				{
+					total += Context.Jog.Where(x => x.UserName == jogger.UserName).Count();
+				}
+			}
+			catch (System.InvalidOperationException)
+			{
+				// There are no jogs, I suppose.
+			}
+
+			return total;
+		}
+
 		private List<Account> GetAllAccounts()
 		{
 			List<Account> accounts = null;
@@ -172,5 +237,7 @@ namespace DigitalWizardry.Jogtracks
 
 			return accounts;
 		}
+
+		#endregion
 	}
 }

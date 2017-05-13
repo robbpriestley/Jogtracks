@@ -291,7 +291,7 @@ $(document).ready(function()
 		sessionStorage.removeItem("errorMessage");
 		
 		LoadJogs();
-		RenderJogsPage();
+		RenderJogsPage("null", "null");
 	}
 
 	function FilterPageHandler(url: string): void
@@ -335,7 +335,7 @@ $(document).ready(function()
 		}
 
 		LoadJogsWithFilter(fromDate, toDate);
-		RenderJogsPage();
+		RenderJogsPage(fromDate, toDate);
 	}
 
 	function RenderWelcomePage(): void
@@ -429,11 +429,13 @@ $(document).ready(function()
 		})
 	}
 
-	function RenderJogsPage(): void
+	function RenderJogsPage(fromDate: string, toDate: string): void
 	{
 		$("#dateFrom").val("");
 		$("#dateTo").val("");
 		
+		LoadJogsTotal(fromDate, toDate);
+
 		let page: JQuery = $(".all-jogs");
 		page.addClass("visible");
 		ShowHeaderComponents(true);
@@ -841,6 +843,25 @@ $(document).ready(function()
 				Jogs = result;
 				GenerateJogsHTML(Jogs);
 				spinner.stop();
+			}
+		});
+	}
+
+	function LoadJogsTotal(fromDate: string, toDate: string): void
+	{
+		let token: string | null = localStorage.getItem("token");
+		
+		$.ajax
+		({
+			type: "GET",
+			dataType: "json",
+			data: { token: token, fromDate: fromDate, toDate: toDate  },
+			contentType: "application/json",
+			url: "/api/jogstotal",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				$("#jogsMessage2").text(result + " jogs.");
 			}
 		});
 	}

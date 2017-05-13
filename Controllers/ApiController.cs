@@ -294,7 +294,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		[HttpGet]
 		[Route("jogs")]
-		public IActionResult JogList(string token)
+		public IActionResult JogsList(string token)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -348,7 +348,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogList()", token);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogsList()", token);
 				return new StatusCodeResult(500);
 			}
 
@@ -414,7 +414,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogList()", token);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogsListFilter()", token);
 				return new StatusCodeResult(500);
 			}
 
@@ -463,6 +463,42 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 				return hs + ":" + ms + ":" + ss;
 			}
+		}
+
+		#endregion
+		#region Jogs: Jog Total Count
+
+		[HttpGet]
+		[Route("jogstotal")]
+		public IActionResult JogsTotal(string token)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			int total = 0;
+
+			try
+			{			
+				total = Jogs.GetTotalByUserAccount(user);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogsTotal()", token);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult(total);
 		}
 
 		#endregion
