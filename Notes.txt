@@ -10,4 +10,7 @@ dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
 
+Add Id to JogOutput
+Bad words
+Add new jogs
 SQLLite?

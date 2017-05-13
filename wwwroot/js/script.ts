@@ -227,6 +227,14 @@ $(document).ready(function()
 		}
 	});
 
+	$("#filterClear").click(function(e) 
+	{
+		$("#fromDate").val("");
+		$("#toDate").val("");
+		Filter = {};
+		window.location.hash = "#jogs";
+	});
+
 	// Single jog page buttons.
 	let singleJogPage: JQuery = $(".single-jog");
 	singleJogPage.on("click", function(e) 
