@@ -438,6 +438,8 @@ img.splash {
 .all-jogs h3 {
 	opacity: 0;
 	color: black;
+	text-align: left;
+	margin-left:225px;
 }
 
 .jogs-list {
