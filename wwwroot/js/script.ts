@@ -11,9 +11,17 @@ interface IDictionary
 
 interface IJogData
 {
-	Id: number;
-	Name: string;
-	Description: string;
+	UserName: string;
+	UserColor: string;
+	Date: string;
+	Year: number;
+	Month: number;
+	Day: number;
+	Week: number;
+	Distance: number;
+	Time: number;
+	TimeString: string;
+	AverageSpeed: number;
 }
 
 // *** BEGIN INTERFACES ***
@@ -22,16 +30,32 @@ interface IJogData
 class JogData implements IJogData 
 {
 	Id: number;
-	Name: string;
-	Rating: number;
-	Description: string;
+	UserName: string;
+	UserColor: string;
+	Date: string;
+	Year: number;
+	Month: number;
+	Day: number;
+	Week: number;
+	Distance: number;
+	Time: number;
+	TimeString: string;
+	AverageSpeed: number;
 
-	constructor(id: number, name: string, rating: number, description: string) 
+	constructor(id: number, userName: string, userColor: string, date: string, year: number, month: number, day: number, week: number, distance: number, time: number, timeString: string, averageSpeed: number)
 	{
 		this.Id = id;
-		this.Name = name;
-		this.Rating = rating;
-		this.Description = description;
+		this.UserName = userName;
+		this.UserColor = userColor;
+		this.Date = date;
+		this.Year = year;
+		this.Month = month;
+		this.Day = day;
+		this.Week = week;
+		this.Distance = distance;
+		this.Time = time;
+		this.TimeString = timeString;
+		this.AverageSpeed = averageSpeed;
 	}
 }
 
@@ -459,8 +483,7 @@ $(document).ready(function()
 				if (jog.Id == jogIndex)
 				{
 					// Populate ".preview-large" with the chosen jog data.
-					container.find("h3").text(jog.Name);
-					container.find("p").text(jog.Description);
+					container.find("h3").text(jog.UserName);
 				}
 			});
 		}
