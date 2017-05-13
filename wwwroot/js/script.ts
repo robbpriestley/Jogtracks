@@ -141,67 +141,7 @@ $(document).ready(function()
 		}
 	}));
 
-	$("#coachSelectControl").select2({
-		width: "400px",
-		placeholder: "Select a coach",
-		dropdownCssClass : "no-search",
-		ajax: 
-		{
-			url: "/api/coaches",
-			dataType: "json",
-			type: "GET",
-			headers: BasicAuth,
-			data: function(params: any) 
-			{
-				var queryParameters = { token: localStorage.getItem("token") }
-				return queryParameters;
-			},
-			processResults: function(data: any) 
-			{
-				$("#coach-select").css("display", "none");
-				
-				return {
-					results: $.map(data, function(jog) 
-					{
-						return {
-							text: jog.UserName,
-							id: jog.UserName
-						}
-					})
-				};
-			}
-		}
-	});
-
-	$("#userSelectControl").select2({
-		width: "400px",
-		placeholder: "Select a user",
-		dropdownCssClass : "no-search",
-		ajax: 
-		{
-			url: "/api/accounts",
-			dataType: "json",
-			type: "GET",
-			headers: BasicAuth,
-			data: function(params: any) 
-			{
-				var queryParameters = { token: localStorage.getItem("token") }
-				return queryParameters;
-			},
-			processResults: function(data: any) 
-			{
-				return {
-					results: $.map(data, function(user) 
-					{
-						return {
-							text: user.UserName,
-							id: user.UserName
-						}
-					})
-				};
-			}
-		}
-	});
+	InitializeSelectControls();
 
 	$("#fromDate").datepicker
 	({
@@ -771,6 +711,7 @@ $(document).ready(function()
 		
 		$("form[name=authForm]").validate().resetForm();
 		$("form[name=coachForm]").validate().resetForm();
+		$("form[name=jogEditForm]").validate().resetForm();
 		$("form[name=changePasswordForm]").validate().resetForm();
 		
 		$("#username").val("");
@@ -781,10 +722,79 @@ $(document).ready(function()
 		
 		// *** END RESET FORMS ***
 
-		//Reset other stuff.
+		InitializeSelectControls();
+
 		$("#noCoach").prop("checked", true);
-		$("#coachSelectControl").empty();
 		ClearStorage();
+	}
+
+	function InitializeSelectControls(): void
+	{
+		$("#coachSelectControl").empty();
+		$("#userSelectControl").empty();
+
+		// Annoyingly, the only way I could seem to empty the select controls was to re-initialize them.
+		$("#coachSelectControl").select2({
+			width: "400px",
+			placeholder: "Select a coach",
+			dropdownCssClass : "no-search",
+			ajax: 
+			{
+				url: "/api/coaches",
+				dataType: "json",
+				type: "GET",
+				headers: BasicAuth,
+				data: function(params: any) 
+				{
+					var queryParameters = { token: localStorage.getItem("token") }
+					return queryParameters;
+				},
+				processResults: function(data: any) 
+				{
+					$("#coach-select").css("display", "none");
+					
+					return {
+						results: $.map(data, function(coach) 
+						{
+							return {
+								text: coach.UserName + ": " + coach.AccountType,
+								id: coach.UserName
+							}
+						})
+					};
+				}
+			}
+		});
+
+		$("#userSelectControl").select2({
+			width: "400px",
+			placeholder: "Select a user",
+			dropdownCssClass : "no-search",
+			ajax: 
+			{
+				url: "/api/accounts",
+				dataType: "json",
+				type: "GET",
+				headers: BasicAuth,
+				data: function(params: any) 
+				{
+					var queryParameters = { token: localStorage.getItem("token") }
+					return queryParameters;
+				},
+				processResults: function(data: any) 
+				{
+					return {
+						results: $.map(data, function(user) 
+						{
+							return {
+								text: user.UserName + ": " + user.AccountType,
+								id: user.UserName
+							}
+						})
+					};
+				}
+			}
+		});
 	}
 
 	function ClearStorage(): void

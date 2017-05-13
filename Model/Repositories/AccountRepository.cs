@@ -51,14 +51,15 @@ namespace DigitalWizardry.Jogtracks
 			}
 			else if (user.AccountType == "COACH")
 			{
-				accounts = Context.Account.Where(x => x.Coach.Equals(user.UserName)).OrderBy(y => y.UserName).ToList();
+				accounts = Context.Account.Where(x => x.Coach.Equals(user.UserName)).ToList();
+				accounts.Add(user);
 			}
 			else
 			{
-				accounts = Context.Account.OrderBy(x => x.UserName).ToList();
+				accounts = Context.Account.ToList();
 			}
 
-			return accounts;
+			return accounts.OrderBy(x => x.UserName).ToList();
 		}
 
 		public string GetUserColor(string userName)

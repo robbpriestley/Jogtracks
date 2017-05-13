@@ -35,10 +35,12 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		public class AccountOutput
 		{
 			public string UserName { get; set; }
+			public string AccountType { get; set; }
 			
-			public AccountOutput(string userName)
+			public AccountOutput(string userName, string accountType)
 			{
 				UserName = userName;
+				AccountType = accountType;
 			}
 		}
 
@@ -592,7 +594,24 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				// Convert full accounts list to basic list.
 				foreach(Account userAccount in userAccounts)
 				{
-					accounts.Add(new AccountOutput(userAccount.UserName));
+					string accountType = null;
+
+					switch (userAccount.AccountType)
+					{
+						case "COACH":
+							accountType = "Coach";
+							break;
+						
+						case "ADMIN":
+							accountType = "Admin";
+							break;
+						
+						default:
+							accountType = "Jogger";
+							break;
+					}
+
+					accounts.Add(new AccountOutput(userAccount.UserName, accountType));
 				}
 			}
 			catch (System.Exception e)
@@ -634,7 +653,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				// Convert full accounts list to basic list.
 				foreach(Account coachAccount in coachAccounts)
 				{
-					coaches.Add(new AccountOutput(coachAccount.UserName));
+					coaches.Add(new AccountOutput(coachAccount.UserName, "Coach"));
 				}
 			}
 			catch (System.Exception e)
