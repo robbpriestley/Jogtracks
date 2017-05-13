@@ -413,6 +413,8 @@ $(document).ready(function()
 	// Fill jog list using handlebars template.
 	function GenerateJogsHTML(jogs: Array<JogData>): void
 	{
+		$("#jogsMessage1").text("Showing " + jogs.length.toString() + " of ");
+		
 		let jogList: JQuery = $(".all-jogs .jogs-list");
 		jogList.html("");
 		let template: string = $("#jogs-template").html();
