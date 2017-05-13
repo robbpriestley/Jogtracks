@@ -10,7 +10,5 @@ dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
 
-Switching to single item view clears filters!
-Bad words
 Add new jogs
 SQLLite?

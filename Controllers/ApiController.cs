@@ -87,12 +87,14 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					
 					Account user = new Account();
 					user.UserName = signUpData.UserName;
-					user.UserColor = RandomUserColor();
 					user.Salt = hashData.Salt;
 					user.Hash = hashData.Hash;
-					user.Token = Guid.NewGuid();;
+					user.Token = Guid.NewGuid();
 					user.AccountType = signUpData.AccountType;
 					Accounts.Add(user);
+
+					user.UserColor = DetermineUserColor(user.Id);  // User colour is determined by Id to enforce cycling of colors.
+					Accounts.Update(user);
 
 					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, null);  // Coach is always null on new sign up.
 					
@@ -108,26 +110,22 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			return Utility.JsonObjectResult(authOutput);
 		}
 
-		private string RandomUserColor()
+		private string DetermineUserColor(int id)
 		{
 			List<string> colors = new List<string>();
 
-			colors.Add("Chartreuse");
-			colors.Add("DarkSeaGreen");
-			colors.Add("GreenYellow");
-			colors.Add("LawnGreen");
-			colors.Add("LightGreen");
-			colors.Add("Lime");
-			colors.Add("LimeGreen");
-			colors.Add("MediumAquamarine");
-			colors.Add("MediumSpringGreen");
-			colors.Add("PaleGreen");
-			colors.Add("SpringGreen");
-			colors.Add("YellowGreen");
+			colors.Add("Gainsboro");
+			colors.Add("Khaki");
+			colors.Add("Lavender");
+			colors.Add("LemonChiffon");
+			colors.Add("LightCyan");
+			colors.Add("LightGoldenrodYellow");
+			colors.Add("Moccasin");
+			colors.Add("PaleGoldenrod");
+			colors.Add("PapayaWhip");
+			colors.Add("PeachPuff");
 
-			Random r = new Random();
-			int i = r.Next(colors.Count);
-			return colors[i];
+			return colors[id % 10];
 		}
 
 		#endregion
