@@ -321,6 +321,8 @@ $(document).ready(function()
 		$("#toDate").val("");
 		Filter = {};
 		sessionStorage.removeItem("errorMessage");
+
+		$("#report").hide();
 		
 		LoadJogs();
 		RenderJogsPage("null", "null");
@@ -328,6 +330,8 @@ $(document).ready(function()
 
 	function FilterPageHandler(url: string): void
 	{
+		$("#report").hide();
+		
 		url = url.split("#filter/")[1].trim();
 
 		let fromDate: string;
@@ -445,6 +449,8 @@ $(document).ready(function()
 	{
 		$("#jogsMessage1").text("Showing " + jogs.length.toString() + " of ");
 		$("#jogsMessage2").show();
+
+		CalculateAverages(jogs);
 		
 		let jogList: JQuery = $(".all-jogs .jogs-list");
 		jogList.html("");
@@ -460,6 +466,30 @@ $(document).ready(function()
 			let jogIndex: string = $(this).data("index");
 			window.location.hash = "jog/" + jogIndex;
 		})
+	}
+
+	function CalculateAverages(jogs: Array<JogData>): void
+	{
+		let totalTime: number = 0;
+		let totalSpeed: number = 0;
+		let totalDistance: number = 0;
+		
+		for (var i: number = 0; i < jogs.length; i++)
+		{
+			totalTime += jogs[i].Time;
+			totalSpeed += jogs[i].AverageSpeed;
+			totalDistance += jogs[i].Distance;
+		}
+
+		let averageTime: number = totalTime / jogs.length;
+		let averageSpeed: number = totalSpeed / jogs.length;
+		let averageDistance: number = totalDistance / jogs.length;
+		
+		$("#averageTime").text(TimeFormat(averageTime));
+		$("#averageSpeed").text(averageSpeed.toFixed(2) + " km/h");
+		$("#averageDistance").text(averageDistance.toFixed(2) + " km");
+
+		$("#report").show();
 	}
 
 	function RenderJogsPage(fromDate: string, toDate: string): void
@@ -977,4 +1007,21 @@ function ParseDate(input: string): Date
 	}
 
 	return date; 
+}
+
+function TimeFormat(totalSeconds: number): string
+{
+	totalSeconds = Number(totalSeconds.toFixed());
+
+	let h: number = Math.floor(totalSeconds / 3600);
+	totalSeconds = totalSeconds - h * 3600;
+	let m: number = Math.floor(totalSeconds / 60);
+	totalSeconds = totalSeconds - m * 60;
+	let s: number = Math.floor(totalSeconds);
+
+	let hs: string = h < 10 ? "0" + h.toString() : h.toString();
+	let ms: string = m < 10 ? "0" + m.toString() : m.toString();
+	let ss: string = s < 10 ? "0" + s.toString() : s.toString();
+
+	return hs + ":" + ms + ":" + ss;
 }
