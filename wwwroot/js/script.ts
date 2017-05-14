@@ -227,14 +227,7 @@ $(document).ready(function()
 
 	$("#singleCancel").on("click", function(e) 
 	{
-		if (!$.isEmptyObject(Filter))
-		{
-			window.location.hash = "#filter/" + JSON.stringify(Filter);
-		}
-		else
-		{
-			window.location.hash = "#jogs";
-		}
+		LoadJogsPageOrFilter(Filter);
 	});
 
 	$("#errorBack").click(function(e) 
@@ -1233,15 +1226,7 @@ $(document).ready(function()
 			success: function(result) 
 			{
 				spinner.stop();
-
-				if (!$.isEmptyObject(Filter))
-				{
-					window.location.hash = "#filter/" + JSON.stringify(Filter);
-				}
-				else
-				{
-					window.location.hash = "#jogs";
-				}
+				LoadJogsPageOrFilter(Filter);
 			}
 		});
 	}
@@ -1262,15 +1247,7 @@ $(document).ready(function()
 			success: function(result) 
 			{
 				spinner.stop();
-
-				if (!$.isEmptyObject(Filter))
-				{
-					window.location.hash = "#filter/" + JSON.stringify(Filter);
-				}
-				else
-				{
-					window.location.hash = "#jogs";
-				}
+				LoadJogsPageOrFilter(Filter);
 			}
 		});
 	}
@@ -1375,6 +1352,18 @@ function UpdateSelectControl(selectControlName: string, value: string): void
 	option.text(value);  // Set text.
 	selectControl.append(option);     // Add coach to the list of selections.
 	selectControl.trigger("change");  // Tell Select2 to update.
+}
+
+function LoadJogsPageOrFilter(filter: IDictionary): void
+{
+	if (!$.isEmptyObject(filter))
+	{
+		window.location.hash = "#filter/" + JSON.stringify(filter);
+	}
+	else
+	{
+		window.location.hash = "#jogs";
+	}
 }
 
 // *** END UTILITY ***
