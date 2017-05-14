@@ -281,6 +281,10 @@ $(document).ready(function()
 			case "#jog":
 				RenderSingleJogPage(url, Jogs);
 				break;
+			
+			case "#error":
+				RenderErrorPage();
+				break;
 
 			default:
 				sessionStorage.setItem("errorMessage", "Unknown page or query string.");
