@@ -522,13 +522,7 @@ $(document).ready(function()
 			{
 				if (jog.Id == jogIndex)
 				{
-					let userSelectControl: JQuery = $("#userSelectControl");
-					let option: JQuery = $("<option selected></option>");
-					option.val(jog.UserName);   // Set id.
-					option.text(jog.UserName);  // Set text.
-					userSelectControl.append(option);     // Add coach to the list of selections.
-					userSelectControl.trigger("change");  // Tell Select2 to update.
-					
+					UpdateSelectControl("userSelectControl", jog.UserName);
 					$("#updateDate").val(jog.Date);
 					$("#updateDistance").val(jog.Distance);
 					$("#updateTime").val(jog.TimeString);
@@ -1045,13 +1039,7 @@ $(document).ready(function()
 		{			
 			$("#coachSelect").show();
 			$("#useCoach").prop("checked", true);
-
-			let coachSelectControl: JQuery = $("#coachSelectControl");
-			let option: JQuery = $("<option selected></option>");
-			option.val(coach);   // Set id.
-			option.text(coach);  // Set text.
-			coachSelectControl.append(option);     // Add coach to the list of selections.
-			coachSelectControl.trigger("change");  // Tell Select2 to update.
+			UpdateSelectControl("coachSelectControl", coach);
 		}
 		else
 		{
@@ -1191,38 +1179,6 @@ $(document).ready(function()
 	}
 
 	// *** END JOGS ***
-	// *** BEGIN UTILITY ***
-
-	function Today(): string
-	{
-		let today: Date = new Date();
-
-		let m: number = (today.getMonth() + 1); // January is 0!
-		let d: number = today.getDate();
-		let ys: string = today.getFullYear().toString();
-		let ms: string = m < 10 ? "0" + m.toString() : m.toString();
-		let ds: string = d < 10 ? "0" + d.toString() : d.toString();
-
-		return ys + "-" + ms + "-" + ds;
-	}
-	
-	function SpinnerSetup() : Spinner
-	{
-		var opts = 
-		{
-			lines: 9,
-			length: 0,
-			width: 13,
-			radius: 21,
-			color: '#000',
-			opacity: 0.25,
-			rotate: 33
-		}
-
-		return new Spinner(opts);
-	}
-
-	// *** END UTILITY ***
 	// *** BEGIN BOOTSTRAP ***
 
 	AuthCheck();
@@ -1230,6 +1186,37 @@ $(document).ready(function()
 
 	// *** END BOOTSTRAP ***
 });
+
+// *** BEGIN UTILITY ***
+
+function SpinnerSetup() : Spinner
+{
+	var opts = 
+	{
+		lines: 9,
+		length: 0,
+		width: 13,
+		radius: 21,
+		color: '#000',
+		opacity: 0.25,
+		rotate: 33
+	}
+
+	return new Spinner(opts);
+}
+
+function Today(): string
+{
+	let today: Date = new Date();
+
+	let m: number = (today.getMonth() + 1); // January is 0!
+	let d: number = today.getDate();
+	let ys: string = today.getFullYear().toString();
+	let ms: string = m < 10 ? "0" + m.toString() : m.toString();
+	let ds: string = d < 10 ? "0" + d.toString() : d.toString();
+
+	return ys + "-" + ms + "-" + ds;
+}
 
 function Reload(): boolean
 {
@@ -1281,3 +1268,16 @@ function TimeFormat(totalSeconds: number): string
 
 	return hs + ":" + ms + ":" + ss;
 }
+
+function UpdateSelectControl(selectControlName: string, value: string): void
+{
+	let selectControl: JQuery = $("#"+ selectControlName);
+	let option: JQuery = $("<option selected></option>");
+	// Assuming that the id and the value are the same.
+	option.val(value);   // Set id.
+	option.text(value);  // Set text.
+	selectControl.append(option);     // Add coach to the list of selections.
+	selectControl.trigger("change");  // Tell Select2 to update.
+}
+
+// *** END UTILITY ***
