@@ -290,6 +290,7 @@ $(document).ready(function()
 				break;
 
 			default:
+				sessionStorage.setItem("errorMessage", "Unknown page or query string.");
 				RenderErrorPage();  // Unknown keyword.
 				break;
 		}
