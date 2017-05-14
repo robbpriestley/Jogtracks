@@ -1179,7 +1179,7 @@ $(document).ready(function()
 
 	function UpdateJog(): void
 	{
-		let user = $("#coachSelectControl").val();
+		let user = $("#userSelectControl").val();
 
 		if (user == null)
 		{
