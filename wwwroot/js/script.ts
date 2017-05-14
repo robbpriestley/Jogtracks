@@ -944,7 +944,7 @@ $(document).ready(function()
 						results: $.map(data, function(coach) 
 						{
 							return {
-								text: coach.UserName + ": " + coach.AccountType,
+								text: coach.UserName,
 								id: coach.UserName
 							}
 						})
@@ -976,7 +976,7 @@ $(document).ready(function()
 						results: $.map(data, function(user) 
 						{
 							return {
-								text: user.UserName + ": " + user.AccountType,
+								text: user.UserName,
 								id: user.UserName
 							}
 						})
