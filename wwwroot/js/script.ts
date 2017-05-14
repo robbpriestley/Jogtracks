@@ -522,7 +522,13 @@ $(document).ready(function()
 			{
 				if (jog.Id == jogIndex)
 				{
-					$("#userSelectControl").val(jog.UserName);
+					let userSelectControl: JQuery = $("#userSelectControl");
+					let option: JQuery = $("<option selected></option>");
+					option.val(jog.UserName);   // Set id.
+					option.text(jog.UserName);  // Set text.
+					userSelectControl.append(option);     // Add coach to the list of selections.
+					userSelectControl.trigger("change");  // Tell Select2 to update.
+					
 					$("#updateDate").val(jog.Date);
 					$("#updateDistance").val(jog.Distance);
 					$("#updateTime").val(jog.TimeString);
@@ -622,7 +628,7 @@ $(document).ready(function()
 			updateDistance:
 			{
 				required: true,
-				digits: true,
+				number: true,
 				max: 1000
 			},
 			updateTime:

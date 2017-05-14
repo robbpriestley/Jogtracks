@@ -10,5 +10,5 @@ dotnet ef database update --context ServiceLogContext
 
 *** TODO ***
 
-Add new jogs
-SQLLite?
+Clear single page field values on new or populate with existing values on edit
+$("#signout").click(function(e) clear query string
