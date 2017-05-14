@@ -7,7 +7,3 @@ dotnet ef database update --context MainContext
 
 dotnet ef migrations add mig2 --context ServiceLogContext
 dotnet ef database update --context ServiceLogContext
-
-*** TODO ***
-
-$("#signout").click(function(e) clear query string
