@@ -247,7 +247,6 @@ $(document).ready(function()
 
 	$("#newJog").click(function(e) 
 	{
-		sessionStorage.removeItem("errorMessage");
 		window.scrollTo(0, 0);
 		window.location.hash = "#jog/0";  // The Id argument of 0 represents a new jog.
 		return false;
@@ -266,7 +265,7 @@ $(document).ready(function()
 		switch (keyword)
 		{
 			case "":
-				DefaultHandler();
+				DefaultHelper();
 				break;
 			
 			case "#signup":
@@ -279,11 +278,11 @@ $(document).ready(function()
 				break;
 			
 			case "#jogs":
-				JogsPageHandler();
+				JogsPageHelper();
 				break;
 
 			case "#filter":
-				FilterPageHandler(url);
+				FilterPageHelper(url);
 				break;
 
 			case "#jog":
@@ -296,7 +295,7 @@ $(document).ready(function()
 		}
 	}
 
-	function DefaultHandler(): void
+	function DefaultHelper(): void
 	{
 		if (localStorage.getItem("token") == null)
 		{
@@ -309,7 +308,7 @@ $(document).ready(function()
 		}
 	}
 
-	function JogsPageHandler(): void
+	function JogsPageHelper(): void
 	{
 		$("#fromDate").val("");
 		$("#toDate").val("");
@@ -322,7 +321,7 @@ $(document).ready(function()
 		RenderJogsPage("null", "null");
 	}
 
-	function FilterPageHandler(url: string): void
+	function FilterPageHelper(url: string): void
 	{
 		$("#report").hide();
 		
