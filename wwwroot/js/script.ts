@@ -245,6 +245,14 @@ $(document).ready(function()
 		return false;
 	});
 
+	$("#newJog").click(function(e) 
+	{
+		sessionStorage.removeItem("errorMessage");
+		window.scrollTo(0, 0);
+		window.location.hash = "#jog/0";  // The Id argument of 0 represents a new jog.
+		return false;
+	});
+
 	// *** END EVENT HANDLERS ***
 	// *** BEGIN PAGE RENDERING ***
 	
