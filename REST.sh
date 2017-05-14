@@ -3,15 +3,15 @@ BASICAUTH=g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu
 # *** ADMIN ACCOUNT ***
 
 echo "Admin: Juan"
-curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Juan", "Password": "qqqqqqqq", "AccountType": "ADMIN"}' > /dev/null
+JUANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Juan", "Password": "qqqqqqqq", "AccountType": "ADMIN"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
 
 # *** COACH ACCOUNTS ***
 
 echo "Coach: Ivan"
-curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Ivan", "Password": "qqqqqqqq", "AccountType": "COACH"}' > /dev/null
+IVANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Ivan", "Password": "qqqqqqqq", "AccountType": "COACH"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
 
 echo "Coach: Lisa"
-curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Lisa", "Password": "qqqqqqqq", "AccountType": "COACH"}' > /dev/null
+LISATOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Lisa", "Password": "qqqqqqqq", "AccountType": "COACH"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
 
 # *** JOGGER ACCOUNTS ***
 
@@ -32,6 +32,42 @@ ZOETOKEN=$(curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/auth/s
 curl -s -u ${BASICAUTH} --request PATCH http://0.0.0.0:5000/api/coachpatch -H "Content-Type: application/json" -d '{"Token": "'"${ZOETOKEN}"'", "Coach": "Lisa"}' > /dev/null
 
 # *** JOGS ***
+
+echo "Jogs: Juan"
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-10 1:38:14 PM", "Distance": 6.43, "Time": 3170 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-09 1:38:14 PM", "Distance": 8.12, "Time": 2695 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-08 1:38:14 PM", "Distance": 2.1, "Time": 1950 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-07 1:38:14 PM", "Distance": 1.48, "Time": 3333 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-06 1:38:14 PM", "Distance": 12.71, "Time": 4444 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-05 1:38:14 PM", "Distance": 11.49, "Time": 5555 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-04 1:38:14 PM", "Distance": 6.97, "Time": 6666 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-03 1:38:14 PM", "Distance": 2.99, "Time": 777 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-02 1:38:14 PM", "Distance": 0.34, "Time": 888 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", "Date": "2017-05-01 1:38:14 PM", "Distance": 1.1, "Time": 999 }' > /dev/null
+
+echo "Jogs: Ivan"
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-10 1:38:14 PM", "Distance": 4.13, "Time": 3456 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-09 1:38:14 PM", "Distance": 5.62, "Time": 5544 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-08 1:38:14 PM", "Distance": 8.74, "Time": 334 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-07 1:38:14 PM", "Distance": 14.33, "Time": 5456 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-06 1:38:14 PM", "Distance": 13.33, "Time": 3434 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-05 1:38:14 PM", "Distance": 3.33, "Time": 5555 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-04 1:38:14 PM", "Distance": 6.45, "Time": 5434 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-03 1:38:14 PM", "Distance": 3.19, "Time": 454 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-02 1:38:14 PM", "Distance": 1.34, "Time": 499 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${IVANTOKEN}"'", "UserName": "Ivan", "Date": "2017-05-01 1:38:14 PM", "Distance": 11.11, "Time": 984 }' > /dev/null
+
+echo "Jogs: Lisa"
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-10 1:38:14 PM", "Distance": 9.55, "Time": 2345 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-09 1:38:14 PM", "Distance": 10.12, "Time": 2345 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-08 1:38:14 PM", "Distance": 3.92, "Time": 345 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-07 1:38:14 PM", "Distance": 12.68, "Time": 2345 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-06 1:38:14 PM", "Distance": 13.61, "Time": 5433 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-05 1:38:14 PM", "Distance": 11.29, "Time": 6784 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-04 1:38:14 PM", "Distance": 2.27, "Time": 4456 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-03 1:38:14 PM", "Distance": 4.59, "Time": 456 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-02 1:38:14 PM", "Distance": 1.84, "Time": 643 }' > /dev/null
+curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${LISATOKEN}"'", "UserName": "Lisa", "Date": "2017-05-01 1:38:14 PM", "Distance": 18.2, "Time": 775 }' > /dev/null
 
 echo "Jogs: Robb"
 curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H "Content-Type: application/json" -d '{ "Token": "'"${ROBBTOKEN}"'", "UserName": "Robb", "Date": "2017-05-10 1:38:14 PM", "Distance": 10.53, "Time": 3470 }' > /dev/null
