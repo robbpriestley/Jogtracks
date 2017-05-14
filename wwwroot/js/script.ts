@@ -649,7 +649,7 @@ $(document).ready(function()
 		},
 		submitHandler: function(form: any)
 		{
-			UpdateJog();
+			AddOrUpdateJog();
 			return false;
 		}
 	});
@@ -1178,16 +1178,101 @@ $(document).ready(function()
 		});
 	}
 
-	function UpdateJog(): void
+	function AddOrUpdateJog(): void
 	{
-		let user = $("#userSelectControl").val();
-
-		if (user == null)
+		if ($("#userSelectControl").val() == null)
 		{
 			$("#userSelectLabel").text("Please select a user from the list.");
 			$("#userSelectLabel").css("display", "inherit");
 			return;
 		}
+
+		let timeParts: Array<string> = $("#updateTime").val().split(":");
+
+		let hh: number, mm: number, ss: number;
+			
+		hh = Number(timeParts[0]);
+		mm = Number(timeParts[1]);
+		ss = Number(timeParts[2]);
+
+		let seconds = hh * 60 * 60 + mm * 60 + ss;
+		
+		var input = 
+		{
+			"Token": localStorage.getItem("token"),
+			"Id": $("#updateId").val(),
+			"UserName": $("#userSelectControl").val(),
+			"Date": $("#updateDate").val(),
+			"Distance": $("#updateDistance").val(),
+			"Time": seconds
+		}
+
+		if ($("#updateId").val() == "0")
+		{
+			AddJog(input);
+		}
+		else
+		{
+			UpdateJog(input);
+		}
+	}
+
+	function AddJog(input: any): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			type: "POST",
+			dataType: "json",
+			data: JSON.stringify(input),
+			contentType: "application/json",
+			url: "/api/jogs/add",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+
+				if (!$.isEmptyObject(Filter))
+				{
+					window.location.hash = "#filter/" + JSON.stringify(Filter);
+				}
+				else
+				{
+					window.location.hash = "#jogs";
+				}
+			}
+		});
+	}
+
+	function UpdateJog(input: any): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			type: "PUT",
+			dataType: "json",
+			data: JSON.stringify(input),
+			contentType: "application/json",
+			url: "/api/jogs/update",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+
+				if (!$.isEmptyObject(Filter))
+				{
+					window.location.hash = "#filter/" + JSON.stringify(Filter);
+				}
+				else
+				{
+					window.location.hash = "#jogs";
+				}
+			}
+		});
 	}
 
 	// *** END JOGS ***

@@ -32,6 +32,16 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			Jogs = jogs;
 		}
 
+		public class JogInput
+		{
+			public int Id { get; set; }
+			public string Token { get; set; }
+			public string UserName { get; set; }
+			public string Date { get; set; }
+			public decimal Distance { get; set; }
+			public int Time { get; set; }
+		}
+
 		public class AccountOutput
 		{
 			public string UserName { get; set; }
@@ -517,25 +527,16 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#endregion
 		#region Jogs: Jog Add
 
-		public class JogAddInput
-		{
-			public string Token { get; set; }
-			public string UserName { get; set; }
-			public string Date { get; set; }
-			public decimal Distance { get; set; }
-			public int Time { get; set; }
-		}
-
 		[HttpPost]
 		[Route("jogs/add")]
-		public IActionResult JogAdd([FromBody] JogAddInput jogAddInput)
+		public IActionResult JogAdd([FromBody] JogInput jogInput)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
-			Account user = GetUser(jogAddInput.Token);
+			Account user = GetUser(jogInput.Token);
 
 			if (user == null)
 			{
@@ -547,17 +548,58 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			try
 			{				
 				Jog jog = new Jog();
-				jog.UserName = jogAddInput.UserName;
+				jog.UserName = jogInput.UserName;
 				jog.AddedBy = user.UserName;
-				jog.Date = DateTime.Parse(jogAddInput.Date);
-				jog.Distance = jogAddInput.Distance;
-				jog.Time = jogAddInput.Time;
+				jog.Date = DateTime.Parse(jogInput.Date);
+				jog.Distance = jogInput.Distance;
+				jog.Time = jogInput.Time;
 				jog.AverageSpeed = (decimal)((double)jog.Distance / ((double)jog.Time / 3600.0d));
 				Jogs.Add(jog);
 			}
 			catch (System.Exception e)
 			{
 				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogAdd()", user.UserName);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
+		}
+
+		#endregion
+		#region Jogs: Jog Update
+
+		[HttpPut]
+		[Route("jogs/update")]
+		public IActionResult JogUpdate([FromBody] JogInput jogInput)
+		{
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+
+			Account user = GetUser(jogInput.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			try
+			{				
+				Jog jog = Jogs.GetById(jogInput.Id);
+				jog.UserName = jogInput.UserName;
+				jog.AddedBy = user.UserName;
+				jog.Date = DateTime.Parse(jogInput.Date);
+				jog.Distance = jogInput.Distance;
+				jog.Time = jogInput.Time;
+				jog.AverageSpeed = (decimal)((double)jog.Distance / ((double)jog.Time / 3600.0d));
+				Jogs.Update(jog);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogUpdate()", user.UserName);
 				return new StatusCodeResult(500);
 			}
 

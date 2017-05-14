@@ -24,6 +24,28 @@ namespace DigitalWizardry.Jogtracks
 			Context.SaveChanges();
 		}
 
+		public void Update(Jog jog)
+		{
+			Context.Jog.Update(jog);
+			Context.SaveChanges();
+		}
+
+		public Jog GetById(int id)
+		{
+			Jog jog = null;
+			
+			try
+			{
+				jog = Context.Jog.Where(x => x.Id == id).Single();
+			}
+			catch (System.InvalidOperationException)
+			{
+				// It doesn't exist, I suppose.
+			}
+
+			return jog;
+		}
+
 		public List<Jog> GetByUserName(string userName)
 		{
 			List<Jog> jogs = null;
