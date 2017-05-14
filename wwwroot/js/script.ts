@@ -9,6 +9,11 @@ interface IDictionary
 	[key: string]: string;
 };
 
+interface JQueryStatic
+{
+    validator: any;
+};
+
 interface IJogData
 {
 	UserName: string;
@@ -143,6 +148,11 @@ $(document).ready(function()
 
 	InitializeSelectControls();
 
+	$("#userSelectControl").on("change", (function(e) 
+	{
+		$("#userSelectLabel").css("display", "none");
+	}));
+
 	$("#fromDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
@@ -154,6 +164,16 @@ $(document).ready(function()
 	});
 
 	$("#toDate").datepicker
+	({
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true,
+		minDate: "-100Y",
+		maxDate: 0,
+		yearRange: "-100:+nn"
+	});
+
+	$("#updateDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
 		changeMonth: true,
@@ -586,6 +606,51 @@ $(document).ready(function()
 		}
 	});
 
+	$("form[name=jogEditForm]").validate(
+	{
+		rules: 
+		{
+			updateDate:
+			{
+				required: true
+			},
+			updateDistance:
+			{
+				required: true,
+				digits: true,
+				max: 1000
+			},
+			updateTime:
+			{
+				required: true,
+				time24: true
+			}
+		},
+		submitHandler: function(form: any)
+		{
+			UpdateJog();
+			return false;
+		}
+	});
+
+	jQuery.validator.addMethod("time24", function(value: any, element: any) 
+	{
+		if (!/^\d{2}:\d{2}:\d{2}$/.test(value))
+		{
+			return false;
+		}
+		
+		var parts = value.split(':');
+		
+		if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59)
+		{
+			return false;
+		}
+		
+		return true;
+
+	}, "Please use the time format HH:MM:SS.");
+
 	// *** END FORM VALIDATION ***
 	// *** BEGIN REST AUTHENTICATION ***
 
@@ -783,6 +848,8 @@ $(document).ready(function()
 				},
 				processResults: function(data: any) 
 				{
+					$("#userSelectLabel").css("display", "none");
+					
 					return {
 						results: $.map(data, function(user) 
 						{
@@ -876,7 +943,7 @@ $(document).ready(function()
 
 			if (coach == null)
 			{
-				$("#coach-select").text("Please select a coach from the list");
+				$("#coach-select").text("Please select a coach from the list.");
 				$("#coach-select").css("display", "inherit");
 				return;
 			}
@@ -981,6 +1048,18 @@ $(document).ready(function()
 				$("#jogsMessage2").text(result + " jogs.");
 			}
 		});
+	}
+
+	function UpdateJog(): void
+	{
+		let user = $("#coachSelectControl").val();
+
+		if (user == null)
+		{
+			$("#userSelectLabel").text("Please select a user from the list.");
+			$("#userSelectLabel").css("display", "inherit");
+			return;
+		}
 	}
 
 	// *** END JOGS ***
