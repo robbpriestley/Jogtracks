@@ -508,6 +508,17 @@ $(document).ready(function()
 		
 		$(".single-jog").css("pointer-events", "auto");
 
+		let accountType: string | null = localStorage.getItem("accountType");
+
+		if (accountType == "JOGGER")
+		{
+			$("#userSelect").hide();
+		}
+		else
+		{
+			$("#userSelect").show();
+		}
+		
 		if (jogIndex == 0)
 		{
 			$("#userSelectControl").empty();
