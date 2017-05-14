@@ -460,7 +460,7 @@ $(document).ready(function()
 		{
 			e.preventDefault();
 			let jogIndex: string = $(this).data("index");
-			window.location.hash = "jog/" + jogIndex;
+			window.location.hash = "#jog/" + jogIndex;
 		})
 	}
 
