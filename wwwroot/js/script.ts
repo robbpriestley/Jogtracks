@@ -504,24 +504,33 @@ $(document).ready(function()
 	function RenderSingleJogPage(url: string, jogs: Array<JogData>): void
 	{	
 		let jogIndex: number = Number(url.split("#jog/")[1].trim());
+		$("#updateId").val(jogIndex);
 		
-		let page: JQuery = $(".single-jog");
-		page.css("pointer-events", "auto");
-		let container: JQuery = $(".preview-large");
+		$(".single-jog").css("pointer-events", "auto");
 
-		// Find the jog by iterating through the data object and searching for the chosen index.
-		if (jogs.length)
+		if (jogIndex == 0)
 		{
+			$("#userSelectControl").empty();
+			$("#updateDate").val("");
+			$("#updateDistance").val("");
+			$("#updateTime").val("");
+		}
+		else if (jogs.length > 0)
+		{
+			// Find the jog by iterating through the data object and searching for the chosen index.
 			jogs.forEach(function(jog)
 			{
 				if (jog.Id == jogIndex)
 				{
-					$("#singleJogUser").text(jog.UserName);
+					$("#userSelectControl").val(jog.UserName);
+					$("#updateDate").val(jog.Date);
+					$("#updateDistance").val(jog.Distance);
+					$("#updateTime").val(jog.TimeString);
 				}
 			});
 		}
 
-		page.addClass("visible");  // Show the page.
+		$(".single-jog").addClass("visible");  // Show the page.
 	}
 
 	// *** END PAGE RENDERING ***
