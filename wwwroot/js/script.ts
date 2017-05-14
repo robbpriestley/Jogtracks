@@ -623,7 +623,11 @@ $(document).ready(function()
 			updateTime:
 			{
 				required: true,
-				time24: true
+				timeFormatCheck: true,
+				timeNumberCheck: true,
+				timeNumberIntegerCheck: true,
+				timeNumberZeroCheck: true,
+				timeNumberValueCheck: true
 			}
 		},
 		submitHandler: function(form: any)
@@ -633,16 +637,11 @@ $(document).ready(function()
 		}
 	});
 
-	jQuery.validator.addMethod("time24", function(value: any, element: any) 
+	jQuery.validator.addMethod("timeFormatCheck", function(value: any, element: any) 
 	{
-		if (!/^\d{2}:\d{2}:\d{2}$/.test(value))
-		{
-			return false;
-		}
-		
-		var parts = value.split(':');
-		
-		if (parts[0] > 23 || parts[1] > 59 || parts[2] > 59)
+		let parts: Array<string> = value.split(":");
+
+		if (parts.length != 3)
 		{
 			return false;
 		}
@@ -650,6 +649,124 @@ $(document).ready(function()
 		return true;
 
 	}, "Please use the time format HH:MM:SS.");
+
+	jQuery.validator.addMethod("timeNumberCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split(":");
+
+		if (parts.length != 3)
+		{
+			return false;
+		}
+		else if (parts[0] == "" || parts[1] == "" || parts[2] == "")
+		{
+			return false;
+		}
+
+		try
+		{
+			let hh: number, mm: number, ss: number;
+			
+			hh = Number(parts[0]);
+			mm = Number(parts[1]);
+			ss = Number(parts[2]);
+
+			if (isNaN(hh) || isNaN(mm) || isNaN(ss))
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+		
+		return true;
+
+	}, "Time elements must be numbers.");
+
+	jQuery.validator.addMethod("timeNumberIntegerCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split(":");
+
+		try
+		{
+			let hh: number, mm: number, ss: number;
+			
+			hh = Number(parts[0]);
+			mm = Number(parts[1]);
+			ss = Number(parts[2]);
+
+			if 
+			(
+				hh !== parseInt(parts[0], 10) ||
+				mm !== parseInt(parts[1], 10) ||
+				ss !== parseInt(parts[2], 10)
+			)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+		
+		return true;
+
+	}, "Time elements must be whole numbers.");
+	
+	jQuery.validator.addMethod("timeNumberZeroCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split(":");
+
+		try
+		{
+			let hh: number, mm: number, ss: number;
+			
+			hh = Number(parts[0]);
+			mm = Number(parts[1]);
+			ss = Number(parts[2]);
+
+			if (hh < 0 || mm < 0 || ss < 0)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+		
+		return true;
+
+	}, "Time elements must be numbers greater than zero.");
+
+	jQuery.validator.addMethod("timeNumberValueCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split(":");
+
+		try
+		{
+			let hh: number, mm: number, ss: number;
+			
+			hh = Number(parts[0]);
+			mm = Number(parts[1]);
+			ss = Number(parts[2]);
+
+			if (hh > 23 || mm > 59 || ss > 59)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+		
+		return true;
+
+	}, "The maximums are 23:59:59.");
 
 	// *** END FORM VALIDATION ***
 	// *** BEGIN REST AUTHENTICATION ***
