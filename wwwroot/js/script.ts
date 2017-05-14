@@ -225,26 +225,15 @@ $(document).ready(function()
 		window.location.hash = "#jogs";
 	});
 
-	// Single jog page buttons.
-	let singleJogPage: JQuery = $(".single-jog");
-	singleJogPage.on("click", function(e) 
+	$("#singleCancel").on("click", function(e) 
 	{
-		if (singleJogPage.hasClass("visible")) 
+		if (!$.isEmptyObject(Filter))
 		{
-			let clicked: JQuery = $(e.target);
-
-			// If the close button or the background are clicked go to the jogs page.
-			if (clicked.hasClass("close") || clicked.hasClass("overlay"))
-			{
-				if (!$.isEmptyObject(Filter))
-				{
-					window.location.hash = "#filter/" + JSON.stringify(Filter);
-				}
-				else
-				{
-					window.location.hash = "#jogs";
-				}
-			}
+			window.location.hash = "#filter/" + JSON.stringify(Filter);
+		}
+		else
+		{
+			window.location.hash = "#jogs";
 		}
 	});
 
