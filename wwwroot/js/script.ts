@@ -1218,7 +1218,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type: "POST",
-			dataType: "json",
+			dataType: "text",
 			data: JSON.stringify(input),
 			contentType: "application/json",
 			url: "/api/jogs/add",
@@ -1239,7 +1239,7 @@ $(document).ready(function()
 		$.ajax
 		({
 			type: "PUT",
-			dataType: "json",
+			dataType: "text",
 			data: JSON.stringify(input),
 			contentType: "application/json",
 			url: "/api/jogs/update",
