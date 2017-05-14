@@ -549,7 +549,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			{				
 				Jog jog = new Jog();
 				jog.UserName = jogInput.UserName;
-				jog.AddedBy = user.UserName;
+				jog.UpdatedBy = user.UserName;
 				jog.Date = DateTime.Parse(jogInput.Date);
 				jog.Distance = jogInput.Distance;
 				jog.Time = jogInput.Time;
@@ -590,7 +590,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			{				
 				Jog jog = Jogs.GetById(jogInput.Id);
 				jog.UserName = jogInput.UserName;
-				jog.AddedBy = user.UserName;
+				jog.UpdatedBy = user.UserName;
 				jog.Date = DateTime.Parse(jogInput.Date);
 				jog.Distance = jogInput.Distance;
 				jog.Time = jogInput.Time;
