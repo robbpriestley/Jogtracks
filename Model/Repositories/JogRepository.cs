@@ -192,6 +192,7 @@ namespace DigitalWizardry.Jogtracks
 			try
 			{
 				List<Account> joggers = GetAccountsByCoach(coach);
+				joggers.Add(coach);
 
 				foreach (Account jogger in joggers)
 				{
