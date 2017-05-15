@@ -127,7 +127,7 @@ $(document).ready(function()
 
 	$("#username").on("change keyup keydown click paste", function()
 	{
-		$("#").css("display", "none");
+		$("#username-taken").css("display", "none");
 	});
 
 	$("input[name=coach]").on("change", (function(e) 
