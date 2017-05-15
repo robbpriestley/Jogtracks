@@ -1187,11 +1187,24 @@ $(document).ready(function()
 
 	function AddOrUpdateJog(): void
 	{
-		if ($("#userSelectControl").val() == null)
+		let userName: string | null;
+		
+		if (localStorage.getItem("accountType") == "JOGGER")
 		{
+			// Jogger users do not see a user select control, and the userName is alwaus their own.
+			userName = localStorage.getItem("userName");
+		}
+		else if ($("#userSelectControl").val() == null)
+		{
+			// Coach and admin users are forced to select a user from the user select control.
 			$("#userSelectLabel").text("Please select a user from the list.");
 			$("#userSelectLabel").css("display", "inherit");
 			return;
+		}
+		else
+		{
+			// For coach and admin users, obtain the userName from the user select control.
+			userName = $("#userSelectControl").val();
 		}
 
 		let timeParts: Array<string> = $("#updateTime").val().split(":");
@@ -1208,7 +1221,7 @@ $(document).ready(function()
 		{
 			"Token": localStorage.getItem("token"),
 			"Id": $("#updateId").val(),
-			"UserName": $("#userSelectControl").val(),
+			"UserName": userName,
 			"Date": $("#updateDate").val(),
 			"Distance": $("#updateDistance").val(),
 			"Time": seconds
