@@ -20,7 +20,7 @@ namespace DigitalWizardry.Jogtracks
 
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("Secrets.json", optional: false);
+				.AddJsonFile("secrets.json", optional: false);
 			Configuration = builder.Build();
 		}
 				

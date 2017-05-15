@@ -9,5 +9,5 @@ RUN dotnet restore
 COPY . /Jogtracks/
 RUN dotnet build
 
-EXPOSE 5000/tcp
+EXPOSE 5001/tcp
 ENTRYPOINT ["dotnet", "run"]
