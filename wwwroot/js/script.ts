@@ -525,6 +525,7 @@ $(document).ready(function()
 		if (jogId == 0)  // 0 indicates a new jog should be created.
 		{
 			$("#updateHeading").text("Create Jog");
+			$("#singleDelete").hide();
 			$("#singleSubmit").val("Create");
 			$("#userSelectControl").empty();
 			$("#updateDate").val("");
@@ -534,6 +535,7 @@ $(document).ready(function()
 		else if (jogs.length > 0)  // Otherwise, an existing jog will be updated.
 		{
 			$("#updateHeading").text("Update Jog");
+			$("#singleDelete").show();
 			$("#singleSubmit").val("Update");
 			
 			// Find the jog by iterating through the data object and searching for the chosen index.
