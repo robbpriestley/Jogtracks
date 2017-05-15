@@ -30,6 +30,13 @@ namespace DigitalWizardry.Jogtracks
 			Context.SaveChanges();
 		}
 
+		public void Delete(int id)
+		{
+			Jog jog = Context.Jog.Where(x => x.Id == id).Single();
+			Context.Jog.Remove(jog);
+			Context.SaveChanges();
+		}
+
 		public Jog GetById(int id)
 		{
 			Jog jog = null;

@@ -607,6 +607,40 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		#endregion
+		#region Jogs: Jog Total Count
+
+		[HttpPost]
+		[Route("jogs/delete")]
+		public IActionResult JogDelete([FromBody] JogInput jogInput)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(jogInput.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, "Jog Id: " + jogInput.Id, user.UserName);
+
+			try
+			{			
+				Jogs.Delete(jogInput.Id);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogDelete()", jogInput.Token);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
+		}
+
+		#endregion
 		#region Accounts: Accounts List
 
 		[HttpGet]

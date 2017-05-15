@@ -225,6 +225,13 @@ $(document).ready(function()
 		window.location.hash = "#jogs";
 	});
 
+	$("#singleDelete").on("click", function(e) 
+	{
+		let url: string = decodeURI(window.location.hash);
+		let jogId: number = Number(url.split("#jog/")[1].trim());
+		DeleteJog(jogId);
+	});
+
 	$("#singleCancel").on("click", function(e) 
 	{
 		LoadJogsPageOrFilter(Filter);
@@ -457,8 +464,8 @@ $(document).ready(function()
 		jogList.find("li").on("click", function(e)
 		{
 			e.preventDefault();
-			let jogIndex: string = $(this).data("index");
-			window.location.hash = "#jog/" + jogIndex;
+			let jogId: string = $(this).data("index");
+			window.location.hash = "#jog/" + jogId;
 		})
 	}
 
@@ -501,8 +508,8 @@ $(document).ready(function()
 	// Opens preview page for one of the jogs. Parameters index from the hash and the jogs object.
 	function RenderSingleJogPage(url: string, jogs: Array<JogData>): void
 	{	
-		let jogIndex: number = Number(url.split("#jog/")[1].trim());
-		$("#updateId").val(jogIndex);
+		let jogId: number = Number(url.split("#jog/")[1].trim());
+		$("#updateId").val(jogId);
 		
 		$(".single-jog").css("pointer-events", "auto");;
 
@@ -515,7 +522,7 @@ $(document).ready(function()
 			$("#userSelect").show();
 		}
 		
-		if (jogIndex == 0)  // 0 indicates a new jog should be created.
+		if (jogId == 0)  // 0 indicates a new jog should be created.
 		{
 			$("#updateHeading").text("Create Jog");
 			$("#singleSubmit").val("Create");
@@ -532,7 +539,7 @@ $(document).ready(function()
 			// Find the jog by iterating through the data object and searching for the chosen index.
 			jogs.forEach(function(jog)
 			{
-				if (jog.Id == jogIndex)
+				if (jog.Id == jogId)
 				{
 					UpdateSelectControl("userSelectControl", jog.UserName);
 					$("#updateDate").val(jog.Date);
@@ -1250,6 +1257,29 @@ $(document).ready(function()
 			data: JSON.stringify(input),
 			contentType: "application/json",
 			url: "/api/jogs/update",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+				LoadJogsPageOrFilter(Filter);
+			}
+		});
+	}
+
+	function DeleteJog(jogId: number): void
+	{
+		let token: string | null = localStorage.getItem("token");
+		
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			type: "POST",
+			dataType: "text",
+			data: JSON.stringify({ Token: token, Id: jogId }),
+			contentType: "application/json",
+			url: "/api/jogs/delete",
 			headers: BasicAuth,
 			success: function(result) 
 			{
