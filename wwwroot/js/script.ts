@@ -504,11 +504,9 @@ $(document).ready(function()
 		let jogIndex: number = Number(url.split("#jog/")[1].trim());
 		$("#updateId").val(jogIndex);
 		
-		$(".single-jog").css("pointer-events", "auto");
+		$(".single-jog").css("pointer-events", "auto");;
 
-		let accountType: string | null = localStorage.getItem("accountType");
-
-		if (accountType == "JOGGER")
+		if (localStorage.getItem("accountType") == "JOGGER")
 		{
 			$("#userSelect").hide();
 		}
@@ -517,14 +515,14 @@ $(document).ready(function()
 			$("#userSelect").show();
 		}
 		
-		if (jogIndex == 0)
+		if (jogIndex == 0)  // 0 indicates a new jog should be created.
 		{
 			$("#userSelectControl").empty();
 			$("#updateDate").val("");
 			$("#updateDistance").val("");
 			$("#updateTime").val("");
 		}
-		else if (jogs.length > 0)
+		else if (jogs.length > 0)  // Otherwise, an existing jog will be updated.
 		{
 			// Find the jog by iterating through the data object and searching for the chosen index.
 			jogs.forEach(function(jog)
