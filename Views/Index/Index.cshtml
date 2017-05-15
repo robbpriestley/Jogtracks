@@ -143,7 +143,7 @@
 	<div class="single-jog page">
 		<div class="overlay"></div>
 		<div class="singleView">
-			<h3>Update Jog</h3>
+			<h3 id="updateHeading"></h3>
 			<div>
 				<form name="jogEditForm">
 					<ul class="formdefault singleForm">
@@ -166,7 +166,9 @@
 							<input type="text" id="updateTime" name="updateTime" class="field"/>
 						</li>
 						<li style="margin-top: 15px;">
-							<input type="submit" value="Submit"/>&nbsp;&nbsp;&nbsp;<input id="singleCancel" type="button" value="Cancel"/>
+							<input id="singleSubmit" type="submit" value=""/>&nbsp;&nbsp;
+							<input id="singleDelete" type="button" value="Delete"/>&nbsp;&nbsp;
+							<input id="singleCancel" type="button" value="Cancel"/>
 						</li>
 					</ul>
 				</form>

@@ -517,6 +517,8 @@ $(document).ready(function()
 		
 		if (jogIndex == 0)  // 0 indicates a new jog should be created.
 		{
+			$("#updateHeading").text("Create Jog");
+			$("#singleSubmit").val("Create");
 			$("#userSelectControl").empty();
 			$("#updateDate").val("");
 			$("#updateDistance").val("");
@@ -524,6 +526,9 @@ $(document).ready(function()
 		}
 		else if (jogs.length > 0)  // Otherwise, an existing jog will be updated.
 		{
+			$("#updateHeading").text("Update Jog");
+			$("#singleSubmit").val("Update");
+			
 			// Find the jog by iterating through the data object and searching for the chosen index.
 			jogs.forEach(function(jog)
 			{
