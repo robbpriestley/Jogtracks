@@ -3,19 +3,19 @@ using Microsoft.AspNetCore.Http;
 
 namespace DigitalWizardry.Jogtracks
 {
-    public class ServiceLogRepository: IServiceLogRepository
-    {		
+	public class ServiceLogRepository: IServiceLogRepository
+	{		
 		public ServiceLogContext Context { get; set; }
 		
 		public ServiceLogRepository(ServiceLogContext context)
-        {
-            Context = context;
-        }
+		{
+			Context = context;
+		}
 		
 		public void Access(HttpRequest request, string message, string userId)
-        {
+		{
 			Add(ServiceLogType.ACCESS, request, message, null, userId);
-        }
+		}
 
 		public void SignUp(HttpRequest request, string message, string userId)
 		{
@@ -28,9 +28,9 @@ namespace DigitalWizardry.Jogtracks
 		}
 
 		public void Error(HttpRequest request, string message, string caller, string userId)
-        {
+		{
 			Add(ServiceLogType.ERROR, request, message, caller, userId);
-        }
+		}
 		
 		public void Test(HttpRequest request, string message, string userId)
 		{
@@ -54,9 +54,9 @@ namespace DigitalWizardry.Jogtracks
 			ServiceLog log = new ServiceLog(type, path, message, userId);
 			
 			Context.ServiceLog.Add(log);
-            Context.SaveChanges();
+			Context.SaveChanges();
 			
 			Console.WriteLine("*** LOG MESSAGE *** UtcTime: " + log.UtcTime + " Type: " + type.ToString() + " Path: " + path + " Message: " + message + " UserId: " + userId);
 		}
-    }
+	}
 }

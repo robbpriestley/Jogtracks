@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DigitalWizardry.Jogtracks
 {
-    class TestJog
+	class TestJog
 	{
 		public DateTime Date;
 		public decimal Distance;
@@ -12,9 +12,9 @@ namespace DigitalWizardry.Jogtracks
 	}
 	
 	public static class TestDataGenerator
-    {
-        public static void Generate(string userName)
-        {	
+	{
+		public static void Generate(string userName)
+		{	
 			List<TestJog> jogs = new List<TestJog>();
 
 			Random r = new Random();
@@ -49,6 +49,6 @@ namespace DigitalWizardry.Jogtracks
 				string script = "curl -s -u ${BASICAUTH} --request POST http://0.0.0.0:5000/api/jogs/add -H \"Content-Type: application/json\" -d '{ \"Token\": \"'\"${" + userName.ToUpper() + "TOKEN}\"'\", \"UserName\": \"" + userName + "\", \"Date\": \"" + jog.Date + "\", \"Distance\": " + jog.Distance + ", \"Time\": " + jog.Time + " }' > /dev/null";
 				Console.WriteLine(script);
 			}
-        }
-    }
+		}
+	}
 }

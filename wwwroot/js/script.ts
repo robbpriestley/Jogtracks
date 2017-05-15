@@ -11,7 +11,7 @@ interface IDictionary
 
 interface JQueryStatic
 {
-    validator: any;
+	validator: any;
 };
 
 interface IJogData
