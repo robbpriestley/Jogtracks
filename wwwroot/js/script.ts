@@ -498,7 +498,7 @@ $(document).ready(function()
 		$("#dateFrom").val("");
 		$("#dateTo").val("");
 		
-		LoadJogsTotal(fromDate, toDate);
+		LoadJogsTotal();
 
 		let page: JQuery = $(".all-jogs");
 		page.addClass("visible");
@@ -845,11 +845,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "POST",
-			dataType: "json",
-			data: JSON.stringify({ UserName: username, Password: password, AccountType: accountType }),
-			contentType: "application/json",
 			url: "/api/auth/signup",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ UserName: username, Password: password, AccountType: accountType }),
+			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -875,11 +875,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "POST",
-			dataType: "json",
-			data: JSON.stringify({ UserName: username, Password: password }),
-			contentType: "application/json",
 			url: "/api/auth/signin",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ UserName: username, Password: password }),
+			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -947,8 +947,8 @@ $(document).ready(function()
 			ajax: 
 			{
 				url: "/api/coaches",
-				dataType: "json",
 				type: "GET",
+				dataType: "json",
 				headers: BasicAuth,
 				data: function(params: any) 
 				{
@@ -979,9 +979,9 @@ $(document).ready(function()
 			ajax: 
 			{
 				url: "/api/accounts",
-				dataType: "json",
 				type: "GET",
 				headers: BasicAuth,
+				dataType: "json",
 				data: function(params: any) 
 				{
 					var queryParameters = { token: localStorage.getItem("token") }
@@ -1022,10 +1022,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "POST",
-			data: JSON.stringify({ Token: token, Password: password }),
-			contentType: "application/json",
 			url: "/api/auth/changepassword",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ Token: token, Password: password }),
+			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1095,10 +1096,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "PATCH",
-			data: JSON.stringify({ Token: localStorage.getItem("token"), Coach: coach }),
-			contentType: "application/json",
 			url: "/api/coachpatch",
+			type: "PATCH",
+			contentType: "application/json",
+			data: JSON.stringify({ Token: localStorage.getItem("token"), Coach: coach }),
+			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1124,11 +1126,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "GET",
-			dataType: "json",
-			data: { token: token },
-			contentType: "application/json",
 			url: "/api/jogs",
+			type: "GET",
+			contentType: "application/json",
+			data: { token: token },
+			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1151,11 +1153,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "GET",
-			dataType: "json",
-			data: { token: token, fromDate: fromDate, toDate: toDate },
-			contentType: "application/json",
 			url: "/api/jogsfilter",
+			type: "GET",
+			contentType: "application/json",
+			data: { token: token, fromDate: fromDate, toDate: toDate },
+			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1172,11 +1174,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "GET",
-			dataType: "json",
-			data: { Token: token },
-			contentType: "application/json",
 			url: "/api/jogs/total",
+			type: "GET",
+			contentType: "application/json",
+			data: { Token: token },
+			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1244,11 +1246,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "POST",
-			dataType: "text",
-			data: JSON.stringify(input),
-			contentType: "application/json",
 			url: "/api/jogs/add",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(input),
+			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1265,11 +1267,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "PUT",
-			dataType: "text",
-			data: JSON.stringify(input),
-			contentType: "application/json",
 			url: "/api/jogs/update",
+			type: "PUT",
+			contentType: "application/json",
+			data: JSON.stringify(input),
+			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
 			{
@@ -1288,11 +1290,11 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			type: "POST",
-			dataType: "text",
-			data: JSON.stringify({ Token: token, Id: jogId }),
-			contentType: "application/json",
 			url: "/api/jogs/delete",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ Token: token, Id: jogId }),
+			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
 			{
