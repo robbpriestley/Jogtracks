@@ -24,7 +24,7 @@
 	<div class="auth page">
 		<div id="authMessage" class="message"></div>
 		<div class="group">
-			<form name="authForm">
+			<form name="authForm" autocomplete="off">
 				<ul class="formdefault">
 					<li id="accountType">
 						<label>Account Type <span class="required">*</span></label>
@@ -61,7 +61,7 @@
 		<div id="coachGroup" class="group">
 			<div class="messageLeft">Coach</div>
 			<div id="changeCoachMessage" class="messageColor" style="display: none;">Your changes have been saved!</div>
-			<form name="coachForm">
+			<form name="coachForm" autocomplete="off">
 				<ul class="formdefault">
 					<label><input id="noCoach" type="radio" name="coach" value="noCoach" checked> I don't want to use a coach</label>
 					<label><input id="useCoach" type="radio" name="coach" value="useCoach"> I want to use a coach</label>
@@ -79,7 +79,7 @@
 		<div class="group">
 			<div class="messageLeft">Change Password</div>
 			<div id="changePasswordMessage" class="messageColor" style="display: none;">Your password has been changed!</div>
-			<form name="changePasswordForm">
+			<form name="changePasswordForm" autocomplete="off">
 				<ul class="formdefault">
 					<li>
 						<label>New Password <span class="required">*</span></label>
@@ -103,7 +103,7 @@
 			<button id="newJog">Add New Jog</button>
 		</div>
 		<div class="controls filter">
-			<form>
+			<form autocomplete="off">
 				<span>Date Filter</span>
 				<label><input id="fromDate" type="text"> From Date</label>
 				<label><input id="toDate" type="text"> To Date</label>
@@ -145,7 +145,7 @@
 		<div class="singleView">
 			<h3 id="updateHeading"></h3>
 			<div>
-				<form name="jogEditForm">
+				<form name="jogEditForm" autocomplete="off">
 					<ul class="formdefault singleForm">
 						<input type="hidden" id="updateId"/>
 						<li id="userSelect">
