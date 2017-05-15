@@ -1166,7 +1166,7 @@ $(document).ready(function()
 		});
 	}
 
-	function LoadJogsTotal(fromDate: string, toDate: string): void
+	function LoadJogsTotal(): void
 	{
 		let token: string | null = localStorage.getItem("token");
 		
@@ -1174,9 +1174,9 @@ $(document).ready(function()
 		({
 			type: "GET",
 			dataType: "json",
-			data: { token: token, fromDate: fromDate, toDate: toDate  },
+			data: { Token: token },
 			contentType: "application/json",
-			url: "/api/jogstotal",
+			url: "/api/jogs/total",
 			headers: BasicAuth,
 			success: function(result) 
 			{

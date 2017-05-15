@@ -492,7 +492,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#region Jogs: Jog Total Count
 
 		[HttpGet]
-		[Route("jogstotal")]
+		[Route("jogs/total")]
 		public IActionResult JogsTotal(string token)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
