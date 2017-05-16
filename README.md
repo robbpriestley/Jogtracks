@@ -1,5 +1,3 @@
-##Jogtracks
-
 ### Overview
 **Jogtracks** is a web application that tracks jogging times for users. It allows users to CRUD (create, read, update, and delete) jog data records. Each jog record consists of date, distance, time (duration), and average speed.
 
