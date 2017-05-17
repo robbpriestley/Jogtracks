@@ -5,7 +5,7 @@ Jog records are displayed to the user in a view and can be filtered by date rang
 
 Ordinary **jogger** users can be managed by **coach** users. A coach user has the ability to CRUD not only their own jog records, but those of jogger users who have selected them as their coach (via the **Settings** page). Also, special **admin** users can CRUD all jog records in the system as well as their own.
 
-### Quick Start
+### Functional Demo
 
 * Visit the functional demo application at [http://www.digitalwizardry.ca:5001](http://www.digitalwizardry.ca:5001)
 * Log in with admin user **Juan** and password **qqqqqqqq**
