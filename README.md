@@ -49,7 +49,7 @@ The REST endpoints are as follows:
 * GET /api/jogs
 * GET /api/jogsfilter
 * GET /api/jogs/total
-* POST /api/jogs/add
+* POST /api/jog
 * PUT /api/jogs/update
 * POST /api/jogs/delete
 * GET /api/accounts

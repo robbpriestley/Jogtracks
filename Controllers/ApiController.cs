@@ -665,7 +665,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#region Jogs: Jog Add and Update
 
 		[HttpPost]
-		[Route("jogs/add")]
+		[Route("jog")]
 		public IActionResult JogAdd([FromBody] JogInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))

@@ -1260,7 +1260,7 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			url: "/api/jogs/add",
+			url: "/api/jog",
 			type: "POST",
 			contentType: "application/json",
 			data: JSON.stringify(input),
