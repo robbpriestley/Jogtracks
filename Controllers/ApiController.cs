@@ -710,7 +710,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		[HttpPut]
-		[Route("jogs/update")]
+		[Route("jog")]
 		public IActionResult JogUpdate([FromBody] JogInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))

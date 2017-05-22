@@ -1291,7 +1291,7 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			url: "/api/jogs/update",
+			url: "/api/jog",
 			type: "PUT",
 			contentType: "application/json",
 			data: JSON.stringify(input),
