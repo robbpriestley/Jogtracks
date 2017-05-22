@@ -1324,8 +1324,8 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			url: "/api/jogs/delete",
-			type: "POST",
+			url: "/api/jog",
+			type: "DELETE",
 			contentType: "application/json",
 			data: JSON.stringify({ Token: token, Id: jogId }),
 			dataType: "text",

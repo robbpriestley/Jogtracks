@@ -780,8 +780,8 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		#endregion
 		#region Jogs: Jog Total Count
 
-		[HttpPost]
-		[Route("jogs/delete")]
+		[HttpDelete]
+		[Route("jog")]
 		public IActionResult JogDelete([FromBody] JogInput jogInput)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
