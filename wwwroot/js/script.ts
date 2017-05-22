@@ -641,6 +641,7 @@ $(document).ready(function()
 			{
 				required: true,
 				number: true,
+				min: 0,
 				max: 1000
 			},
 			updateTime:
