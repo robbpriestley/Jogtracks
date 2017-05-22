@@ -87,7 +87,6 @@ $(document).ready(function()
 	{
 		SignOut();
 		$("#confirm").show();
-		$("#accountType").show();
 		$("#authMessage").text("Create an account");
 		window.location.hash = "#signup";
 		return false;
@@ -97,7 +96,6 @@ $(document).ready(function()
 	{
 		SignOut();
 		$("#confirm").hide();
-		$("#accountType").hide();
 		$("#authMessage").text("Sign in to your account");
 		window.location.hash = "#signin";
 		return false;
@@ -587,8 +585,7 @@ $(document).ready(function()
 			
 			if (keyword == "#signup")
 			{
-				let accountType: string = $("input[name=accountType]:checked").val();
-				SignUp(username, password, accountType);
+				SignUp(username, password);
 			}
 			else if (keyword == "#signin")
 			{
@@ -840,7 +837,7 @@ $(document).ready(function()
 		window.location.hash = "#jogs";
 	}
 
-	function SignUp(username: string, password: string, accountType: string): void
+	function SignUp(username: string, password: string): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
@@ -850,7 +847,7 @@ $(document).ready(function()
 			url: "/api/auth/signup",
 			type: "POST",
 			contentType: "application/json",
-			data: JSON.stringify({ UserName: username, Password: password, AccountType: accountType }),
+			data: JSON.stringify({ UserName: username, Password: password }),
 			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 
@@ -1195,7 +1192,7 @@ $(document).ready(function()
 		
 		if (localStorage.getItem("accountType") == "JOGGER")
 		{
-			// Jogger users do not see a user select control, and the userName is alwaus their own.
+			// Jogger users do not see a user select control, and the userName is always their own.
 			userName = localStorage.getItem("userName");
 		}
 		else if ($("#userSelectControl").val() == null)

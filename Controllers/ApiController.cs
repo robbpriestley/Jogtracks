@@ -112,7 +112,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					user.Salt = hashData.Salt;
 					user.Hash = hashData.Hash;
 					user.Token = Guid.NewGuid();
-					user.AccountType = signUpData.AccountType;
+					user.AccountType = "JOGGER";  // Sign ups are always Joggers. They can be promoted by admins and by coaches.
 					Accounts.Add(user);
 
 					user.UserColor = DetermineUserColor(user.Id);  // User colour is determined by Id to enforce cycling of colors.
