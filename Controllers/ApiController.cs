@@ -399,7 +399,55 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 		
 		#endregion
-		#region Jogs: Jog List
+		#region Jogs
+
+		[HttpGet]
+		[Route("jog")]
+		public IActionResult Jog(int id, string token)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+			
+			JogOutput jogOutput = null;
+
+			try
+			{			
+				jogOutput = new JogOutput();
+				
+				Jog jog = Jogs.GetById(id);
+
+				jogOutput.Id = jog.Id;
+				jogOutput.UserName = user.UserName;
+				jogOutput.UserColor = user.UserColor;
+				jogOutput.Date = JogOutput.DateStringCalc(jog.Date);
+				jogOutput.Year = jog.Date.Year;
+				jogOutput.Month = jog.Date.Month;
+				jogOutput.Day = jog.Date.Day;
+				jogOutput.Week = JogOutput.WeekOfYearCalc(jog.Date);
+				jogOutput.Distance = jog.Distance;
+				jogOutput.Time = jog.Time;
+				jogOutput.TimeString = JogOutput.TimeStringCalc(jog.Time);
+				jogOutput.AverageSpeed = jog.AverageSpeed;
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.JogsList()", token);
+				return new StatusCodeResult(500);
+			}
+
+			return Utility.JsonObjectResult(jogOutput);
+		}
 
 		[HttpGet]
 		[Route("jogs")]
