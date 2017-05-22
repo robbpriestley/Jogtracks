@@ -86,6 +86,8 @@ When a user authenticates, they are issued a token, which is saved to the browse
 
 Also, the REST API is protected by basic authentication, which would prevent a casual attack on the API endpoints. As well the credentials for the database and other sensitive items of data are stored in a file, secrets.json, which is not stored in version control and is thus not openly readable.
 
+Additionally, account passwords are not stored in the database, rather salts and hashes are. Native .NET cryptography modules handle the hash generation.
+
 Please keep in mind that in a true production environment, the web application would be served via HTTPS. Otherwise usernames, passwords, and other data would be transmitted from the client to the server in plaintext. As this project is currently for demonstration purposes only, the application is not served via HTTPS.
 
 A full security audit would be warranted if this application were to become a full-fledged production system that aimed to protect user data and prevent unauthorized access. This application has at least one vulnerability that would be fairly easy for an attacker to exploit (jog update requires a numeric integer ID value which could be guessed).
