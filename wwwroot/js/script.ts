@@ -1167,10 +1167,10 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			url: "/api/jogsfilter",
+			url: "/api/jogs/filter",
 			type: "GET",
 			contentType: "application/json",
-			data: { token: token, fromDate: fromDate, toDate: toDate },
+			data: { fromDate: fromDate, toDate: toDate, token: token },
 			dataType: "json",
 			headers: BasicAuth,
 			success: function(result) 

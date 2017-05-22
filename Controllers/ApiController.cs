@@ -514,8 +514,8 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		[HttpGet]
-		[Route("jogsfilter")]
-		public IActionResult JogsListFilter(string token, string fromDate, string toDate)
+		[Route("jogs/filter")]
+		public IActionResult JogsListFilter(string fromDate, string toDate, string token)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{

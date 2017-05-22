@@ -47,7 +47,7 @@ The REST endpoints are as follows:
 
 * GET /api/jog
 * GET /api/jogs
-* GET /api/jogsfilter
+* GET /api/jogs/filter
 * GET /api/jogs/total
 * POST /api/jog
 * PUT /api/jog
