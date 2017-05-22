@@ -3,6 +3,7 @@
 		<span id="user" class="user" style="display:none;">Welcome, User!</span>
 		<a id="signup" href="">Sign Up</a>
 		<a id="signin" href="">Sign In</a>
+		<a id="accounts" href="" style="display:none;">Accounts</a>
 		<a id="settings" href="" style="display:none;">Settings</a>
 		<a id="signout" href="" style="display:none;">Sign Out</a>
 	</h2>
@@ -45,6 +46,35 @@
 				</ul>
 			</form>
 		</div>
+	</div>
+
+	<div class="accounts page">
+		<div class="message">Accounts</div>
+		<div class="group">
+			<div class="messageLeft">Add Account</div>
+			<div id="addAccountMessage" class="messageColor" style="display: none;"></div>
+			<form name="addAccountForm" autocomplete="off">
+				<ul class="formdefault">
+					<li>
+						<label>Username <span class="required">*</span></label>
+						<input type="text" id="aausername" name="aausername" class="field"/>
+						<label id="aausername-taken" style="display: none;" class="error"></label>
+					</li>
+					<li>
+						<label>Password <span class="required">*</span></label>
+						<input type="password" id="aapassword" name="aapassword" class="field"/>
+					</li>
+					<li id="confirm">
+						<label>Confirm Password <span class="required">*</span></label>
+						<input type="password" id="aacpassword" name="aacpassword" class="field"/>
+					</li>
+					<li>
+						<input type="submit" value="Submit"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<div><a id="accountsDone" href="">Done</a></div>
 	</div>
 
 	<div class="settings page">

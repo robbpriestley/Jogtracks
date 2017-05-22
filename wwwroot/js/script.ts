@@ -114,6 +114,19 @@ $(document).ready(function()
 		window.location.hash = "#jogs";
 		return false;
 	});
+
+	$("#accounts").click(function(e) 
+	{
+		Accounts();
+		return false;
+	});
+
+	$("#accountsDone").click(function(e) 
+	{
+		window.scrollTo(0, 0);
+		window.location.hash = "#jogs";
+		return false;
+	});
 	
 	$("#signout").click(function(e) 
 	{
@@ -126,6 +139,11 @@ $(document).ready(function()
 	$("#username").on("change keyup keydown click paste", function()
 	{
 		$("#username-taken").css("display", "none");
+	});
+
+	$("#aausername").on("change keyup keydown click paste", function()
+	{
+		$("#aausername-taken").css("display", "none");
 	});
 
 	$("input[name=coach]").on("change", (function(e) 
@@ -271,6 +289,10 @@ $(document).ready(function()
 				RenderAuthPage();
 				break;
 
+			case "#accounts":
+				RenderAccountsPage();
+				break;
+
 			case "#settings":
 				RenderSettingsPage();
 				break;
@@ -382,6 +404,15 @@ $(document).ready(function()
 		var page = $(".auth");
 		page.addClass("visible");
 		page.css("pointer-events", "auto");
+		ShowHeaderComponents(true);
+	}
+
+	function RenderAccountsPage(): void
+	{
+		var page = $(".accounts");
+		page.addClass("visible");
+		page.css("pointer-events", "auto");
+		
 		ShowHeaderComponents(true);
 	}
 
@@ -592,6 +623,36 @@ $(document).ready(function()
 				SignIn(username, password);
 			}
 
+			return false;
+		}
+	});
+
+	$("form[name=addAccountForm]").validate(
+	{
+		rules: 
+		{
+			aausername:
+			{
+				required: true,
+				alphanumeric:true
+			},
+			aapassword:
+			{
+				minlength: 8,
+				required: true,
+				alphanumeric:true
+			},
+			aacpassword:
+			{
+				required: true,
+				equalTo: "#aapassword"
+			}
+		},
+		submitHandler: function(form: any)
+		{
+			let aausername: string = $("#aausername").val();
+			let aapassword: string = $("#aapassword").val();
+			AddAccount(aausername, aapassword);
 			return false;
 		}
 	});
@@ -817,6 +878,15 @@ $(document).ready(function()
 		$("#signin").hide();
 		$("#signout").show();
 		$("#settings").show();
+
+		if (localStorage.getItem("accountType") == "JOGGER")
+		{
+			$("#accounts").hide();
+		}
+		else
+		{
+			$("#accounts").show();
+		}
 	}
 	
 	function ServerAuthenticated(username: string, authOutput: any): void
@@ -827,6 +897,15 @@ $(document).ready(function()
 		$("#signin").hide();
 		$("#signout").show();
 		$("#settings").show();
+
+		if (authOutput.AccountType == "JOGGER")
+		{
+			$("#accounts").hide();
+		}
+		else
+		{
+			$("#accounts").show();
+		}
 
 		localStorage.setItem("token", authOutput.Token);
 		localStorage.setItem("coach", authOutput.Coach);
@@ -920,11 +999,13 @@ $(document).ready(function()
 		$("#signin").show();
 		$("#signout").hide();
 		$("#settings").hide();
+		$("#accounts").hide();
 
 		// *** BEGIN RESET FORMS ***
 		
 		$("#jogger").prop("checked", true);
 		$("#username-taken").css("display", "none");
+		$("#aausername-taken").css("display", "none");
 		
 		$("form[name=authForm]").validate().resetForm();
 		$("form[name=coachForm]").validate().resetForm();
@@ -934,6 +1015,9 @@ $(document).ready(function()
 		$("#username").val("");
 		$("#password").val("");
 		$("#cpassword").val("");
+		$("#aausername").val("");
+		$("#aapassword").val("");
+		$("#aacpassword").val("");
 		$("#changePassword").val("");
 		$("#changecPassword").val("");
 		
@@ -943,6 +1027,48 @@ $(document).ready(function()
 
 		$("#noCoach").prop("checked", true);
 		ClearStorage();
+	}
+
+	function AddAccount(username: string, password: string): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			url: "/api/auth/signup",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ UserName: username, Password: password }),
+			dataType: "json",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				if (result == undefined)
+				{
+					spinner.stop();
+					$("#aausername-taken").text("Sorry, that username is already taken");
+					$("#aausername-taken").css("display", "inherit");
+				}
+				else if (result.ValidationMessage != null)
+				{
+					// Server-side form validation failed.
+					spinner.stop();
+					sessionStorage.setItem("errorMessage", result.ValidationMessage);
+					window.location.hash = "#error";				
+				}
+				else
+				{
+					spinner.stop();
+					$("#aausername").val("");
+					$("#aapassword").val("");
+					$("#aacpassword").val("");
+					$("#addAccountMessage").text("Added account " + username + "!");
+					$("#addAccountMessage").show();
+					setTimeout(function() { $("#addAccountMessage").fadeOut(); }, 3000);					
+				}
+			}
+		});
 	}
 
 	function InitializeSelectControls(): void
@@ -1051,6 +1177,18 @@ $(document).ready(function()
 	}
 
 	// *** END REST AUTHENTICATION ***
+	// *** BEGIN ACCOUNTS ***
+
+	function Accounts(): void
+	{
+		// Clear the jogs list.
+		let jogList: JQuery = $(".all-jogs .jogs-list");
+		jogList.html("");
+
+		window.location.hash = "#accounts";
+	}
+
+	// *** END ACCOUNTS ***
 	// *** BEGIN SETTINGS ***
 
 	function Settings(): void

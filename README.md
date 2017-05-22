@@ -132,6 +132,7 @@ This project was completed in only a few days and as such there are numerous way
   * Only letters, numbers, and underscores for password.
   * Minimum 8 characters for password.
   * Password and confirm password must match.
+  * If the user chooses a username that has already been taken, the validation message "Sorry, that username is already taken" is displayed.
 * After successful sign up:
   * A "Welcome, user!" message should appear in the header. 
   * The **Sign Up** and **Sign In** buttons should be replaced with **Settings** and **Sign Out** buttons.
@@ -150,9 +151,15 @@ This project was completed in only a few days and as such there are numerous way
   * The **jogs** page should be displayed.
   * The browser **localSettings** should contain token, accountType, coach, token, and userName fields.
 
+**Accounts**
+
+* Accounts button in header menu is only visible to **coach** and **admin** account types.
+* The **Add Account** control should functions identically to the **Sign Up** control (see above) with the exception that on successful add, the page does not change and a success message is shown.
+* 
+
 **Settings**
 
-* Account Type should be determined by user.
+* **Account Type** should be determined by user.
 * **Coach** select control group:
   * The control group should be hidden for **coach** and **admin** user account types as it is irrelevant.
   * The control group should appear and be properly populated with any previously-selected coach if the user is a **jogger** user account type.
