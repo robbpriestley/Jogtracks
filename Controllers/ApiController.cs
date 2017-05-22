@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DigitalWizardry.Jogtracks.Controllers
 {
@@ -62,6 +63,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			public string Coach { get; set; }
 			public string Token { get; set; }
 			public string UserName { get; set; }
+			public string ValidationMessage { get; set; }
 
 			public AuthOutput(string token, string accountType, string userName, string coach)
 			{
@@ -69,6 +71,11 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				Coach = coach;
 				UserName = userName;
 				AccountType = accountType;
+			}
+			
+			public AuthOutput(string validationMessage)
+			{
+				ValidationMessage = validationMessage;
 			}
 		}
 
@@ -79,12 +86,11 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		{
 			public string UserName { get; set; }
 			public string Password { get; set; }
-			public string AccountType { get; set; }
 		}
 
 		[HttpPost]
 		[Route("auth/signup")]
-		public IActionResult SignUp([FromBody] SignUpInput signUpData)
+		public IActionResult SignUp([FromBody] SignUpInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -95,20 +101,22 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
+				ValidateSignUpInput(input);
+				
 				try
 				{
-					Accounts.GetByUserName(signUpData.UserName);
+					Accounts.GetByUserName(input.UserName);
 					// This is bad. The account already exists. Reject the sign up by returning 204 code.
-					ServiceLogs.SignUp(Request, "ERROR: Account Exists", signUpData.UserName);
+					ServiceLogs.SignUp(Request, "ERROR: Account Exists", input.UserName);
 					return new StatusCodeResult(204);
 				}
 				catch (System.InvalidOperationException)
 				{
 					// This is good. The account doesn't exist yet. Create the account and return token.
-					HashData hashData = HashPassword(signUpData.Password);
+					HashData hashData = HashPassword(input.Password);
 					
 					Account user = new Account();
-					user.UserName = signUpData.UserName;
+					user.UserName = input.UserName;
 					user.Salt = hashData.Salt;
 					user.Hash = hashData.Hash;
 					user.Token = Guid.NewGuid();
@@ -120,16 +128,43 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, null);  // Coach is always null on new sign up.
 					
-					ServiceLogs.SignUp(Request, signUpData.AccountType, signUpData.UserName);
+					ServiceLogs.SignUp(Request, "JOGGER", input.UserName);
 				}
+			}
+			catch (ValidationException ve)
+			{
+				authOutput = new AuthOutput(ve.Message);
+				ServiceLogs.Error(Request, "[VALIDATION] " + ve.ToString(), "ApiController.SignUp()", input == null ? null : input.UserName);
 			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignUp()", signUpData == null ? null : signUpData.UserName);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignUp()", input == null ? null : input.UserName);
 				return new StatusCodeResult(500);
 			}
 
 			return Utility.JsonObjectResult(authOutput);
+		}
+
+		private void ValidateSignUpInput(SignUpInput input)
+		{
+			Regex r = new Regex("^[a-zA-Z0-9]*$");
+	
+			if (input.UserName == null || input.Password == null)
+			{
+				throw new ValidationException("Both username and password must be provided.");
+			}
+			else if (!r.IsMatch(input.UserName))
+			{
+				throw new ValidationException("Username must be alphanumeric.");
+			}
+			else if (!r.IsMatch(input.Password))
+			{
+				throw new ValidationException("Password must be alphanumeric.");
+			}
+			else if (input.Password.Length < 8)
+			{
+				throw new ValidationException("Password must be at least 8 characters long.");
+			}
 		}
 
 		private string DetermineUserColor(int id)
@@ -161,7 +196,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		
 		[HttpPost]
 		[Route("auth/signin")]
-		public IActionResult SignIn([FromBody] SignInInput signInData)
+		public IActionResult SignIn([FromBody] SignInInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -172,16 +207,18 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
+				ValidateSignInInput(input);
+				
 				try
 				{
-					Account user = Accounts.GetByUserName(signInData.UserName);
+					Account user = Accounts.GetByUserName(input.UserName);
 					
-					string hash = HashPassword(user.Salt, signInData.Password);
+					string hash = HashPassword(user.Salt, input.Password);
 
 					if (user.Hash != hash)
 					{
 						// This is bad. The password doesn't match. Reject the sign in by returning 204 code.
-						ServiceLogs.SignIn(Request, "ERROR: Bad Password", signInData.UserName);
+						ServiceLogs.SignIn(Request, "ERROR: Bad Password", input.UserName);
 						return new StatusCodeResult(204);
 					}
 
@@ -190,22 +227,49 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, user.Coach);
 					
-					ServiceLogs.SignIn(Request, user.Token.ToString(), signInData.UserName);
+					ServiceLogs.SignIn(Request, user.Token.ToString(), input.UserName);
 				}
 				catch (System.InvalidOperationException)
 				{
 					// The user's account doesn't exist. Reject the request by returning 500 code.
-					ServiceLogs.SignIn(Request, "ERROR: Account Doesn't Exist", signInData.UserName);
+					ServiceLogs.SignIn(Request, "ERROR: Account Doesn't Exist", input.UserName);
 					return new StatusCodeResult(204);
 				}
 			}
+			catch (ValidationException ve)
+			{
+				authOutput = new AuthOutput(ve.Message);
+				ServiceLogs.Error(Request, "[VALIDATION] " + ve.ToString(), "ApiController.SignIn()", input == null ? null : input.UserName);
+			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignIn()", signInData == null ? null : signInData.UserName);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SignIn()", input == null ? null : input.UserName);
 				return new StatusCodeResult(500);
 			}
 
 			return Utility.JsonObjectResult(authOutput);
+		}
+
+		private void ValidateSignInInput(SignInInput input)
+		{
+			Regex r = new Regex("^[a-zA-Z0-9]*$");
+	
+			if (input.UserName == null || input.Password == null)
+			{
+				throw new ValidationException("Both username and password must be provided.");
+			}
+			else if (!r.IsMatch(input.UserName))
+			{
+				throw new ValidationException("Username must be alphanumeric.");
+			}
+			else if (!r.IsMatch(input.Password))
+			{
+				throw new ValidationException("Password must be alphanumeric.");
+			}
+			else if (input.Password.Length < 8)
+			{
+				throw new ValidationException("Password must be at least 8 characters long.");
+			}
 		}
 
 		#endregion
@@ -219,7 +283,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		[HttpPost]
 		[Route("auth/changepassword")]
-		public IActionResult ChangePassword([FromBody] ChangePasswordInput changePasswordData)
+		public IActionResult ChangePassword([FromBody] ChangePasswordInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -228,11 +292,13 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
+				ValidateChangePasswordInput(input);
+				
 				try
 				{
-					HashData hashData = HashPassword(changePasswordData.Password);
+					HashData hashData = HashPassword(input.Password);
 					
-					Account user = Accounts.GetByToken(Guid.Parse(changePasswordData.Token));
+					Account user = Accounts.GetByToken(Guid.Parse(input.Token));
 					user.Salt = hashData.Salt;
 					user.Hash = hashData.Hash;
 					Accounts.Update(user);
@@ -242,17 +308,40 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				catch (System.InvalidOperationException)
 				{
 					// The user's account doesn't exist. Reject the request by returning 500 code.
-					ServiceLogs.Access(Request, "ERROR: Account Doesn't Exist", changePasswordData.Token);
+					ServiceLogs.Access(Request, "ERROR: Account Doesn't Exist", input.Token);
 					return new StatusCodeResult(204);
 				}
 			}
+			catch (ValidationException ve)
+			{
+				ServiceLogs.Error(Request, "[VALIDATION] " + ve.ToString(), "ApiController.ChangePassword()", null);
+				return new StatusCodeResult(204);
+			}
 			catch (System.Exception e)
 			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.ChangePassword()", changePasswordData.Token);
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.ChangePassword()", input.Token);
 				return new StatusCodeResult(500);
 			}
 
 			return new ObjectResult("SUCCESS");
+		}
+
+		private void ValidateChangePasswordInput(ChangePasswordInput input)
+		{
+			Regex r = new Regex("^[a-zA-Z0-9]*$");
+	
+			if (input.Password == null)
+			{
+				throw new ValidationException("Password must be provided.");
+			}
+			else if (!r.IsMatch(input.Password))
+			{
+				throw new ValidationException("Password must be alphanumeric.");
+			}
+			else if (input.Password.Length < 8)
+			{
+				throw new ValidationException("Password must be at least 8 characters long.");
+			}
 		}
 
 		#endregion
@@ -525,18 +614,18 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		#endregion
-		#region Jogs: Jog Add
+		#region Jogs: Jog Add and Update
 
 		[HttpPost]
 		[Route("jogs/add")]
-		public IActionResult JogAdd([FromBody] JogInput jogInput)
+		public IActionResult JogAdd([FromBody] JogInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
-			Account user = GetUser(jogInput.Token);
+			Account user = GetUser(input.Token);
 
 			if (user == null)
 			{
@@ -547,14 +636,21 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
+				ValidateJogInput(input);
+				
 				Jog jog = new Jog();
-				jog.UserName = jogInput.UserName;
+				jog.UserName = input.UserName;
 				jog.UpdatedBy = user.UserName;
-				jog.Date = DateTime.Parse(jogInput.Date);
-				jog.Distance = jogInput.Distance;
-				jog.Time = jogInput.Time;
+				jog.Date = DateTime.Parse(input.Date);
+				jog.Distance = input.Distance;
+				jog.Time = input.Time;
 				jog.AverageSpeed = (decimal)((double)jog.Distance / ((double)jog.Time / 3600.0d));
 				Jogs.Add(jog);
+			}
+			catch (ValidationException ve)
+			{
+				ServiceLogs.Error(Request, "[VALIDATION] " + ve.ToString(), "ApiController.JogAdd()", user.UserName);
+				return new ObjectResult(ve.Message);
 			}
 			catch (System.Exception e)
 			{
@@ -565,19 +661,16 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			return new ObjectResult("SUCCESS");
 		}
 
-		#endregion
-		#region Jogs: Jog Update
-
 		[HttpPut]
 		[Route("jogs/update")]
-		public IActionResult JogUpdate([FromBody] JogInput jogInput)
+		public IActionResult JogUpdate([FromBody] JogInput input)
 		{
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
 				return new UnauthorizedResult();
 			}
 
-			Account user = GetUser(jogInput.Token);
+			Account user = GetUser(input.Token);
 
 			if (user == null)
 			{
@@ -588,14 +681,21 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
-				Jog jog = Jogs.GetById(jogInput.Id);
-				jog.UserName = jogInput.UserName;
+				ValidateJogInput(input);
+			
+				Jog jog = Jogs.GetById(input.Id);
+				jog.UserName = input.UserName;
 				jog.UpdatedBy = user.UserName;
-				jog.Date = DateTime.Parse(jogInput.Date);
-				jog.Distance = jogInput.Distance;
-				jog.Time = jogInput.Time;
+				jog.Date = DateTime.Parse(input.Date);
+				jog.Distance = input.Distance;
+				jog.Time = input.Time;
 				jog.AverageSpeed = (decimal)((double)jog.Distance / ((double)jog.Time / 3600.0d));
 				Jogs.Update(jog);
+			}
+			catch (ValidationException ve)
+			{
+				ServiceLogs.Error(Request, "[VALIDATION] " + ve.ToString(), "ApiController.SignUp()", user.UserName);
+				return new ObjectResult(ve.Message);
 			}
 			catch (System.Exception e)
 			{
@@ -605,6 +705,29 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			return new ObjectResult("SUCCESS");
 		}
+
+		private void ValidateJogInput(JogInput input)
+		{
+			if 
+			(
+				input.Date == null ||
+				input.Token == null ||
+				input.UserName == null
+				// Distance, Id, and Time are non-nullable fields.
+			)
+			{
+				throw new ValidationException("All jog data fields must be provided.");
+			}
+			else if (input.Distance < 0 || input.Distance > 1000)
+			{
+				throw new ValidationException("Distance must be in the range 0 to 1000.");
+			}
+			else if (input.Time < 0 || input.Time > 86400)
+			{
+				throw new ValidationException("Time in seconds must be in the range 0 to 86400.");
+			}
+		}
+
 
 		#endregion
 		#region Jogs: Jog Total Count
@@ -803,4 +926,9 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		#endregion
 	}
+}
+
+class ValidationException : Exception
+{
+	public ValidationException(string message) : base(message) {}
 }

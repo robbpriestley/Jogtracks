@@ -239,7 +239,7 @@ $(document).ready(function()
 	{
 		sessionStorage.removeItem("errorMessage");
 		window.scrollTo(0, 0);
-		window.location.hash = "#jogs";
+		window.location.hash = "#";
 		return false;
 	});
 
@@ -859,6 +859,13 @@ $(document).ready(function()
 					$("#username-taken").text("Sorry, that username is already taken");
 					$("#username-taken").css("display", "inherit");
 				}
+				else if (result.ValidationMessage != null)
+				{
+					// Server-side form validation failed.
+					spinner.stop();
+					sessionStorage.setItem("errorMessage", result.ValidationMessage);
+					window.location.hash = "#error";				
+				}
 				else
 				{
 					spinner.stop();
@@ -888,6 +895,13 @@ $(document).ready(function()
 					spinner.stop();
 					$("#username-taken").text("Bad username or password");
 					$("#username-taken").css("display", "inherit");
+				}
+				else if (result.ValidationMessage != null)
+				{
+					// Server-side form validation failed.
+					spinner.stop();
+					sessionStorage.setItem("errorMessage", result.ValidationMessage);
+					window.location.hash = "#error";				
 				}
 				else
 				{
@@ -1254,8 +1268,18 @@ $(document).ready(function()
 			headers: BasicAuth,
 			success: function(result) 
 			{
-				spinner.stop();
-				LoadJogsPageOrFilter(Filter);
+				if (result == "SUCCESS")
+				{
+					spinner.stop();
+					LoadJogsPageOrFilter(Filter);
+				}
+				else
+				{
+					// Server-side form validation failed.
+					spinner.stop();
+					sessionStorage.setItem("errorMessage", result);
+					window.location.hash = "#error";
+				}
 			}
 		});
 	}
@@ -1275,8 +1299,18 @@ $(document).ready(function()
 			headers: BasicAuth,
 			success: function(result) 
 			{
-				spinner.stop();
-				LoadJogsPageOrFilter(Filter);
+				if (result == "SUCCESS")
+				{
+					spinner.stop();
+					LoadJogsPageOrFilter(Filter);
+				}
+				else
+				{
+					// Server-side form validation failed.
+					spinner.stop();
+					sessionStorage.setItem("errorMessage", result);
+					window.location.hash = "#error";
+				}
 			}
 		});
 	}
