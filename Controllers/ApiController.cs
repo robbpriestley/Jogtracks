@@ -922,7 +922,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 		
 		[HttpPatch]
-		[Route("coachpatch")]
+		[Route("account/coach")]
 		public IActionResult CoachPatch([FromBody] CoachPatchInput coachPatchInput)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))

@@ -1110,7 +1110,7 @@ $(document).ready(function()
 		
 		$.ajax
 		({
-			url: "/api/coachpatch",
+			url: "/api/account/coach",
 			type: "PATCH",
 			contentType: "application/json",
 			data: JSON.stringify({ Token: localStorage.getItem("token"), Coach: coach }),

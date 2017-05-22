@@ -54,7 +54,7 @@ The REST endpoints are as follows:
 * DELETE /api/jog
 * GET /api/accounts
 * GET /api/coaches
-* PATCH /api/coachpatch
+* PATCH /api/account/coach
 * POST /api/auth/signup
 * POST /api/auth/signin
 * POST /api/auth/changepassword
