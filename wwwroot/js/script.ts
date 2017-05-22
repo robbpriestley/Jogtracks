@@ -810,11 +810,8 @@ $(document).ready(function()
 	}
 
 	function Authenticated(): void
-	{
-		let token: string | null = localStorage.getItem("token");
-		let userName: string | null = localStorage.getItem("userName");
-		
-		$("#user").text("Welcome, " + userName + "!");
+	{		
+		$("#user").text("Welcome, " + localStorage.getItem("userName") + "!");
 		$("#user").show();
 		$("#signup").hide();
 		$("#signin").hide();
