@@ -55,7 +55,6 @@ The REST endpoints are as follows:
 * GET /api/accounts
 * GET /api/coaches
 * DELETE /api/account
-* PATCH /api/account/coach
 * POST /api/auth/signup
 * POST /api/auth/signin
 * POST /api/auth/changepassword
