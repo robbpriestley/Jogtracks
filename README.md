@@ -3,7 +3,7 @@
 
 Jog records are displayed to the user in a view and can be filtered by date range. A **report** subsection of the view details average distance, time, and speed for all records currently displayed by the filter.
 
-Ordinary **jogger** users can be managed by **coach** users. A coach user has the ability to CRUD not only their own jog records, but those of jogger users who have selected them as their coach (via the **Settings** page). Also, special **admin** users can CRUD all jog records in the system as well as their own.
+Ordinary **jogger** users can be managed by **coach** users. A coach user has the ability to CRUD user records. Also, special **admin** users can CRUD all jog records in the system as well as user records.
 
 ### Functional Demo
 
@@ -13,11 +13,22 @@ Ordinary **jogger** users can be managed by **coach** users. A coach user has th
 ### Permission Levels
 There are three permission levels: user, manager, and administrator.
 
-**Jogger**: a jogger has **user permissions** and can CRUD their own jog records.
+**Jogger**: 
 
-**Coach**: a coach has **manager permissions** and can CRUD their own jog records as well as the jog records for any **Jogger** who has selected them as coach in the **Settings** page.
+* Has **user permissions** 
+* Can view and CRUD their own jog records
 
-**Administrator**: an administrator can CRUD their own jog records as well as the jog records for any user in the system.
+**Coach**:
+
+* Has **manager permissions**
+* Can view all jog records
+* Can CRUD all user records
+
+**Administrator**: 
+
+* Has **superuser permissions**
+* Can CRUD all jog records
+* Can CRUD all user records
 
 ### Technical Overview
 
@@ -60,7 +71,7 @@ The REST endpoints are as follows:
 * POST /api/auth/signin
 * POST /api/auth/changepassword
 
-Here is a working example REST call using cURL. Note the use of **basic authentication** and the query string containing a valid **token**. For more information on how this works, see the [Security Model](#security-model) section below.
+Here is a example REST call using cURL. Note the use of **basic authentication** and the query string containing a valid **token**. For more information on how this works, see the [Security Model](#security-model) section below. In order for this to work, a currently valid token would need to be supplied in the token parameter position.
 
 `curl -s -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request GET http://www.digitalwizardry.ca:5001/api/jogs?token=8239B176-1F3D-4172-A8BD-AA6CF293A753`
 
@@ -155,8 +166,13 @@ This project was completed in only a few days and as such there are numerous way
 **Accounts**
 
 * Accounts button in header menu is only visible to **coach** and **admin** account types.
-* The **Add Account** control should functions identically to the **Sign Up** control (see above) with the exception that on successful add, the page does not change and a success message is shown.
-* 
+* The **Add Account** control should function more-or-less identically to the **Sign Up** control (see above) with the exception that on successful add, the page does not change and a success message is shown.
+* The **Update Account Type** control should cause the account type selection determined by the radio buttons to update the user account record. A user must be selected. Success message fades out after 3 seconds.
+* The **Change Password** control should have good form validation and should function to change the password, with a confirmation message being displayed on **Submit** button click. A user must be selected. Message fades out after 3 seconds. Form validation criteria are as follows:
+  * Only letters, numbers, and underscores for password.
+  * Minimum 8 characters for password.
+  * Password and confirm password must match.
+* The **Delete Account** control should allow a user and all the user's associated jog records to be removed from the database. A user must be selected.
 
 **Settings**
 
@@ -165,7 +181,7 @@ This project was completed in only a few days and as such there are numerous way
   * The control group should be hidden for **coach** and **admin** user account types as it is irrelevant.
   * The control group should appear and be properly populated with any previously-selected coach if the user is a **jogger** user account type.
   * If the user is a **jogger**, the coach select control should populate on activation via AJAX call to the server with a list of valid coaches. The user should then be able to select a coach and persist the selection using the **Save Changes** button. Clicking the button causes a confirmation message to be displayed. Message fades out after 3 seconds.
-* **Password reset** control group should have good form validation and should function to change the password, with a confirmation message being displayed on **Submit** button click. Message fades out after 3 seconds. Form validation criteria are as follows:
+* **Change Password** control group should have good form validation and should function to change the password, with a confirmation message being displayed on **Submit** button click. Message fades out after 3 seconds. Form validation criteria are as follows:
   * Only letters, numbers, and underscores for password.
   * Minimum 8 characters for password.
   * Password and confirm password must match.
