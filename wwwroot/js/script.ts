@@ -1073,10 +1073,104 @@ $(document).ready(function()
 
 	function InitializeSelectControls(): void
 	{
+		$("#updateAccountSelectControl").empty();
+		$("#cpAccountSelectControl").empty();
+		$("#deleteAccountSelectControl").empty();
 		$("#coachSelectControl").empty();
 		$("#userSelectControl").empty();
 
 		// Annoyingly, the only way I could seem to empty the select controls was to re-initialize them.
+		
+		$("#updateAccountSelectControl").select2({
+			width: "400px",
+			placeholder: "Select a user",
+			dropdownCssClass : "no-search",
+			ajax: 
+			{
+				url: "/api/accounts",
+				type: "GET",
+				headers: BasicAuth,
+				dataType: "json",
+				data: function(params: any) 
+				{
+					var queryParameters = { token: localStorage.getItem("token") }
+					return queryParameters;
+				},
+				processResults: function(data: any) 
+				{
+					return {
+						results: $.map(data, function(user) 
+						{
+							return {
+								text: user.UserName,
+								id: user.UserName
+							}
+						})
+					};
+				}
+			}
+		});
+
+		$("#cpAccountSelectControl").select2({
+			width: "400px",
+			placeholder: "Select a user",
+			dropdownCssClass : "no-search",
+			ajax: 
+			{
+				url: "/api/accounts",
+				type: "GET",
+				headers: BasicAuth,
+				dataType: "json",
+				data: function(params: any) 
+				{
+					var queryParameters = { token: localStorage.getItem("token") }
+					return queryParameters;
+				},
+				processResults: function(data: any) 
+				{
+					return {
+						results: $.map(data, function(user) 
+						{
+							return {
+								text: user.UserName,
+								id: user.UserName
+							}
+						})
+					};
+				}
+			}
+		});
+
+		$("#deleteAccountSelectControl").select2({
+			width: "400px",
+			placeholder: "Select a user",
+			dropdownCssClass : "no-search",
+			ajax: 
+			{
+				url: "/api/accounts",
+				type: "GET",
+				headers: BasicAuth,
+				dataType: "json",
+				data: function(params: any) 
+				{
+					var queryParameters = { token: localStorage.getItem("token") }
+					return queryParameters;
+				},
+				processResults: function(data: any) 
+				{
+					return {
+						results: $.map(data, function(user) 
+						{
+							return {
+								text: user.UserName,
+								id: user.UserName
+							}
+						})
+					};
+				}
+			}
+		});
+
 		$("#coachSelectControl").select2({
 			width: "400px",
 			placeholder: "Select a coach",
