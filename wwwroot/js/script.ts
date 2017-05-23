@@ -531,14 +531,7 @@ $(document).ready(function()
 		
 		$(".single-jog").css("pointer-events", "auto");;
 
-		if (localStorage.getItem("accountType") == "JOGGER")
-		{
-			$("#userSelect").hide();
-		}
-		else
-		{
-			$("#userSelect").show();
-		}
+		let accountType: string | null = localStorage.getItem("accountType");
 		
 		if (jogId == 0)  // 0 indicates a new jog should be created.
 		{
@@ -553,9 +546,9 @@ $(document).ready(function()
 		else if (jogs.length > 0)  // Otherwise, an existing jog will be updated.
 		{
 			$("#updateHeading").text("Update Jog");
-			$("#singleDelete").show();
 			$("#singleSubmit").val("Update");
-			
+			$("#singleDelete").show();
+
 			// Find the jog by iterating through the data object and searching for the chosen index.
 			jogs.forEach(function(jog)
 			{
@@ -569,7 +562,44 @@ $(document).ready(function()
 			});
 		}
 
+		if (accountType == "JOGGER")
+		{
+			$("#userSelect").hide();
+			$("#singleSubmit").show();
+			SingleJogDisabled(false);
+		}
+		else if (accountType == "COACH")
+		{
+			$("#userSelect").hide();
+			$("#singleSubmit").hide();
+			$("#singleDelete").hide();
+			SingleJogDisabled(true);
+			$("#updateHeading").text("Jog View");
+		}
+		else  // accountType == "ADMIN"
+		{
+			$("#userSelect").show();
+			$("#singleSubmit").show();
+			SingleJogDisabled(false);
+		}
+
 		$(".single-jog").addClass("visible");  // Show the page.
+	}
+
+	function SingleJogDisabled(readOnly: boolean): void
+	{
+		if (readOnly)
+		{
+			$("#updateDate").prop("disabled", true);
+			$("#updateDistance").prop("disabled", true);
+			$("#updateTime").prop("disabled", true);
+		}
+		else
+		{
+			$("#updateDate").prop("disabled", false);
+			$("#updateDistance").prop("disabled", false);
+			$("#updateTime").prop("disabled", false);
+		}
 	}
 
 	// *** END PAGE RENDERING ***
