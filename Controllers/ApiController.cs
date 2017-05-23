@@ -824,6 +824,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		{
 			public string Token { get; set; }
 			public string UserName { get; set; }
+			public string AccountType { get; set; }
 		}
 
 		#endregion
@@ -883,6 +884,42 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return Utility.JsonObjectResult(accounts);
+		}
+
+		#endregion
+		#region Accounts: Update Account Type
+
+		[HttpPatch]
+		[Route("account")]
+		public IActionResult UpdateAccountType([FromBody] AccountInput input)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(input.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			try
+			{				
+				Account account = Accounts.GetByUserName(input.UserName);
+				account.AccountType = input.AccountType;
+				Accounts.Update(account);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.DeleteAccount()", input.UserName);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
 		}
 
 		#endregion

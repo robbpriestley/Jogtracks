@@ -703,7 +703,8 @@ $(document).ready(function()
 			}
 			
 			$("#updateAccount-select").css("display", "none");
-			// Do something
+			let accountType: string = $("input[name=accountType]:checked").val();
+			UpdateAccountType($("#updateAccountSelectControl").val(), accountType);
 			return false;
 		}
 	});
@@ -1153,7 +1154,7 @@ $(document).ready(function()
 					$("#aausername").val("");
 					$("#aapassword").val("");
 					$("#aacpassword").val("");
-					$("#addAccountMessage").text("Added account: " + username + "!");
+					$("#addAccountMessage").text("Added account " + username + "!");
 					$("#addAccountMessage").show();
 					setTimeout(function() { $("#addAccountMessage").fadeOut(); }, 3000);					
 				}
@@ -1174,7 +1175,7 @@ $(document).ready(function()
 			success: function(result) 
 			{
 				InitializeSelectControls();
-				$("#deleteAccountMessage").text("Deleted account: " + username + "!");
+				$("#deleteAccountMessage").text("Deleted account " + username + "!");
 				$("#deleteAccountMessage").show();
 				setTimeout(function() { $("#deleteAccountMessage").fadeOut(); }, 3000);					
 			}
@@ -1368,8 +1369,32 @@ $(document).ready(function()
 				$("#aChangePassword").val("");
 				$("#acChangePassword").val("");
 				$("#cpAccountMessage").show();
+				$("#cpAccountMessage").text("Password changed for user " + username + "!");
 				setTimeout(function() { $("#cpAccountMessage").fadeOut(); }, 3000);
 				InitializeSelectControls();
+			}
+		});
+	}
+
+	function UpdateAccountType(username: string, accountType: string): void
+	{
+		let spinner: Spinner = SpinnerSetup();	 
+		spinner.spin($("#main")[0]);
+		
+		$.ajax
+		({
+			url: "/api/account",
+			type: "PATCH",
+			contentType: "application/json",
+			data: JSON.stringify({ Token: localStorage.getItem("token"), UserName: username, AccountType: accountType }),
+			dataType: "text",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+				$("#updateAccountMessage").text("Updated account " + username + " to " + accountType + "!");
+				$("#updateAccountMessage").show();
+				setTimeout(function() { $("#updateAccountMessage").fadeOut(); }, 3000);
 			}
 		});
 	}

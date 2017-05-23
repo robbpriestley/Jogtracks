@@ -84,6 +84,12 @@
 						<label><select id="updateAccountSelectControl"></select></label>
 						<label id="updateAccount-select" style="display: none;" class="error"></label>
 					</li>
+					<li id="accountType">
+						<label>Account Type <span class="required">*</span></label>
+						<label><input id="jogger" type="radio" name="accountType" value="JOGGER" checked> Jogger</label>
+						<label><input id="coach" type="radio" name="accountType" value="COACH"> Coach</label>
+						<label><input id="coach" type="radio" name="accountType" value="ADMIN"> Admin</label>
+					</li>
 					<li>
 						<input type="submit" value="Update"/>
 					</li>
@@ -92,7 +98,7 @@
 		</div>
 		<div class="group">
 			<div class="messageLeft">Change Account Password</div>
-			<div id="cpAccountMessage" class="messageColor" style="display: none;">The password has been changed!</div>
+			<div id="cpAccountMessage" class="messageColor" style="display: none;"></div>
 			<form name="cpAccountForm" autocomplete="off">
 				<ul class="formdefault">
 					<li id="cpAccountSelect">
