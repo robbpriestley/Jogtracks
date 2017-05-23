@@ -1207,7 +1207,7 @@ $(document).ready(function()
 				dataType: "json",
 				data: function(params: any) 
 				{
-					var queryParameters = { token: localStorage.getItem("token") }
+					var queryParameters = { token: localStorage.getItem("token"), includeSelf: true }
 					return queryParameters;
 				},
 				processResults: function(data: any) 
