@@ -174,8 +174,8 @@
 		<div class="controls filter">
 			<form autocomplete="off">
 				<span>Date Filter</span>
-				<label><input id="fromDate" type="text"> From Date</label>
-				<label><input id="toDate" type="text"> To Date</label>
+				<label><input id="fromDate" type="text" readonly="true"> From Date</label>
+				<label><input id="toDate" type="text" readonly="true"> To Date</label>
 			</form>
 			<button id="filterRefresh">Refresh</button>
 			<button id="filterClear">Clear</button>
@@ -224,7 +224,7 @@
 						</li>
 						<li>
 							<label>Date <span class="required">*</span></label>
-							<input type="text" id="updateDate" name="updateDate" class="field"/>
+							<input type="text" id="updateDate" name="updateDate" class="field" readonly="true"/>
 						</li>
 						<li>
 							<label>Distance (km) <span class="required">*</span></label>
