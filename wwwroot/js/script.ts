@@ -1141,7 +1141,7 @@ $(document).ready(function()
 				dataType: "json",
 				data: function(params: any) 
 				{
-					var queryParameters = { token: localStorage.getItem("token") }
+					var queryParameters = { token: localStorage.getItem("token"), includeSelf: false }
 					return queryParameters;
 				},
 				processResults: function(data: any) 
@@ -1171,7 +1171,7 @@ $(document).ready(function()
 				dataType: "json",
 				data: function(params: any) 
 				{
-					var queryParameters = { token: localStorage.getItem("token") }
+					var queryParameters = { token: localStorage.getItem("token"), includeSelf: false }
 					return queryParameters;
 				},
 				processResults: function(data: any) 
@@ -1201,7 +1201,7 @@ $(document).ready(function()
 				dataType: "json",
 				data: function(params: any) 
 				{
-					var queryParameters = { token: localStorage.getItem("token") }
+					var queryParameters = { token: localStorage.getItem("token"), includeSelf: false }
 					return queryParameters;
 				},
 				processResults: function(data: any) 

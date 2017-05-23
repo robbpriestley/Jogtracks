@@ -52,7 +52,7 @@ namespace DigitalWizardry.Jogtracks
 			return Context.Account.Where(x => x.AccountType.Equals("COACH")).OrderBy(x => x.UserName).ToList();
 		}
 
-		public List<Account> GetLinkedAccounts(Account user)
+		public List<Account> GetLinkedAccounts(Account user, bool includeSelf)
 		{
 			List<Account> accounts = null;
 
@@ -61,14 +61,16 @@ namespace DigitalWizardry.Jogtracks
 				accounts = new List<Account>();
 				accounts.Add(user);
 			}
-			else if (user.AccountType == "COACH")
-			{
-				accounts = Context.Account.Where(x => x.Coach.Equals(user.UserName)).ToList();
-				accounts.Add(user);
-			}
 			else
 			{
-				accounts = Context.Account.ToList();
+				if (!includeSelf)
+				{
+					accounts = Context.Account.Where(x => !x.UserName.Equals(user.UserName)).ToList();
+				}
+				else
+				{
+					accounts = Context.Account.ToList();
+				}
 			}
 
 			return accounts.OrderBy(x => x.UserName).ToList();

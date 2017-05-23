@@ -825,7 +825,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 		[HttpGet]
 		[Route("accounts")]
-		public IActionResult AccountList(string token)
+		public IActionResult AccountList(string token, bool includeSelf)
 		{			
 			if (!Utility.BasicAuthentication(Secrets, Request))
 			{
@@ -845,7 +845,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 
 			try
 			{				
-				List<Account> userAccounts = Accounts.GetLinkedAccounts(user);
+				List<Account> userAccounts = Accounts.GetLinkedAccounts(user, includeSelf);
 
 				// Convert full accounts list to basic list.
 				foreach(Account userAccount in userAccounts)

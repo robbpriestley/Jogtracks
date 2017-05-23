@@ -11,7 +11,7 @@ namespace DigitalWizardry.Jogtracks
 		Account GetByUserName(string userName);
 		void ClearCoach(string coach);
 		List<Account> GetCoaches();
-		List<Account> GetLinkedAccounts(Account user);
+		List<Account> GetLinkedAccounts(Account user, bool includeSelf);
 		string GetUserColor(string userName);
 		void DeleteByUserName(string userName);
 	}
