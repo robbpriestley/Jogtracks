@@ -94,7 +94,7 @@ namespace DigitalWizardry.Jogtracks
 			{
 				if (fromDate != null && toDate != null)
 				{
-					jogs = Context.Jog.Where(x => x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList();
+					jogs = Context.Jog.Where(x => x.Date >= fromDate && x.Date < ((DateTime)toDate).AddDays(1)).ToList();
 				}
 				else
 				{
@@ -136,7 +136,7 @@ namespace DigitalWizardry.Jogtracks
 			{
 				if (fromDate != null && toDate != null)
 				{
-					jogs = Context.Jog.Where(x => x.UserName == user.UserName && x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList();
+					jogs = Context.Jog.Where(x => x.UserName == user.UserName && x.Date >= fromDate && x.Date < ((DateTime)toDate).AddDays(1)).ToList();
 				}
 				else
 				{
