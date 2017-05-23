@@ -325,6 +325,15 @@ $(document).ready(function()
 		sessionStorage.removeItem("errorMessage");
 
 		$("#report").hide();
+
+		if (localStorage.getItem("accountType") != "COACH")
+		{
+			$("#newJog").show();
+		}
+		else
+		{
+			$("#newJog").hide();
+		}
 		
 		LoadJogs();
 		RenderJogsPage("null", "null");
