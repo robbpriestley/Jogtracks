@@ -60,15 +60,13 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		public class AuthOutput
 		{
 			public string AccountType { get; set; }
-			public string Coach { get; set; }
 			public string Token { get; set; }
 			public string UserName { get; set; }
 			public string ValidationMessage { get; set; }
 
-			public AuthOutput(string token, string accountType, string userName, string coach)
+			public AuthOutput(string token, string accountType, string userName)
 			{
 				Token = token;
-				Coach = coach;
 				UserName = userName;
 				AccountType = accountType;
 			}
@@ -126,7 +124,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					user.UserColor = DetermineUserColor(user.Id);  // User colour is determined by Id to enforce cycling of colors.
 					Accounts.Update(user);
 
-					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, null);  // Coach is always null on new sign up.
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName);
 					
 					ServiceLogs.SignUp(Request, "JOGGER", input.UserName);
 				}
@@ -225,7 +223,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 					user.Token = Guid.NewGuid();
 					Accounts.Update(user);
 
-					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName, user.Coach);
+					authOutput = new AuthOutput(user.Token.ToString(), user.AccountType, user.UserName);
 					
 					ServiceLogs.SignIn(Request, user.Token.ToString(), input.UserName);
 				}
@@ -903,7 +901,6 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			try
 			{				
 				Jogs.DeleteByUserName(input.UserName);
-				Accounts.ClearCoach(input.UserName);
 				Accounts.DeleteByUserName(input.UserName);
 			}
 			catch (System.Exception e)
@@ -955,47 +952,6 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return Utility.JsonObjectResult(coaches);
-		}
-
-		#endregion
-		#region Coaches: Coach Patch
-			
-		public class CoachPatchInput
-		{
-			public string Token { get; set; }
-			public string Coach { get; set; }
-		}
-		
-		[HttpPatch]
-		[Route("account/coach")]
-		public IActionResult CoachPatch([FromBody] CoachPatchInput coachPatchInput)
-		{			
-			if (!Utility.BasicAuthentication(Secrets, Request))
-			{
-				return new UnauthorizedResult();
-			}
-			
-			Account user = GetUser(coachPatchInput.Token);
-
-			if (user == null)
-			{
-				return new StatusCodeResult(204);
-			}
-			
-			ServiceLogs.Access(Request, null, user.UserName);
-
-			try
-			{				
-				user.Coach = coachPatchInput.Coach == "null" ? null : coachPatchInput.Coach;
-				Accounts.Update(user);
-			}
-			catch (System.Exception e)
-			{
-				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.SetCoach()", coachPatchInput.Token);
-				return new StatusCodeResult(500);
-			}
-
-			return new ObjectResult("SUCCESS");
 		}
 
 		#endregion

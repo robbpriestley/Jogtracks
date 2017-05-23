@@ -146,22 +146,6 @@ $(document).ready(function()
 		$("#aausername-taken").css("display", "none");
 	});
 
-	$("input[name=coach]").on("change", (function(e) 
-	{
-		let value: string = $("input[name=coach]:checked").val();
-		
-		if (value == "noCoach")
-		{
-			$("#coachSelect").hide();
-			$("#coach-select").css("display", "none");
-		}
-		else
-		{
-			$("#coachSelect").show();
-			$("#coach-select").css("display", "none");
-		}
-	}));
-
 	InitializeSelectControls();
 
 	$("#userSelectControl").on("change", (function(e) 
@@ -427,20 +411,16 @@ $(document).ready(function()
 		if (accountType == "JOGGER")
 		{
 			$("#accountTypeMessage").html("You are a <strong>Jogger</strong> with <strong>user-level</strong> permissions.");
-			$("#coachGroup").show();
 		}
 		else if (accountType == "COACH")
 		{
 			$("#accountTypeMessage").html("You are a <strong>Coach</strong> with <strong>manager-level</strong> permissions.");
-			$("#coachGroup").hide();
 		}
 		else
 		{
 			$("#accountTypeMessage").html("You are an <strong>Administrator</strong> with <strong>superuser-level</strong> permissions.");
-			$("#coachGroup").hide();
 		}
 
-		SetCoachSelectControl();
 		ShowHeaderComponents(true);
 	}
 	
@@ -681,15 +661,6 @@ $(document).ready(function()
 		{
 			let account: string = $("#deleteAccountSelectControl").val();
 			DeleteAccount(account);
-			return false;
-		}
-	});
-	
-	$("form[name=coachForm]").validate(
-	{
-		submitHandler: function(form: any)
-		{
-			CoachPatch();
 			return false;
 		}
 	});
@@ -1036,7 +1007,6 @@ $(document).ready(function()
 		$("#aausername-taken").css("display", "none");
 		
 		$("form[name=authForm]").validate().resetForm();
-		$("form[name=coachForm]").validate().resetForm();
 		$("form[name=jogEditForm]").validate().resetForm();
 		$("form[name=changePasswordForm]").validate().resetForm();
 		
@@ -1052,8 +1022,6 @@ $(document).ready(function()
 		// *** END RESET FORMS ***
 
 		InitializeSelectControls();
-
-		$("#noCoach").prop("checked", true);
 		ClearStorage();
 	}
 
@@ -1124,7 +1092,6 @@ $(document).ready(function()
 		$("#updateAccountSelectControl").empty();
 		$("#cpAccountSelectControl").empty();
 		$("#deleteAccountSelectControl").empty();
-		$("#coachSelectControl").empty();
 		$("#userSelectControl").empty();
 
 		// Annoyingly, the only way I could seem to empty the select controls was to re-initialize them.
@@ -1212,38 +1179,6 @@ $(document).ready(function()
 							return {
 								text: user.UserName,
 								id: user.UserName
-							}
-						})
-					};
-				}
-			}
-		});
-
-		$("#coachSelectControl").select2({
-			width: "400px",
-			placeholder: "Select a coach",
-			dropdownCssClass : "no-search",
-			ajax: 
-			{
-				url: "/api/coaches",
-				type: "GET",
-				dataType: "json",
-				headers: BasicAuth,
-				data: function(params: any) 
-				{
-					var queryParameters = { token: localStorage.getItem("token") }
-					return queryParameters;
-				},
-				processResults: function(data: any) 
-				{
-					$("#coach-select").css("display", "none");
-					
-					return {
-						results: $.map(data, function(coach) 
-						{
-							return {
-								text: coach.UserName,
-								id: coach.UserName
 							}
 						})
 					};
@@ -1340,66 +1275,6 @@ $(document).ready(function()
 		jogList.html("");
 
 		window.location.hash = "#settings";
-	}
-
-	function SetCoachSelectControl(): void
-	{
-		let coach: string | null = localStorage.getItem("coach");
-
-		if (coach != null && coach != "null")  // A coach has previously been selected.
-		{			
-			$("#coachSelect").show();
-			$("#useCoach").prop("checked", true);
-			UpdateSelectControl("coachSelectControl", coach);
-		}
-		else
-		{
-			$("#coachSelect").hide();
-			$("#noCoach").prop("checked", true);
-		}
-	}
-
-	function CoachPatch(): void
-	{
-		let coach: string;
-		let useCoach: string = $("input[name=coach]:checked").val();
-		
-		if (useCoach == "useCoach")
-		{
-			coach = $("#coachSelectControl").val();
-
-			if (coach == null)
-			{
-				$("#coach-select").text("Please select a coach from the list.");
-				$("#coach-select").css("display", "inherit");
-				return;
-			}
-		}
-		else
-		{
-			coach = "null";
-		}
-		
-		localStorage.setItem("coach", coach);
-		
-		let spinner: Spinner = SpinnerSetup();
-		spinner.spin($("#main")[0]);
-		
-		$.ajax
-		({
-			url: "/api/account/coach",
-			type: "PATCH",
-			contentType: "application/json",
-			data: JSON.stringify({ Token: localStorage.getItem("token"), Coach: coach }),
-			dataType: "text",
-			headers: BasicAuth,
-			success: function(result) 
-			{
-				spinner.stop();
-				$("#changeCoachMessage").show();
-				setTimeout(function() { $("#changeCoachMessage").fadeOut(); }, 3000);
-			}
-		});
 	}
 
 	// *** END SETTINGS ***

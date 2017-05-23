@@ -19,6 +19,5 @@ namespace DigitalWizardry.Jogtracks
 		public byte[] Salt { get; set; }
 		public string Hash { get; set; }
 		public Guid Token { get; set; }
-		public string Coach { get; set; }
 	}
 }

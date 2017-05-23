@@ -72,23 +72,14 @@ namespace DigitalWizardry.Jogtracks
 		public List<Jog> GetByUserAccount(Account user, DateTime? fromDate, DateTime? toDate)
 		{
 			List<Jog> jogs = null;
-			
-			switch (user.AccountType)
+
+			if (user.AccountType.Equals("JOGGER"))
 			{
-				case "JOGGER":
-					jogs = GetJogsByJogger(user, fromDate, toDate);
-					break;
-
-				case "COACH":
-					jogs = GetJogsByCoach(user, fromDate, toDate);
-					break;
-
-				case "ADMIN":
-					jogs = GetAll(fromDate, toDate);
-					break;
-				
-				default:
-					break;
+				jogs = GetJogsByJogger(user, fromDate, toDate);
+			}
+			else
+			{
+				jogs = GetAll(fromDate, toDate);
 			}
 
 			// Don't return a null list.
@@ -121,23 +112,14 @@ namespace DigitalWizardry.Jogtracks
 		public int GetTotalByUserAccount(Account user)
 		{
 			int total = 0;
-			
-			switch (user.AccountType)
+
+			if (user.AccountType.Equals("JOGGER"))
 			{
-				case "JOGGER":
-					total = GetTotalJogsByJogger(user);
-					break;
-
-				case "COACH":
-					total = GetTotalJogsByCoach(user);
-					break;
-
-				case "ADMIN":
-					total = Count();
-					break;
-				
-				default:
-					break;
+				total = GetTotalJogsByJogger(user);
+			}
+			else
+			{
+				total = Count();
 			}
 
 			// Don't return a null list. Also, postpone sorting due to efficiency gained as UserColor must still be obtained.
@@ -169,35 +151,6 @@ namespace DigitalWizardry.Jogtracks
 			return jogs;
 		}
 
-		private List<Jog> GetJogsByCoach(Account coach, DateTime? fromDate, DateTime? toDate)
-		{
-			List<Jog> jogs = new List<Jog>();
-			
-			try
-			{
-				List<Account> joggers = GetAccountsByCoach(coach);
-				joggers.Add(coach);
-
-				foreach (Account jogger in joggers)
-				{
-					if (fromDate != null && toDate != null)
-					{
-						jogs.AddRange(Context.Jog.Where(x => x.UserName == jogger.UserName && x.Date >= fromDate && x.Date <= ((DateTime)toDate).AddDays(1)).ToList());
-					}
-					else
-					{
-						jogs.AddRange(Context.Jog.Where(x => x.UserName == jogger.UserName).ToList());
-					}
-				}
-			}
-			catch (System.InvalidOperationException)
-			{
-				// There are no jogs, I suppose.
-			}
-
-			return jogs;
-		}
-
 		private int GetTotalJogsByJogger(Account user)
 		{
 			int total = 0;
@@ -214,28 +167,6 @@ namespace DigitalWizardry.Jogtracks
 			return total;
 		}
 
-		private int GetTotalJogsByCoach(Account coach)
-		{
-			int total = 0;
-			
-			try
-			{
-				List<Account> joggers = GetAccountsByCoach(coach);
-				joggers.Add(coach);
-
-				foreach (Account jogger in joggers)
-				{
-					total += Context.Jog.Where(x => x.UserName == jogger.UserName).Count();
-				}
-			}
-			catch (System.InvalidOperationException)
-			{
-				// There are no jogs, I suppose.
-			}
-
-			return total;
-		}
-
 		private List<Account> GetAllAccounts()
 		{
 			List<Account> accounts = null;
@@ -243,22 +174,6 @@ namespace DigitalWizardry.Jogtracks
 			try
 			{
 				accounts = Context.Account.ToList();
-			}
-			catch (System.InvalidOperationException)
-			{
-				// There are none, I suppose.
-			}
-
-			return accounts;
-		}
-
-		private List<Account> GetAccountsByCoach(Account coach)
-		{
-			List<Account> accounts = null;
-			
-			try
-			{
-				accounts = Context.Account.Where(x => x.Coach == coach.UserName).ToList();
 			}
 			catch (System.InvalidOperationException)
 			{
