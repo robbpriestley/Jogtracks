@@ -277,6 +277,7 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		{
 			public string Token { get; set; }
 			public string Password { get; set; }
+			public string UserName { get; set; }
 		}
 
 		[HttpPost]
@@ -288,6 +289,15 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				return new UnauthorizedResult();
 			}
 
+			Account user = GetUser(input.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+			
 			try
 			{				
 				ValidateChangePasswordInput(input);
@@ -296,17 +306,15 @@ namespace DigitalWizardry.Jogtracks.Controllers
 				{
 					HashData hashData = HashPassword(input.Password);
 					
-					Account user = Accounts.GetByToken(Guid.Parse(input.Token));
-					user.Salt = hashData.Salt;
-					user.Hash = hashData.Hash;
-					Accounts.Update(user);
-
-					ServiceLogs.Access(Request, null, user.UserName);
+					Account target = Accounts.GetByUserName(input.UserName);
+					target.Salt = hashData.Salt;
+					target.Hash = hashData.Hash;
+					Accounts.Update(target);
 				}
 				catch (System.InvalidOperationException)
 				{
 					// The user's account doesn't exist. Reject the request by returning 500 code.
-					ServiceLogs.Access(Request, "ERROR: Account Doesn't Exist", input.Token);
+					ServiceLogs.Access(Request, "ERROR: Account Doesn't Exist", input.UserName);
 					return new StatusCodeResult(204);
 				}
 			}

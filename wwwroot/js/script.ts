@@ -687,9 +687,24 @@ $(document).ready(function()
 
 	$("form[name=cpAccountForm]").validate(
 	{
+		rules: 
+		{
+			aChangePassword:
+			{
+				minlength: 8,
+				required: true,
+				alphanumeric:true
+			},
+			acChangePassword:
+			{
+				required: true,
+				equalTo: "#aChangePassword"
+			}
+		},
 		submitHandler: function(form: any)
 		{
-			// Do something
+			let password: string = $("#aChangePassword").val();
+			AccountChangePassword(password, $("#cpAccountSelectControl").val());
 			return false;
 		}
 	});
@@ -723,7 +738,7 @@ $(document).ready(function()
 		submitHandler: function(form: any)
 		{
 			let password: string = $("#changePassword").val();
-			ChangePassword(password);
+			ChangePassword(password, localStorage.getItem("userName"));
 			return false;
 		}
 	});
@@ -1266,7 +1281,7 @@ $(document).ready(function()
 		sessionStorage.removeItem("errorMessage");
 	}
 
-	function ChangePassword(password: string): void
+	function ChangePassword(password: string, username: any): void
 	{
 		let spinner: Spinner = SpinnerSetup();
 		spinner.spin($("#main")[0]);
@@ -1278,7 +1293,7 @@ $(document).ready(function()
 			url: "/api/auth/changepassword",
 			type: "POST",
 			contentType: "application/json",
-			data: JSON.stringify({ Token: token, Password: password }),
+			data: JSON.stringify({ Token: token, Password: password, UserName: username }),
 			dataType: "text",
 			headers: BasicAuth,
 			success: function(result) 
@@ -1288,6 +1303,33 @@ $(document).ready(function()
 				$("#changecPassword").val("");
 				$("#changePasswordMessage").show();
 				setTimeout(function() { $("#changePasswordMessage").fadeOut(); }, 3000);
+			}
+		});
+	}
+
+	function AccountChangePassword(password: string, username: any): void
+	{
+		let spinner: Spinner = SpinnerSetup();
+		spinner.spin($("#main")[0]);
+
+		let token: string | null = localStorage.getItem("token");
+		
+		$.ajax
+		({
+			url: "/api/auth/changepassword",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify({ Token: token, Password: password, UserName: username }),
+			dataType: "text",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				spinner.stop();
+				$("#aChangePassword").val("");
+				$("#acChangePassword").val("");
+				$("#cpAccountMessage").show();
+				setTimeout(function() { $("#cpAccountMessage").fadeOut(); }, 3000);
+				InitializeSelectControls();
 			}
 		});
 	}
