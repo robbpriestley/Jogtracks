@@ -153,6 +153,21 @@ $(document).ready(function()
 		$("#userSelectLabel").css("display", "none");
 	}));
 
+	$("#updateAccountSelectControl").on("change", (function(e) 
+	{
+		$("#updateAccount-select").css("display", "none");
+	}));
+
+	$("#cpAccountSelectControl").on("change", (function(e) 
+	{
+		$("#cpAccount-select").css("display", "none");
+	}));
+
+	$("#deleteAccountSelectControl").on("change", (function(e) 
+	{
+		$("#deleteAccount-select").css("display", "none");
+	}));
+
 	$("#fromDate").datepicker
 	({
 		dateFormat: "yy-mm-dd",
@@ -680,6 +695,14 @@ $(document).ready(function()
 	{
 		submitHandler: function(form: any)
 		{
+			if ($("#updateAccountSelectControl").val() == null)
+			{
+				$("#updateAccount-select").text("Please select a user from the list.");
+				$("#updateAccount-select").css("display", "inherit");
+				return;
+			}
+			
+			$("#updateAccount-select").css("display", "none");
 			// Do something
 			return false;
 		}
@@ -703,6 +726,14 @@ $(document).ready(function()
 		},
 		submitHandler: function(form: any)
 		{
+			if ($("#cpAccountSelectControl").val() == null)
+			{
+				$("#cpAccount-select").text("Please select a user from the list.");
+				$("#cpAccount-select").css("display", "inherit");
+				return;
+			}
+			
+			$("#cpAccount-select").css("display", "none");
 			let password: string = $("#aChangePassword").val();
 			AccountChangePassword(password, $("#cpAccountSelectControl").val());
 			return false;
@@ -713,6 +744,15 @@ $(document).ready(function()
 	{
 		submitHandler: function(form: any)
 		{
+			if ($("#deleteAccountSelectControl").val() == null)
+			{
+				$("#deleteAccount-select").text("Please select a user from the list.");
+				$("#deleteAccount-select").css("display", "inherit");
+				return;
+			}
+			
+			$("#deleteAccount-select").css("display", "none");
+			
 			let account: string = $("#deleteAccountSelectControl").val();
 			DeleteAccount(account);
 			return false;
