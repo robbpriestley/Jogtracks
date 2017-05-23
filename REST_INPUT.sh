@@ -3,15 +3,18 @@ BASICAUTH=g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu
 # *** ADMIN ACCOUNT ***
 
 echo "Admin: Juan"
-JUANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Juan", "Password": "qqqqqqqq", "AccountType": "ADMIN"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+JUANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Juan", "Password": "qqqqqqqq"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+curl -s -u ${BASICAUTH} --request PATCH http://www.digitalwizardry.ca:5001/api/account -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Juan", AccountType: "ADMIN" }' > /dev/null
 
 # *** COACH ACCOUNTS ***
 
 echo "Coach: Ivan"
-IVANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Ivan", "Password": "qqqqqqqq", "AccountType": "COACH"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+IVANTOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Ivan", "Password": "qqqqqqqq"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+curl -s -u ${BASICAUTH} --request PATCH http://www.digitalwizardry.ca:5001/api/account -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Ivan", AccountType: "COACH" }' > /dev/null
 
 echo "Coach: Lisa"
-LISATOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Lisa", "Password": "qqqqqqqq", "AccountType": "COACH"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+LISATOKEN=$(curl -s -u ${BASICAUTH} --request POST http://www.digitalwizardry.ca:5001/api/auth/signup -H "Content-Type: application/json" -d '{"UserName": "Lisa", "Password": "qqqqqqqq"}' | python -c "import sys, json; print json.load(sys.stdin)['Token']") > /dev/null
+curl -s -u ${BASICAUTH} --request PATCH http://www.digitalwizardry.ca:5001/api/account -H "Content-Type: application/json" -d '{ "Token": "'"${JUANTOKEN}"'", "UserName": "Lisa", AccountType: "COACH" }' > /dev/null
 
 # *** JOGGER ACCOUNTS ***
 
