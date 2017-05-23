@@ -793,7 +793,12 @@ $(document).ready(function()
 		{
 			updateDate:
 			{
-				required: true
+				required: true,
+				dateFormatCheck: true,
+				dateYearCheck: true,
+				dateMonthCheck: true,
+				dateDayCheck: true,
+				dateParseCheck: true
 			},
 			updateDistance:
 			{
@@ -819,11 +824,132 @@ $(document).ready(function()
 		}
 	});
 
+	jQuery.validator.addMethod("dateFormatCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split("-");
+
+		if (parts.length != 3)
+		{
+			return false;
+		}
+		else if (parts[0] == "" || parts[1] == "" || parts[2] == "")
+		{
+			return false;
+		}
+
+		return true;
+
+	}, "Please use the date format YYYY-MM-DD.");
+
+	jQuery.validator.addMethod("dateYearCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split("-");
+
+		try
+		{
+			let yyyy: number;
+			
+			yyyy = Number(parts[0]);
+
+			if (yyyy < 0 || yyyy > 3000)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+
+		return true;
+
+	}, "Year should be in the range 0 to 3000.");
+
+	jQuery.validator.addMethod("dateMonthCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split("-");
+
+		try
+		{
+			let mm: number;
+			
+			mm = Number(parts[1]);
+
+			if (mm < 1 || mm > 12)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+
+		return true;
+
+	}, "Month should be in the range 01 to 12.");
+
+	jQuery.validator.addMethod("dateDayCheck", function(value: any, element: any) 
+	{
+		let parts: Array<string> = value.split("-");
+
+		try
+		{
+			let dd: number;
+			
+			dd = Number(parts[2]);
+
+			if (dd < 1 || dd > 31)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+
+		return true;
+
+	}, "Day should be in the range 01 to 31.");
+
+	jQuery.validator.addMethod("dateParseCheck", function(value: any, element: any) 
+	{
+		try
+		{
+			let parts: Array<string> = value.split("-");
+
+			let yyyy: number, mm: number, dd: number;
+			
+			yyyy = Number(parts[0]);
+			mm = Number(parts[1]);
+			dd = Number(parts[2]);
+
+    		let date: Date = new Date(yyyy, mm - 1, dd);
+
+			if (date.getFullYear() != yyyy || date.getMonth() != mm - 1 || date.getDate() != dd)
+			{
+				return false;
+			}
+		}
+		catch (error)
+		{
+			return false;
+		}
+
+		return true;
+
+	}, "Please enter a valid date.");
+
 	jQuery.validator.addMethod("timeFormatCheck", function(value: any, element: any) 
 	{
 		let parts: Array<string> = value.split(":");
 
 		if (parts.length != 3)
+		{
+			return false;
+		}
+		else if (parts[0] == "" || parts[1] == "" || parts[2] == "")
 		{
 			return false;
 		}
