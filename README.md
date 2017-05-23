@@ -73,7 +73,7 @@ The REST endpoints are as follows:
 
 Here is a example REST call using cURL. Note the use of **basic authentication** and the query string containing a valid **token**. For more information on how this works, see the [Security Model](#security-model) section below. In order for this to work, a currently valid token would need to be supplied in the token parameter position.
 
-`curl -s -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request GET http://www.digitalwizardry.ca:5001/api/jogs?token=64ba1989-a3eb-403e-aff9-b9b35a421d4d`
+`curl -s -u g9CZRkDEC5x8vfr96HMvkR3oiEiPLW:ECepRGahbgUCnwH5rCC7Xk3fdkBCKu --request GET http://www.digitalwizardry.ca:5001/api/jogs?token=34773F59-15AE-4111-A514-C8AAC3CC8A7A`
 
 ### Test Data
 
