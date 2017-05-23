@@ -103,6 +103,7 @@ $(document).ready(function()
 	
 	$("#settings").click(function(e) 
 	{
+		window.scrollTo(0, 0);
 		Jogs = [];
 		Settings();
 		return false;
@@ -117,6 +118,7 @@ $(document).ready(function()
 
 	$("#accounts").click(function(e) 
 	{
+		window.scrollTo(0, 0);
 		Accounts();
 		return false;
 	});
@@ -130,6 +132,7 @@ $(document).ready(function()
 	
 	$("#signout").click(function(e) 
 	{
+		window.scrollTo(0, 0);
 		Jogs = [];
 		SignOut();
 		window.location.hash = "#";  // Show welcome page.
