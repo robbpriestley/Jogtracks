@@ -268,6 +268,12 @@ namespace DigitalWizardry.Jogtracks
 			return accounts;
 		}
 
+		public void DeleteByUserName(string userName)
+		{			
+			Context.Jog.RemoveRange(Context.Jog.Where(x => x.UserName.Equals(userName)));
+			Context.SaveChanges();
+		}
+
 		#endregion
 	}
 }

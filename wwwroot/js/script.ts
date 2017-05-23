@@ -657,6 +657,34 @@ $(document).ready(function()
 		}
 	});
 
+	$("form[name=updateAccountForm]").validate(
+	{
+		submitHandler: function(form: any)
+		{
+			// Do something
+			return false;
+		}
+	});
+
+	$("form[name=cpAccountForm]").validate(
+	{
+		submitHandler: function(form: any)
+		{
+			// Do something
+			return false;
+		}
+	});
+
+	$("form[name=deleteAccountForm]").validate(
+	{
+		submitHandler: function(form: any)
+		{
+			let account: string = $("#deleteAccountSelectControl").val();
+			DeleteAccount(account);
+			return false;
+		}
+	});
+	
 	$("form[name=coachForm]").validate(
 	{
 		submitHandler: function(form: any)
@@ -1063,10 +1091,30 @@ $(document).ready(function()
 					$("#aausername").val("");
 					$("#aapassword").val("");
 					$("#aacpassword").val("");
-					$("#addAccountMessage").text("Added account " + username + "!");
+					$("#addAccountMessage").text("Added account: " + username + "!");
 					$("#addAccountMessage").show();
 					setTimeout(function() { $("#addAccountMessage").fadeOut(); }, 3000);					
 				}
+			}
+		});
+	}
+
+	function DeleteAccount(username: string): void
+	{
+		$.ajax
+		({
+			url: "/api/account",
+			type: "DELETE",
+			contentType: "application/json",
+			data: JSON.stringify({ UserName: username, Token: localStorage.getItem("token") }),
+			dataType: "text",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				InitializeSelectControls();
+				$("#deleteAccountMessage").text("Deleted account: " + username + "!");
+				$("#deleteAccountMessage").show();
+				setTimeout(function() { $("#deleteAccountMessage").fadeOut(); }, 3000);					
 			}
 		});
 	}

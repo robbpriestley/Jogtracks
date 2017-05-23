@@ -14,5 +14,6 @@ namespace DigitalWizardry.Jogtracks
 		List<Jog> GetByUserName(string userName);
 		List<Jog> GetAll(DateTime? fromDate, DateTime? toDate);
 		List<Jog> GetByUserAccount(Account user, DateTime? fromDate, DateTime? toDate);
+		void DeleteByUserName(string userName);
 	}
 }

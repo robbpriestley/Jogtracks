@@ -9,8 +9,10 @@ namespace DigitalWizardry.Jogtracks
 		void Update(Account account);
 		Account GetByToken(Guid token);
 		Account GetByUserName(string userName);
+		void ClearCoach(string coach);
 		List<Account> GetCoaches();
 		List<Account> GetLinkedAccounts(Account user);
 		string GetUserColor(string userName);
+		void DeleteByUserName(string userName);
 	}
 }

@@ -812,6 +812,15 @@ namespace DigitalWizardry.Jogtracks.Controllers
 		}
 
 		#endregion
+		#region Accounts
+
+		public class AccountInput
+		{
+			public string Token { get; set; }
+			public string UserName { get; set; }
+		}
+
+		#endregion
 		#region Accounts: Accounts List
 
 		[HttpGet]
@@ -868,6 +877,42 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 
 			return Utility.JsonObjectResult(accounts);
+		}
+
+		#endregion
+		#region Accounts: Delete Account
+
+		[HttpDelete]
+		[Route("account")]
+		public IActionResult DeleteAccount([FromBody] AccountInput input)
+		{			
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+			
+			Account user = GetUser(input.Token);
+
+			if (user == null)
+			{
+				return new StatusCodeResult(204);
+			}
+			
+			ServiceLogs.Access(Request, null, user.UserName);
+
+			try
+			{				
+				Jogs.DeleteByUserName(input.UserName);
+				Accounts.ClearCoach(input.UserName);
+				Accounts.DeleteByUserName(input.UserName);
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.DeleteAccount()", input.UserName);
+				return new StatusCodeResult(500);
+			}
+
+			return new ObjectResult("SUCCESS");
 		}
 
 		#endregion

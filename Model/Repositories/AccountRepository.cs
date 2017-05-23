@@ -35,6 +35,18 @@ namespace DigitalWizardry.Jogtracks
 			return Context.Account.Where(x => x.UserName == userName).Single();
 		}
 
+		public void ClearCoach(string coach)
+		{
+			List<Account> accounts = Context.Account.Where(x => x.Coach.Equals(coach)).ToList();
+
+			foreach (Account account in accounts)
+			{
+				account.Coach = null;
+			}
+
+			Context.SaveChanges();
+		}
+
 		public List<Account> GetCoaches()
 		{
 			return Context.Account.Where(x => x.AccountType.Equals("COACH")).OrderBy(x => x.UserName).ToList();
@@ -66,6 +78,13 @@ namespace DigitalWizardry.Jogtracks
 		{
 			Account user = GetByUserName(userName);
 			return user.UserColor;
+		}
+
+		public void DeleteByUserName(string userName)
+		{
+			Account account = GetByUserName(userName);
+			Context.Account.Remove(account);
+			Context.SaveChanges();
 		}
 	}
 }
