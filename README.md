@@ -1,5 +1,5 @@
 ### Overview
-**Jogtracks** is a web application that tracks jogging times for users. It allows users to CRUD (create, read, update, and delete) jog data records. Each jog record consists of date, distance, time (duration), and average speed.
+**Jogtracks** is a demonstration, full-stack, single-page web application that allows users to track their jogging times and distances. It allows users to CRUD (create, read, update, and delete) jog data records. Each jog record consists of date, distance, time (duration), and average speed.
 
 Jog records are displayed to the user in a view and can be filtered by date range. A **report** subsection of the view details average distance, time, and speed for all records currently displayed by the filter.
 
