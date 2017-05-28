@@ -283,7 +283,7 @@ $(document).ready(function()
 		switch (keyword)
 		{
 			case "":
-				DefaultHelper();
+				RenderWelcomePage();
 				break;
 			
 			case "#signup":
@@ -319,19 +319,6 @@ $(document).ready(function()
 				sessionStorage.setItem("errorMessage", "Unknown page or query string.");
 				RenderErrorPage();  // Unknown keyword.
 				break;
-		}
-	}
-
-	function DefaultHelper(): void
-	{
-		if (localStorage.getItem("token") == null)
-		{
-			SignOut();
-			RenderWelcomePage();
-		}
-		else
-		{
-			window.location.hash = "#jogs";
 		}
 	}
 
@@ -1086,10 +1073,14 @@ $(document).ready(function()
 		if (token != null)
 		{
 			CheckToken(token);
+			window.location.hash = "#";
+			$(window).trigger("hashchange");
 		}
 		else
 		{
 			SignOut();
+			window.location.hash = "#";
+			$(window).trigger("hashchange");
 		}
 	}
 
@@ -1112,6 +1103,7 @@ $(document).ready(function()
 				else
 				{
 					SignOut();
+					window.location.hash = "#";
 				}
 			}
 		});
@@ -1134,9 +1126,6 @@ $(document).ready(function()
 		{
 			$("#accounts").show();
 		}
-
-		window.location.hash = "#jogs";
-		$(window).trigger("hashchange");
 	}
 	
 	function ServerAuthenticated(username: string, authOutput: any): void
@@ -1197,6 +1186,11 @@ $(document).ready(function()
 					spinner.stop();
 					ServerAuthenticated(username, result);
 				}
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1234,6 +1228,11 @@ $(document).ready(function()
 					spinner.stop();
 					ServerAuthenticated(username, result);
 				}
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1316,6 +1315,11 @@ $(document).ready(function()
 					$("#addAccountMessage").show();
 					setTimeout(function() { $("#addAccountMessage").fadeOut(); }, 3000);					
 				}
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1502,6 +1506,11 @@ $(document).ready(function()
 				$("#changecPassword").val("");
 				$("#changePasswordMessage").show();
 				setTimeout(function() { $("#changePasswordMessage").fadeOut(); }, 3000);
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1530,6 +1539,11 @@ $(document).ready(function()
 				$("#cpAccountMessage").text("Password changed for user " + username + "!");
 				setTimeout(function() { $("#cpAccountMessage").fadeOut(); }, 3000);
 				InitializeSelectControls();
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1553,6 +1567,11 @@ $(document).ready(function()
 				$("#updateAccountMessage").text("Updated account " + username + " to " + accountType + "!");
 				$("#updateAccountMessage").show();
 				setTimeout(function() { $("#updateAccountMessage").fadeOut(); }, 3000);
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1607,6 +1626,11 @@ $(document).ready(function()
 				Jogs = result;
 				GenerateJogsHTML(Jogs);
 				spinner.stop();
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1634,6 +1658,11 @@ $(document).ready(function()
 				Jogs = result;
 				GenerateJogsHTML(Jogs);
 				spinner.stop();
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1736,6 +1765,11 @@ $(document).ready(function()
 					sessionStorage.setItem("errorMessage", result);
 					window.location.hash = "#error";
 				}
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1767,6 +1801,11 @@ $(document).ready(function()
 					sessionStorage.setItem("errorMessage", result);
 					window.location.hash = "#error";
 				}
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
@@ -1790,6 +1829,11 @@ $(document).ready(function()
 			{
 				spinner.stop();
 				LoadJogsPageOrFilter(Filter);
+			},
+			error: function()
+			{
+				spinner.stop();
+				window.location.hash = "#";
 			}
 		});
 	}
