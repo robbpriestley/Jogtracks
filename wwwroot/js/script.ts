@@ -1,6 +1,6 @@
 "use strict";
 
-declare var Handlebars:any;
+declare var Handlebars: any;
 
 // *** BEGIN INTERFACES ***
 
@@ -1085,12 +1085,36 @@ $(document).ready(function()
 
 		if (token != null)
 		{
-			Authenticated();
+			CheckToken(token);
 		}
 		else
 		{
-			window.location.hash = "#";  // Show welcome page.
+			SignOut();
 		}
+	}
+
+	function CheckToken(token: string): void
+	{
+		$.ajax
+		({
+			url: "/api/auth",
+			type: "GET",
+			contentType: "application/json",
+			data: { token: token },
+			dataType: "text",
+			headers: BasicAuth,
+			success: function(result) 
+			{
+				if (result == "true")
+				{
+					Authenticated();
+				}
+				else
+				{
+					SignOut();
+				}
+			}
+		});
 	}
 
 	function Authenticated(): void
@@ -1110,6 +1134,9 @@ $(document).ready(function()
 		{
 			$("#accounts").show();
 		}
+
+		window.location.hash = "#jogs";
+		$(window).trigger("hashchange");
 	}
 	
 	function ServerAuthenticated(username: string, authOutput: any): void
@@ -1247,6 +1274,8 @@ $(document).ready(function()
 
 		InitializeSelectControls();
 		ClearStorage();
+
+		window.location.hash = "#";
 	}
 
 	function AddAccount(username: string, password: string): void
@@ -1769,7 +1798,6 @@ $(document).ready(function()
 	// *** BEGIN BOOTSTRAP ***
 
 	AuthCheck();
-	$(window).trigger("hashchange");  // Trigger a hash change to start the app.
 
 	// *** END BOOTSTRAP ***
 });

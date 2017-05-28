@@ -55,6 +55,42 @@ namespace DigitalWizardry.Jogtracks.Controllers
 			}
 		}
 
+		#region Authentication: Check Token
+		
+		[HttpGet]
+		[Route("auth")]
+		public IActionResult CheckToken(string token)
+		{
+			if (!Utility.BasicAuthentication(Secrets, Request))
+			{
+				return new UnauthorizedResult();
+			}
+
+			bool result = false;
+
+			try
+			{				
+				try
+				{
+					Account user = Accounts.GetByToken(Guid.Parse(token));
+					result = true;
+				}
+				catch (System.InvalidOperationException)
+				{
+					// The token is not valid.
+					result = false;
+				}
+			}
+			catch (System.Exception e)
+			{
+				ServiceLogs.Error(Request, "[EXCEPTION] " + e.ToString(), "ApiController.CheckToken()", token);
+				result = false;
+			}
+
+			return new ObjectResult(result);
+		}
+		
+		#endregion
 		#region Authentication Output
 
 		public class AuthOutput
