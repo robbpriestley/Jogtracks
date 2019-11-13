@@ -5,11 +5,6 @@ Jog records are displayed to the user in a view and can be filtered by date rang
 
 Ordinary **jogger** users can be managed by **coach** users. A coach user has the ability to CRUD user records. Also, special **admin** users can CRUD all jog records in the system as well as user records.
 
-### Functional Demo
-
-* Visit the functional demo application at [http://www.digitalwizardry.ca:5001](http://www.digitalwizardry.ca:5001)
-* Log in with admin user **Juan** and password **qqqqqqqq**
-
 ### Permission Levels
 There are three permission levels: user, manager, and administrator.
 
